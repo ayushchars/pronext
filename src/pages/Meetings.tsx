@@ -70,7 +70,7 @@ const mockActiveMeeting = {
   chatMessages: [
     { id: 'c1', sender: 'Sarah Johnson', message: 'Hi everyone, thanks for joining!', time: '14:32' },
     { id: 'c2', sender: 'You', message: 'Hello team, excited for our discussion today.', time: '14:33' },
-    { id: 'c3', sender: 'Mark Williams', message: 'I have some ideas I'd like to share regarding the new campaign.', time: '14:34' },
+    { id: 'c3', sender: 'Mark Williams', message: "I have some ideas I'd like to share regarding the new campaign.", time: '14:34' },
   ],
 };
 
