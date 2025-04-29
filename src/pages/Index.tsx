@@ -1,24 +1,55 @@
 
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
+import SubscriptionConfirmation from '@/components/subscription/SubscriptionConfirmation';
 
 const Index = () => {
   const { isAuthenticated, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [subscriptionData, setSubscriptionData] = useState({
+    plan: 'Gold Package',
+    price: 99.99,
+  });
 
   useEffect(() => {
-    // Redirect to the appropriate dashboard or login page
-    if (isAuthenticated) {
-      navigate(isAdmin ? '/admin' : '/dashboard');
+    // Check for subscription success parameters
+    const success = searchParams.get('success');
+    const plan = searchParams.get('plan');
+    const price = searchParams.get('price');
+    
+    if (success === 'true' && plan) {
+      setSubscriptionData({
+        plan: plan === 'gold' ? 'Gold Package' : plan === 'platinum' ? 'Platinum Package' : 'Starter Package',
+        price: price ? parseFloat(price) : 99.99,
+      });
+      setShowConfirmation(true);
     } else {
-      navigate('/login');
+      // Redirect to the appropriate dashboard or login page
+      if (isAuthenticated) {
+        navigate(isAdmin ? '/admin' : '/dashboard');
+      } else {
+        navigate('/login');
+      }
     }
-  }, [isAuthenticated, isAdmin, navigate]);
+  }, [isAuthenticated, isAdmin, navigate, searchParams]);
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    // Redirect after closing the confirmation dialog
+    navigate(isAdmin ? '/admin' : '/dashboard');
+  };
 
   // This is just a placeholder while redirecting
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <SubscriptionConfirmation
+        isOpen={showConfirmation}
+        onClose={handleCloseConfirmation}
+        subscriptionData={subscriptionData}
+      />
       <div className="text-center">
         <div className="flex justify-center mb-4">
           <img 

@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -7,6 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
+import SubscriptionConfirmation from '@/components/subscription/SubscriptionConfirmation';
+import { useSearchParams } from 'react-router-dom';
 
 // Mock subscription data
 const mockActiveSubscription = {
@@ -90,8 +92,25 @@ const planOptions: PlanOption[] = [
 
 const Subscriptions = () => {
   const { toast } = useToast();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [hasActiveSubscription] = useState(true);
   const [activeSubscription] = useState(mockActiveSubscription);
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [subscribedPlan, setSubscribedPlan] = useState<PlanOption | null>(null);
+
+  useEffect(() => {
+    // Show confirmation dialog if subscription success parameter is present
+    const success = searchParams.get('success');
+    const planId = searchParams.get('plan');
+    
+    if (success === 'true' && planId) {
+      const plan = planOptions.find(p => p.id === planId);
+      if (plan) {
+        setSubscribedPlan(plan);
+        setShowConfirmation(true);
+      }
+    }
+  }, [searchParams]);
 
   // Calculate days left in subscription
   const calculateDaysRemaining = () => {
@@ -126,10 +145,33 @@ const Subscriptions = () => {
   };
 
   const handleUpgradeSubscription = (planId: string) => {
-    toast({
-      title: `Upgrading to ${planId.charAt(0).toUpperCase() + planId.slice(1)} plan`,
-      description: "We're processing your upgrade request.",
-    });
+    // Simulate subscription upgrade process
+    const plan = planOptions.find(p => p.id === planId);
+    if (plan) {
+      setSubscribedPlan(plan);
+      setShowConfirmation(true);
+      
+      // Update URL to simulate success parameter
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set('success', 'true');
+      newParams.set('plan', planId);
+      setSearchParams(newParams);
+      
+      toast({
+        title: `Upgrading to ${planId.charAt(0).toUpperCase() + planId.slice(1)} plan`,
+        description: "We're processing your upgrade request.",
+      });
+    }
+  };
+
+  const handleCloseConfirmation = () => {
+    setShowConfirmation(false);
+    
+    // Remove URL parameters
+    const newParams = new URLSearchParams(searchParams);
+    newParams.delete('success');
+    newParams.delete('plan');
+    setSearchParams(newParams, { replace: true });
   };
 
   const daysRemaining = calculateDaysRemaining();
@@ -137,6 +179,18 @@ const Subscriptions = () => {
 
   return (
     <DashboardLayout>
+      {/* Subscription Confirmation Dialog */}
+      {subscribedPlan && (
+        <SubscriptionConfirmation 
+          isOpen={showConfirmation}
+          onClose={handleCloseConfirmation}
+          subscriptionData={{
+            plan: subscribedPlan.name,
+            price: subscribedPlan.price
+          }}
+        />
+      )}
+      
       <div className="space-y-6">
         <div>
           <h1 className="text-3xl font-bold">Manage Subscriptions</h1>
