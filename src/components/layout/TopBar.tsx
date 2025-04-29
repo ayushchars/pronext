@@ -43,8 +43,12 @@ const TopBar = ({ toggleSidebar }: TopBarProps) => {
             <Menu className="h-5 w-5" />
           </Button>
           <div className="flex items-center">
-            <span className="text-xl font-bold text-trading-blue dark:text-white">Trade</span>
-            <span className="text-xl font-bold text-trading-purple">Central</span>
+            <img 
+              src="/lovable-uploads/1dc005c5-1f18-4598-92dc-030b0afec31f.png" 
+              alt="Pro Net Solutions Logo" 
+              className="h-8 mr-2" 
+            />
+            <span className="text-xl font-bold text-gray-800 dark:text-white">Pro Net Solutions</span>
           </div>
         </div>
         

@@ -49,9 +49,15 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="max-w-md w-full p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold">
-            <span className="text-trading-blue dark:text-white">Trade</span>
-            <span className="text-trading-purple">Central</span>
+          <div className="flex justify-center mb-3">
+            <img 
+              src="/lovable-uploads/1dc005c5-1f18-4598-92dc-030b0afec31f.png" 
+              alt="Pro Net Solutions Logo" 
+              className="h-16"
+            />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+            Pro Net Solutions
           </h1>
           <p className="text-gray-500 dark:text-gray-400 mt-2">
             Login to your affiliate dashboard
