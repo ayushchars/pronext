@@ -12,6 +12,10 @@ import Login from "./pages/Login";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
+import TeamManagement from "./pages/TeamManagement";
+import EarningsWallet from "./pages/EarningsWallet";
+import EpinCenter from "./pages/EpinCenter";
+import HierarchyTree from "./pages/HierarchyTree";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +31,10 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<AffiliateDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/team" element={<TeamManagement />} />
+            <Route path="/earnings" element={<EarningsWallet />} />
+            <Route path="/epin" element={<EpinCenter />} />
+            <Route path="/hierarchy" element={<HierarchyTree />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
