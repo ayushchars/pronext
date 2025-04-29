@@ -11,7 +11,10 @@ import {
   Key,
   DollarSign,
   LifeBuoy,
-  Settings
+  Settings,
+  Bell,
+  CreditCard,
+  Video
 } from 'lucide-react';
 
 interface AffiliateSidebarProps {
@@ -24,16 +27,17 @@ const AffiliateSidebar = ({ collapsed }: AffiliateSidebarProps) => {
   
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
-    { icon: User, label: 'Profile', path: '/profile' },
-    { icon: Inbox, label: 'Announcements', path: '/announcements' },
+    { icon: Bell, label: 'Announcements', path: '/announcements' },
     { icon: Download, label: 'Download Center', path: '/downloads' },
     { icon: Inbox, label: 'My Invoices', path: '/invoices' },
     { icon: Users, label: 'My Team', path: '/team' },
     { icon: Wallet, label: 'Earning Wallet', path: '/earnings' },
     { icon: Key, label: 'Epin Center', path: '/epin' },
     { icon: DollarSign, label: 'My Payouts', path: '/payouts' },
+    { icon: Video, label: 'Meetings', path: '/meetings' },
     { icon: LifeBuoy, label: 'Support', path: '/support' },
-    { icon: Settings, label: 'My Profile', path: '/profile/settings' },
+    { icon: CreditCard, label: 'Subscriptions', path: '/subscriptions' },
+    { icon: Settings, label: 'Profile Settings', path: '/profile/settings' },
   ];
 
   return (

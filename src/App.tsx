@@ -16,6 +16,11 @@ import TeamManagement from "./pages/TeamManagement";
 import EarningsWallet from "./pages/EarningsWallet";
 import EpinCenter from "./pages/EpinCenter";
 import HierarchyTree from "./pages/HierarchyTree";
+import Announcements from "./pages/Announcements";
+import Support from "./pages/Support";
+import ProfileSettings from "./pages/ProfileSettings";
+import Subscriptions from "./pages/Subscriptions";
+import Meetings from "./pages/Meetings";
 
 const queryClient = new QueryClient();
 
@@ -35,6 +40,11 @@ const App = () => (
             <Route path="/earnings" element={<EarningsWallet />} />
             <Route path="/epin" element={<EpinCenter />} />
             <Route path="/hierarchy" element={<HierarchyTree />} />
+            <Route path="/announcements" element={<Announcements />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/profile/settings" element={<ProfileSettings />} />
+            <Route path="/subscriptions" element={<Subscriptions />} />
+            <Route path="/meetings" element={<Meetings />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
