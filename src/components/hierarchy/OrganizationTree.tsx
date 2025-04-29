@@ -111,22 +111,10 @@ const TreeNode = ({ node, level = 0 }: TreeNodeProps) => {
 
 const OrganizationTree = () => {
   return (
-    <div className="organization-tree p-6">
+    <div className="organization-tree p-6 relative overflow-x-auto min-w-[800px] pt-8">
       <TreeNode node={mockTreeData} />
       
-      <style jsx>{`
-        .organization-tree {
-          position: relative;
-          overflow-x: auto;
-          min-width: 800px;
-          padding: 2rem;
-        }
-        
-        .tree-children {
-          position: relative;
-          margin-left: 2rem;
-        }
-      `}</style>
+      {/* Custom CSS for organization tree structure moved to className above */}
     </div>
   );
 };
