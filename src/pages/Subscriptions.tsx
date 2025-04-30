@@ -13,20 +13,20 @@ import { useSearchParams } from 'react-router-dom';
 // Mock subscription data
 const mockActiveSubscription = {
   id: 'sub_12345',
-  plan: 'Gold Package',
+  plan: 'Standard Plan',
   status: 'active',
   startDate: '2025-01-15T00:00:00Z',
-  endDate: '2026-01-15T00:00:00Z',
-  renewalDate: '2026-01-15T00:00:00Z',
-  price: 99.99,
-  billingCycle: 'yearly',
+  endDate: '2025-02-12T00:00:00Z', // 28 days from start date
+  renewalDate: '2025-02-12T00:00:00Z', // 28 days from start date
+  price: 60.00,
+  billingCycle: 'monthly',
   features: [
-    'Access to all affiliate tools',
-    'Commission rates up to 15%',
-    'Priority customer support',
-    'Team management features',
-    'Advanced reporting dashboard',
-    'Email marketing integration',
+    'Live meetings and education on forex',
+    'Gold (XAUUSD) trading education',
+    'Access to multiple telegram channels',
+    'ProNet Announcement channel',
+    'ProNet Crypto Premium channel',
+    'ProNet Currency channel',
   ],
 };
 
@@ -44,48 +44,54 @@ interface PlanOption {
 
 const planOptions: PlanOption[] = [
   {
-    id: 'starter',
-    name: 'Starter Package',
-    price: 29.99,
+    id: 'standard',
+    name: 'Standard Plan',
+    price: 60.00,
+    billingCycle: 'monthly',
+    popular: true,
+    features: [
+      { name: 'Live meetings and education on forex', included: true },
+      { name: 'Gold (XAUUSD) trading education', included: true },
+      { name: 'Access to multiple telegram channels', included: true },
+      { name: 'ProNet Announcement channel', included: true },
+      { name: 'ProNet Crypto Premium channel', included: true },
+      { name: 'ProNet Currency channel', included: true },
+      { name: 'ProNet Gold Mentor channel', included: true },
+      { name: 'ProNet Gold Scalper channel', included: true },
+      { name: 'ProNet I Options channel', included: true },
+      { name: 'ProNet I Stocks channel', included: true },
+      { name: 'ProNet Indices channel', included: true },
+      { name: 'ProNet Live Sessions channel', included: true },
+    ],
+  },
+  {
+    id: 'forex-addon',
+    name: 'Forex Add-on',
+    price: 20.00,
     billingCycle: 'monthly',
     popular: false,
     features: [
-      { name: 'Basic affiliate tools', included: true },
-      { name: 'Commission rates up to 5%', included: true },
-      { name: 'Standard customer support', included: true },
-      { name: 'Team management features', included: false },
-      { name: 'Advanced reporting dashboard', included: false },
-      { name: 'Email marketing integration', included: false },
+      { name: 'Advanced forex signals', included: true },
+      { name: 'Exclusive forex webinars', included: true },
+      { name: 'One-on-one forex mentoring session', included: true },
+      { name: 'Forex strategy guides', included: true },
+      { name: 'Daily market analysis', included: true },
+      { name: 'Access to ProNet Forex Pro channel', included: true },
     ],
   },
   {
-    id: 'gold',
-    name: 'Gold Package',
-    price: 99.99,
-    billingCycle: 'yearly',
-    popular: true,
-    features: [
-      { name: 'Access to all affiliate tools', included: true },
-      { name: 'Commission rates up to 15%', included: true },
-      { name: 'Priority customer support', included: true },
-      { name: 'Team management features', included: true },
-      { name: 'Advanced reporting dashboard', included: true },
-      { name: 'Email marketing integration', included: true },
-    ],
-  },
-  {
-    id: 'platinum',
-    name: 'Platinum Package',
-    price: 199.99,
-    billingCycle: 'yearly',
+    id: 'gold-addon',
+    name: 'Gold Trading Add-on',
+    price: 25.00,
+    billingCycle: 'monthly',
     popular: false,
     features: [
-      { name: 'Access to all affiliate tools', included: true },
-      { name: 'Commission rates up to 25%', included: true },
-      { name: 'VIP customer support', included: true },
-      { name: 'Team management features', included: true },
-      { name: 'Advanced reporting dashboard', included: true },
-      { name: 'Email marketing integration', included: true },
+      { name: 'Premium XAUUSD signals', included: true },
+      { name: 'Gold market analysis', included: true },
+      { name: 'Weekly gold trading webinars', included: true },
+      { name: 'Gold trading strategy guides', included: true },
+      { name: 'Access to Gold Pro channel', included: true },
+      { name: 'Gold trading indicators', included: true },
     ],
   },
 ];
@@ -158,8 +164,8 @@ const Subscriptions = () => {
       setSearchParams(newParams);
       
       toast({
-        title: `Upgrading to ${planId.charAt(0).toUpperCase() + planId.slice(1)} plan`,
-        description: "We're processing your upgrade request.",
+        title: `Subscribing to ${plan.name}`,
+        description: "We're processing your subscription request.",
       });
     }
   };
@@ -175,7 +181,7 @@ const Subscriptions = () => {
   };
 
   const daysRemaining = calculateDaysRemaining();
-  const percentComplete = 100 - ((daysRemaining / 365) * 100);
+  const percentComplete = 100 - ((daysRemaining / 28) * 100); // Changed from 365 to 28 days
 
   return (
     <DashboardLayout>
@@ -335,7 +341,7 @@ const Subscriptions = () => {
                     onClick={() => handleUpgradeSubscription(plan.id)}
                     disabled={activeSubscription && activeSubscription.plan === plan.name}
                   >
-                    {activeSubscription && activeSubscription.plan === plan.name ? 'Current Plan' : 'Upgrade'}
+                    {activeSubscription && activeSubscription.plan === plan.name ? 'Current Plan' : plan.id.includes('addon') ? 'Add to Plan' : 'Subscribe'}
                   </Button>
                 </CardFooter>
               </Card>

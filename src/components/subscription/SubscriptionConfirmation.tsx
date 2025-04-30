@@ -31,7 +31,7 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
               <DialogTitle className="text-2xl font-bold text-[#4CD3C8]">Congratulations, {user?.name?.split(' ')[0] || 'Affiliate'}!</DialogTitle>
             </div>
             <DialogDescription className="text-white text-lg">
-              You have successfully subscribed to Pro Net Solutions.
+              You have successfully subscribed to {subscriptionData.plan}.
               <p className="mt-2">Your subscription is now active.</p>
             </DialogDescription>
           </DialogHeader>

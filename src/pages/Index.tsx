@@ -10,8 +10,8 @@ const Index = () => {
   const [searchParams] = useSearchParams();
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [subscriptionData, setSubscriptionData] = useState({
-    plan: 'Gold Package',
-    price: 99.99,
+    plan: 'Standard Plan',
+    price: 60.00,
   });
 
   useEffect(() => {
@@ -22,8 +22,10 @@ const Index = () => {
     
     if (success === 'true' && plan) {
       setSubscriptionData({
-        plan: plan === 'gold' ? 'Gold Package' : plan === 'platinum' ? 'Platinum Package' : 'Starter Package',
-        price: price ? parseFloat(price) : 99.99,
+        plan: plan === 'standard' ? 'Standard Plan' : 
+              plan === 'forex-addon' ? 'Forex Add-on' : 
+              plan === 'gold-addon' ? 'Gold Trading Add-on' : 'Standard Plan',
+        price: price ? parseFloat(price) : 60.00,
       });
       setShowConfirmation(true);
     } else {
