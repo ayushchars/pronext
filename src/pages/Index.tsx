@@ -44,7 +44,7 @@ const Index = () => {
 
   // This is just a placeholder while redirecting
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-[#1A2A38]">
       <SubscriptionConfirmation
         isOpen={showConfirmation}
         onClose={handleCloseConfirmation}
@@ -58,10 +58,10 @@ const Index = () => {
             className="h-20" 
           />
         </div>
-        <h1 className="text-4xl font-bold mb-4 text-gray-800">
+        <h1 className="text-4xl font-bold mb-4 text-[#4CD3C8]">
           Pro Net Solutions
         </h1>
-        <p className="text-xl text-gray-600">Loading your dashboard...</p>
+        <p className="text-xl text-white">Loading your dashboard...</p>
       </div>
     </div>
   );

@@ -65,10 +65,10 @@ export default {
 				},
 				// Custom trading platform colors
 				trading: {
-					blue: '#1E3A8A',
-					purple: '#6D28D9',
-					accent: '#8B5CF6',
-					lightAccent: '#C4B5FD',
+					blue: '#1A2A38',
+					purple: '#4CD3C8',
+					accent: '#2CBFB1',
+					lightAccent: '#25A69A',
 					success: '#10B981',
 					warning: '#F59E0B',
 					danger: '#EF4444',

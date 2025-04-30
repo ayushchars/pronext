@@ -50,7 +50,7 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
               
               <p className="flex justify-between">
                 <span className="text-gray-300">Phone:</span>
-                <span className="font-semibold">{user?.phoneNumber || 'Not provided'}</span>
+                <span className="font-semibold">{user?.phone || 'Not provided'}</span>
               </p>
             </div>
           </div>
