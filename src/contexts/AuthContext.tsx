@@ -1,4 +1,3 @@
-
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 // Roles available in the application
@@ -10,6 +9,7 @@ interface User {
   email: string;
   role: UserRole;
   avatar?: string;
+  phone?: string; // Added phone property to fix TypeScript error
 }
 
 interface AuthContextType {

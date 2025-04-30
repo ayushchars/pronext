@@ -46,8 +46,8 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
-      <div className="max-w-md w-full p-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
+    <div className="min-h-screen flex items-center justify-center bg-[#1A2A38]">
+      <div className="max-w-md w-full p-8 bg-card text-card-foreground rounded-lg shadow-lg">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-3">
             <img 
@@ -56,10 +56,10 @@ const Login = () => {
               className="h-16"
             />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
+          <h1 className="text-2xl font-bold text-card-foreground">
             Pro Net Solutions
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-muted-foreground mt-2">
             Login to your affiliate dashboard
           </p>
         </div>
@@ -109,7 +109,7 @@ const Login = () => {
             </Button>
           </div>
 
-          <div className="text-center text-sm">
+          <div className="text-center text-sm text-muted-foreground">
             <p>
               For demo purposes: Use <span className="font-semibold">admin@example.com</span> or <span className="font-semibold">affiliate@example.com</span> with any password
             </p>
