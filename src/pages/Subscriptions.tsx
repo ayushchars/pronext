@@ -4,7 +4,7 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, Telegram } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
 import SubscriptionConfirmation from '@/components/subscription/SubscriptionConfirmation';
@@ -27,6 +27,12 @@ const mockActiveSubscription = {
     'ProNet Announcement channel',
     'ProNet Crypto Premium channel',
     'ProNet Currency channel',
+    'ProNet Gold Mentor channel',
+    'ProNet Gold Scalper channel',
+    'ProNet I Options channel',
+    'ProNet I Stocks channel',
+    'ProNet Indices channel',
+    'ProNet Live Sessions channel',
   ],
 };
 
@@ -65,33 +71,63 @@ const planOptions: PlanOption[] = [
     ],
   },
   {
-    id: 'forex-addon',
-    name: 'Forex Add-on',
-    price: 20.00,
-    billingCycle: 'monthly',
-    popular: false,
-    features: [
-      { name: 'Advanced forex signals', included: true },
-      { name: 'Exclusive forex webinars', included: true },
-      { name: 'One-on-one forex mentoring session', included: true },
-      { name: 'Forex strategy guides', included: true },
-      { name: 'Daily market analysis', included: true },
-      { name: 'Access to ProNet Forex Pro channel', included: true },
-    ],
-  },
-  {
-    id: 'gold-addon',
-    name: 'Gold Trading Add-on',
+    id: 'real-estate-addon',
+    name: 'Real Estate Add-on',
     price: 25.00,
     billingCycle: 'monthly',
     popular: false,
     features: [
-      { name: 'Premium XAUUSD signals', included: true },
-      { name: 'Gold market analysis', included: true },
-      { name: 'Weekly gold trading webinars', included: true },
-      { name: 'Gold trading strategy guides', included: true },
-      { name: 'Access to Gold Pro channel', included: true },
-      { name: 'Gold trading indicators', included: true },
+      { name: 'Real estate investment strategies', included: true },
+      { name: 'Property market analysis', included: true },
+      { name: 'Weekly real estate webinars', included: true },
+      { name: 'Real estate investment guides', included: true },
+      { name: 'Access to ProNet Real Estate channel', included: true },
+      { name: 'Property valuation tools', included: true },
+    ],
+  },
+  {
+    id: 'dropshipping-addon',
+    name: 'Drop Shipping Add-on',
+    price: 20.00,
+    billingCycle: 'monthly',
+    popular: false,
+    features: [
+      { name: 'Dropshipping business strategies', included: true },
+      { name: 'Product sourcing guidance', included: true },
+      { name: 'E-commerce platform setup help', included: true },
+      { name: 'Marketing strategies for dropshipping', included: true },
+      { name: 'Access to ProNet Dropshipping channel', included: true },
+      { name: 'Supplier connection resources', included: true },
+    ],
+  },
+  {
+    id: 'esports-addon',
+    name: 'Esports Add-on',
+    price: 15.00,
+    billingCycle: 'monthly',
+    popular: false,
+    features: [
+      { name: 'Esports market analysis', included: true },
+      { name: 'Gaming team investment strategies', included: true },
+      { name: 'Tournament predictions and insights', included: true },
+      { name: 'Weekly esports industry updates', included: true },
+      { name: 'Access to ProNet Esports channel', included: true },
+      { name: 'Exclusive gaming event information', included: true },
+    ],
+  },
+  {
+    id: 'fantasy-gaming-addon',
+    name: 'Fantasy Gaming Add-on',
+    price: 15.00,
+    billingCycle: 'monthly',
+    popular: false,
+    features: [
+      { name: 'Fantasy sports strategies', included: true },
+      { name: 'Player performance analysis', included: true },
+      { name: 'Weekly fantasy sports tips', included: true },
+      { name: 'League-specific guides', included: true },
+      { name: 'Access to ProNet Fantasy Gaming channel', included: true },
+      { name: 'Exclusive odds and predictions', included: true },
     ],
   },
 ];
@@ -180,8 +216,16 @@ const Subscriptions = () => {
     setSearchParams(newParams, { replace: true });
   };
 
+  const handleTelegramAccess = () => {
+    window.open('https://t.me/ProNetSolutions', '_blank');
+    toast({
+      title: "Opening Telegram",
+      description: "Redirecting you to the ProNet Solutions Telegram channels.",
+    });
+  };
+
   const daysRemaining = calculateDaysRemaining();
-  const percentComplete = 100 - ((daysRemaining / 28) * 100); // Changed from 365 to 28 days
+  const percentComplete = 100 - ((daysRemaining / 28) * 100); // 28 days cycle
 
   return (
     <DashboardLayout>
@@ -258,6 +302,14 @@ const Subscriptions = () => {
                   ))}
                 </ul>
               </div>
+
+              <Button 
+                className="w-full bg-[#229ED9] hover:bg-[#1A7AB0] flex items-center justify-center"
+                onClick={handleTelegramAccess}
+              >
+                <Telegram className="mr-2 h-5 w-5" />
+                Access Telegram Channels
+              </Button>
             </CardContent>
             <CardFooter className="flex justify-between flex-wrap gap-2">
               <Button variant="outline" onClick={handleManageSubscription}>

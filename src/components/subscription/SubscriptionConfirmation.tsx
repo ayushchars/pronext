@@ -2,7 +2,7 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { PartyPopper } from 'lucide-react';
+import { PartyPopper, Telegram } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface SubscriptionConfirmationProps {
@@ -20,6 +20,10 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
   subscriptionData
 }) => {
   const { user } = useAuth();
+
+  const handleTelegramAccess = () => {
+    window.open('https://t.me/ProNetSolutions', '_blank');
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -54,6 +58,14 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
               </p>
             </div>
           </div>
+          
+          <Button 
+            onClick={handleTelegramAccess}
+            className="w-full bg-[#229ED9] hover:bg-[#1A7AB0] text-white font-medium py-2 px-4 rounded mb-4 flex items-center justify-center"
+          >
+            <Telegram className="mr-2 h-5 w-5" />
+            Access Telegram Channels
+          </Button>
           
           <Button 
             onClick={onClose}

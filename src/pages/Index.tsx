@@ -23,8 +23,10 @@ const Index = () => {
     if (success === 'true' && plan) {
       setSubscriptionData({
         plan: plan === 'standard' ? 'Standard Plan' : 
-              plan === 'forex-addon' ? 'Forex Add-on' : 
-              plan === 'gold-addon' ? 'Gold Trading Add-on' : 'Standard Plan',
+              plan === 'real-estate-addon' ? 'Real Estate Add-on' : 
+              plan === 'dropshipping-addon' ? 'Drop Shipping Add-on' : 
+              plan === 'esports-addon' ? 'Esports Add-on' : 
+              plan === 'fantasy-gaming-addon' ? 'Fantasy Gaming Add-on' : 'Standard Plan',
         price: price ? parseFloat(price) : 60.00,
       });
       setShowConfirmation(true);
