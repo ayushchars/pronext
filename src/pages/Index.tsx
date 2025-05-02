@@ -70,12 +70,12 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
+      {/* Hero Section - Updated background image */}
       <section 
         id="home" 
         className="relative pt-32 pb-20 min-h-[90vh] flex items-center"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(26, 42, 56, 0.8), rgba(26, 42, 56, 0.95)), url('/lovable-uploads/796c2510-a8a2-47f5-9127-81950f4dc7fa.png')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(26, 42, 56, 0.8), rgba(26, 42, 56, 0.95)), url('/lovable-uploads/55a8a599-90bc-4b6b-974c-551b0a08cad3.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -271,41 +271,6 @@ const Index = () => {
               </p>
               <p className="text-gray-300">
                 Blockchain enthusiast who has guided hundreds of investors through the volatile crypto landscape.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Growth Avenues Section */}
-      <section className="py-16 bg-[#1A2A38]">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12 text-[#4CD3C8]">
-            Our Community Can Earn: Multiple Avenues for Growth
-          </h2>
-          
-          <div className="space-y-6 max-w-3xl mx-auto">
-            {/* Avenue 1 */}
-            <div className="bg-[#223143] p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Using Our Products & Services</h3>
-              <p className="text-gray-300">
-                Practical education allows traders to identify patterns, signals, and potential strategies to enhance trading profitability.
-              </p>
-            </div>
-            
-            {/* Avenue 2 */}
-            <div className="bg-[#223143] p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Promoting Our Services</h3>
-              <p className="text-gray-300">
-                Earn commissions by sharing Pro Net's valuable insights with others who can benefit.
-              </p>
-            </div>
-            
-            {/* Avenue 3 */}
-            <div className="bg-[#223143] p-6 rounded-lg">
-              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Growing Your Portfolio</h3>
-              <p className="text-gray-300">
-                Learn to trade, grow assets, and develop the skills needed to achieve financial growth.
               </p>
             </div>
           </div>
