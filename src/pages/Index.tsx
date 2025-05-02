@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { CheckCircle, LayoutGrid, ChartBar, FileText, Users, Globe, Mail } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { LayoutDashboard, TargetIcon, FileText, Users, Globe, Mail, Instagram, Youtube, Facebook } from 'lucide-react';
 
 const Index = () => {
   const { isAuthenticated } = useAuth();
@@ -21,24 +20,23 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#1A2A38] text-white">
-      {/* Header */}
+      {/* Header/Navigation */}
       <header className="bg-[#1A2A38]/90 backdrop-blur-sm border-b border-border/20 fixed w-full z-50">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center">
             <img 
               src="/lovable-uploads/1dc005c5-1f18-4598-92dc-030b0afec31f.png" 
-              alt="Pro Net Solutions Logo" 
+              alt="PRO NET Solutions" 
               className="h-8 mr-2" 
             />
             <span className="text-xl font-bold text-white">Pro Net Solutions</span>
           </div>
           
           <nav className="hidden md:flex items-center space-x-6">
-            <a href="#home" className="text-white hover:text-primary transition-colors">Home</a>
-            <a href="#services" className="text-white hover:text-primary transition-colors">Services</a>
-            <a href="#features" className="text-white hover:text-primary transition-colors">Features</a>
-            <a href="#mentors" className="text-white hover:text-primary transition-colors">Mentors</a>
-            <a href="#contact" className="text-white hover:text-primary transition-colors">Contact</a>
+            <a href="#" className="text-white hover:text-primary transition-colors">Home</a>
+            <a href="#" className="text-white hover:text-primary transition-colors">Services</a>
+            <a href="#" className="text-white hover:text-primary transition-colors">Articles</a>
+            <a href="#" className="text-white hover:text-primary transition-colors">Contact</a>
           </nav>
           
           <div className="flex items-center space-x-4">
@@ -70,12 +68,12 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section - Updated background image */}
+      {/* Hero Section */}
       <section 
         id="home" 
         className="relative pt-32 pb-20 min-h-[90vh] flex items-center"
         style={{
-          backgroundImage: `linear-gradient(to bottom, rgba(26, 42, 56, 0.8), rgba(26, 42, 56, 0.95)), url('/lovable-uploads/55a8a599-90bc-4b6b-974c-551b0a08cad3.png')`,
+          backgroundImage: `linear-gradient(to bottom, rgba(26, 42, 56, 0.8), rgba(26, 42, 56, 0.95)), url('/lovable-uploads/d1a85572-d92b-476a-81af-3f6effa84fcb.png')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
@@ -85,7 +83,7 @@ const Index = () => {
             Empowering Dreams, <span className="text-[#4CD3C8]">Elevating Lives!</span>
           </h1>
           <p className="text-lg md:text-xl max-w-3xl mx-auto mb-10 text-gray-300">
-            Succeed in the fast-paced financial markets with Pro Net Solutions' expert guidance and innovative tools. Achieve financial independence through cutting-edge technology and education.
+            Succeed in the fast-paced financial markets with Pro Net Solutions' expert guidance. Achieve financial independence through cutting-edge technology and education.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mb-16">
             <div className="flex items-center gap-2 px-4 py-2 bg-[#223143] rounded-full">
@@ -111,7 +109,7 @@ const Index = () => {
       </section>
 
       {/* Alert Providers Section */}
-      <section id="features" className="py-16 bg-[#1A2A38]">
+      <section className="py-16 bg-[#1A2A38]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-12 text-[#4CD3C8]">
             ALERT PROVIDERS: GAINING AN EDGE IN THE MARKETS
@@ -121,15 +119,18 @@ const Index = () => {
             <div className="bg-[#223143] p-6 rounded-lg hover:shadow-lg transition-shadow">
               <div className="flex justify-center mb-6">
                 <div className="bg-[#1A2A38] p-4 rounded-md">
-                  <LayoutGrid className="text-[#4CD3C8] h-8 w-8" />
+                  <LayoutDashboard className="text-[#4CD3C8] h-8 w-8" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">Profitable with Patience</h3>
+              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">PROFITABLE WITH PATIENCE</h3>
               <p className="text-center mb-4 text-gray-300">
-                Stay focused on long-term success with strategic investments and disciplined trading.
+                Stay focused on long-term success with strategic investments.
               </p>
               <p className="text-center mb-4 text-gray-300">
-                Our team of experienced traders guides you to make informed decisions that build consistent growth.
+                Our team of experienced traders guides you through market analysis.
+              </p>
+              <p className="text-center mb-4 text-gray-300">
+                We assist in identifying opportunities consistently.
               </p>
               <div className="text-center">
                 <Button variant="link" className="text-[#4CD3C8]">Learn More</Button>
@@ -140,15 +141,18 @@ const Index = () => {
             <div className="bg-[#223143] p-6 rounded-lg hover:shadow-lg transition-shadow">
               <div className="flex justify-center mb-6">
                 <div className="bg-[#1A2A38] p-4 rounded-md">
-                  <ChartBar className="text-[#4CD3C8] h-8 w-8" />
+                  <TargetIcon className="text-[#4CD3C8] h-8 w-8" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">Accurate Analysis</h3>
+              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">ACCURATE ANALYSIS</h3>
               <p className="text-center mb-4 text-gray-300">
-                Get timely, actionable data insights for smarter investment decisions every day.
+                Timely, actionable data insights for smarter investment decisions daily.
               </p>
               <p className="text-center mb-4 text-gray-300">
-                Our advanced analytics tools help you spot opportunities others miss with intuitive visual data.
+                Our advanced analytics tools help you spot opportunities others miss.
+              </p>
+              <p className="text-center mb-4 text-gray-300">
+                Visual data that's intuitive and quick to understand.
               </p>
               <div className="text-center">
                 <Button variant="link" className="text-[#4CD3C8]">Learn More</Button>
@@ -162,12 +166,15 @@ const Index = () => {
                   <FileText className="text-[#4CD3C8] h-8 w-8" />
                 </div>
               </div>
-              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">Expert Knowledge</h3>
+              <h3 className="text-xl font-bold mb-4 text-center uppercase text-[#4CD3C8]">EXPERT KNOWLEDGE</h3>
               <p className="text-center mb-4 text-gray-300">
-                Access cutting-edge market insights and educational resources from industry leaders.
+                Access cutting-edge market insights from industry leaders.
               </p>
               <p className="text-center mb-4 text-gray-300">
-                Our comprehensive training helps you develop trading strategies that work in any market condition.
+                Comprehensive educational resources help you build up your expertise.
+              </p>
+              <p className="text-center mb-4 text-gray-300">
+                Learn trading strategies that work in any market condition.
               </p>
               <div className="text-center">
                 <Button variant="link" className="text-[#4CD3C8]">Learn More</Button>
@@ -207,7 +214,7 @@ const Index = () => {
       </section>
 
       {/* Mentors Section */}
-      <section id="mentors" className="py-16 bg-[#1A2A38]">
+      <section className="py-16 bg-[#1A2A38]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-4 text-[#4CD3C8]">
             Mentorship That Guides You Forward
@@ -277,6 +284,41 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Our Community Can Earn Section */}
+      <section className="py-16 bg-[#1A2A38]">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold text-center mb-12 text-[#4CD3C8]">
+            Our Community Can Earn: Multiple Avenues for Growth
+          </h2>
+          
+          <div className="space-y-6 max-w-3xl mx-auto">
+            {/* Avenue 1 */}
+            <div className="bg-[#223143] p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Using Our Products & Services</h3>
+              <p className="text-gray-300">
+                Practical education allows traders to identify patterns, signals, and market strategies to enhance trading profitability.
+              </p>
+            </div>
+            
+            {/* Avenue 2 */}
+            <div className="bg-[#223143] p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Promoting Our Services</h3>
+              <p className="text-gray-300">
+                Earn commissions by sharing Pro Net's valuable insights with others who can benefit.
+              </p>
+            </div>
+            
+            {/* Avenue 3 */}
+            <div className="bg-[#223143] p-6 rounded-lg">
+              <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Growing Your Portfolio</h3>
+              <p className="text-gray-300">
+                Learn to trade, grow assets, and develop the skills needed to achieve financial growth.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Lifestyle Funds Section */}
       <section className="py-16 bg-[#1A2A38]">
         <div className="container mx-auto px-4">
@@ -337,7 +379,7 @@ const Index = () => {
       </section>
 
       {/* Newsletter Section */}
-      <section id="contact" className="py-16 bg-[#1A2A38]">
+      <section className="py-16 bg-[#1A2A38]">
         <div className="container mx-auto px-4">
           <h2 className="text-3xl font-bold text-center mb-8 text-[#4CD3C8]">
             Subscribe to our Newsletter!
@@ -373,7 +415,7 @@ const Index = () => {
             Pro Net Solutions provides users access to digital market resources and investment education.
           </p>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
             <div>
               <h4 className="text-white font-bold mb-4">About</h4>
               <ul className="space-y-2">
@@ -395,7 +437,7 @@ const Index = () => {
             </div>
             
             <div>
-              <h4 className="text-white font-bold mb-4">Resources</h4>
+              <h4 className="text-white font-bold mb-4">Legal</h4>
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-[#4CD3C8]">Privacy Policy</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-[#4CD3C8]">Terms of Use</a></li>
@@ -405,7 +447,7 @@ const Index = () => {
             </div>
             
             <div>
-              <h4 className="text-white font-bold mb-4">Contact Us</h4>
+              <h4 className="text-white font-bold mb-4">Contact</h4>
               <ul className="space-y-2">
                 <li className="text-gray-400">support@pronetsolutions.com</li>
                 <li className="text-gray-400">+1 (555) 123-4567</li>
@@ -415,17 +457,17 @@ const Index = () => {
           
           <div className="flex justify-center space-x-4 mb-8">
             <a href="#" className="bg-[#1A2A38] p-2 rounded-full hover:bg-[#4CD3C8] transition-colors">
-              <Users className="h-5 w-5 text-white" />
+              <Facebook className="h-5 w-5 text-white" />
             </a>
             <a href="#" className="bg-[#1A2A38] p-2 rounded-full hover:bg-[#4CD3C8] transition-colors">
-              <Globe className="h-5 w-5 text-white" />
+              <Instagram className="h-5 w-5 text-white" />
             </a>
             <a href="#" className="bg-[#1A2A38] p-2 rounded-full hover:bg-[#4CD3C8] transition-colors">
               <Mail className="h-5 w-5 text-white" />
             </a>
           </div>
           
-          <div className="text-center text-gray-500">
+          <div className="text-center text-gray-500 border-t border-gray-700 pt-8">
             <p>Copyright © {new Date().getFullYear()} Pro Net Solutions. All rights reserved.</p>
           </div>
         </div>
