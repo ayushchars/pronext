@@ -103,7 +103,7 @@ const Index = () => {
           </div>
           <Button 
             className="bg-primary text-white hover:bg-primary/90 text-lg px-8 py-6"
-            onClick={() => navigate('/subscriptions')}
+            onClick={() => handleNavigation('/dashboard')}
           >
             Get Started
           </Button>
@@ -197,7 +197,7 @@ const Index = () => {
               </p>
               <Button 
                 className="bg-[#1A2A38] text-white hover:bg-[#223143]"
-                onClick={() => navigate('/subscriptions')}
+                onClick={() => handleNavigation('/subscriptions')}
               >
                 Subscribe Now
               </Button>
