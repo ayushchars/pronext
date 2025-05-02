@@ -1,10 +1,9 @@
-
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertCircle, Telegram } from 'lucide-react';
+import { CheckCircle, XCircle, AlertCircle, MessageSquare } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
 import SubscriptionConfirmation from '@/components/subscription/SubscriptionConfirmation';
@@ -307,7 +306,7 @@ const Subscriptions = () => {
                 className="w-full bg-[#229ED9] hover:bg-[#1A7AB0] flex items-center justify-center"
                 onClick={handleTelegramAccess}
               >
-                <Telegram className="mr-2 h-5 w-5" />
+                <MessageSquare className="mr-2 h-5 w-5" />
                 Access Telegram Channels
               </Button>
             </CardContent>
