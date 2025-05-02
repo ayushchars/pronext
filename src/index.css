@@ -84,6 +84,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  html {
+    @apply scroll-smooth;
+  }
 }
 
 @layer components {
@@ -106,4 +110,38 @@
   .btn-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary/90 transition-colors;
   }
+  
+  /* Landing page specific components */
+  .feature-card {
+    @apply bg-[#223143] p-6 rounded-lg transition-all hover:-translate-y-1 hover:shadow-lg;
+  }
+  
+  .feature-icon {
+    @apply bg-[#1A2A38] p-4 rounded-md text-[#4CD3C8];
+  }
+  
+  .section-title {
+    @apply text-3xl font-bold text-center mb-12 text-[#4CD3C8];
+  }
+  
+  .section-subtitle {
+    @apply text-xl font-bold mb-4 text-[#4CD3C8];
+  }
+}
+
+/* Animation keyframes */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
 }
