@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import SignUp from "./pages/SignUp";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
@@ -21,6 +22,10 @@ import Support from "./pages/Support";
 import ProfileSettings from "./pages/ProfileSettings";
 import Subscriptions from "./pages/Subscriptions";
 import Meetings from "./pages/Meetings";
+import Downloads from "./pages/Downloads";
+import Payouts from "./pages/Payouts";
+import Invoices from "./pages/Invoices";
+import Referral from "./pages/Referral";
 
 const queryClient = new QueryClient();
 
@@ -34,6 +39,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<AffiliateDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/team" element={<TeamManagement />} />
@@ -45,6 +51,10 @@ const App = () => (
             <Route path="/profile/settings" element={<ProfileSettings />} />
             <Route path="/subscriptions" element={<Subscriptions />} />
             <Route path="/meetings" element={<Meetings />} />
+            <Route path="/downloads" element={<Downloads />} />
+            <Route path="/payouts" element={<Payouts />} />
+            <Route path="/invoices" element={<Invoices />} />
+            <Route path="/referral" element={<Referral />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

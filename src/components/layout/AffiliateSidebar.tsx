@@ -14,7 +14,9 @@ import {
   Settings,
   Bell,
   CreditCard,
-  Video
+  Video,
+  FileText,
+  Share2
 } from 'lucide-react';
 
 interface AffiliateSidebarProps {
@@ -29,11 +31,12 @@ const AffiliateSidebar = ({ collapsed }: AffiliateSidebarProps) => {
     { icon: Home, label: 'Dashboard', path: '/dashboard' },
     { icon: Bell, label: 'Announcements', path: '/announcements' },
     { icon: Download, label: 'Download Center', path: '/downloads' },
-    { icon: Inbox, label: 'My Invoices', path: '/invoices' },
+    { icon: FileText, label: 'My Invoices', path: '/invoices' },
     { icon: Users, label: 'My Team', path: '/team' },
     { icon: Wallet, label: 'Earning Wallet', path: '/earnings' },
     { icon: Key, label: 'Epin Center', path: '/epin' },
     { icon: DollarSign, label: 'My Payouts', path: '/payouts' },
+    { icon: Share2, label: 'My Referrals', path: '/referral' },
     { icon: Video, label: 'Meetings', path: '/meetings' },
     { icon: LifeBuoy, label: 'Support', path: '/support' },
     { icon: CreditCard, label: 'Subscriptions', path: '/subscriptions' },

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { useAuth } from '@/contexts/AuthContext';
@@ -11,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
 import { User, Lock, Bell, Shield, Smartphone } from 'lucide-react';
+import AgreementLetter from '@/components/profile/AgreementLetter';
 
 // Mock user profile data
 const mockUserProfile = {
@@ -161,6 +161,10 @@ const ProfileSettings = () => {
             <TabsTrigger value="notifications">
               <Bell className="h-4 w-4 mr-2" />
               Notifications
+            </TabsTrigger>
+            <TabsTrigger value="agreements">
+              <Shield className="h-4 w-4 mr-2" />
+              Agreements
             </TabsTrigger>
           </TabsList>
           
@@ -383,6 +387,10 @@ const ProfileSettings = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+          
+          <TabsContent value="agreements" className="mt-0">
+            <AgreementLetter userName={profile.name} />
           </TabsContent>
         </Tabs>
       </div>
