@@ -16,6 +16,10 @@ const Index = () => {
     }
   };
 
+  const handleExternalNavigation = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -62,21 +66,178 @@ const Index = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl text-center mx-auto">
             <h1 className="text-5xl font-bold text-white leading-tight mb-6">
-              Empowering Dreams & Elevating Lives
+              Pro Net Solutions - Multi-Service Platform
             </h1>
             <p className="text-xl text-gray-300 mb-8">
-              Join our community of successful affiliates and traders to build a sustainable passive income stream through our proven system.
+              Choose from our diverse range of services - Financial Markets, Fantasy Gaming, and Dropshipping Solutions.
             </p>
-            <Button 
-              className="bg-[#4CD3C8] text-[#1A2A38] hover:bg-[#3cc3b8] text-lg px-8 py-6"
-              onClick={() => handleNavigation('/signup')}
-            >
-              Get Started Today
-            </Button>
           </div>
         </div>
       </section>
-
+      
+      {/* Services Selection Section */}
+      <section className="py-16 bg-[#1E2E3C]">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-white mb-4">
+              Our Services
+            </h2>
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+              Select the service that matches your needs and goals
+            </p>
+          </div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Financial Markets Service */}
+            <div className="bg-[#1A2A38] rounded-xl overflow-hidden shadow-2xl transform transition-all duration-300 hover:scale-105">
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" 
+                  alt="Financial Markets" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-[#4CD3C8] mb-2">Financial Markets</h3>
+                <p className="text-gray-300 mb-6">
+                  Access premium trading signals, expert mentorship, and build a passive income through our financial markets platform.
+                </p>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Trading signals & analysis</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Expert mentorship</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Affiliate earnings</p>
+                  </div>
+                </div>
+                <Button 
+                  className="bg-[#4CD3C8] text-[#1A2A38] hover:bg-[#3cc3b8] w-full"
+                  onClick={() => handleNavigation('/signup')}
+                >
+                  Access Financial Services
+                </Button>
+              </div>
+            </div>
+            
+            {/* Fantasy Gaming Service */}
+            <div className="bg-[#1A2A38] rounded-xl overflow-hidden shadow-2xl transform transition-all duration-300 hover:scale-105">
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1542751371-adc38448a05e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" 
+                  alt="Fantasy Gaming & eSports" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-[#4CD3C8] mb-2">Fantasy Gaming & eSports</h3>
+                <p className="text-gray-300 mb-6">
+                  Experience premium casino games, live sports betting, eSports competitions and more on our gaming platform.
+                </p>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Casino games & slots</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Sports & eSports betting</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Easy deposits & withdrawals</p>
+                  </div>
+                </div>
+                <Button 
+                  className="bg-[#4CD3C8] text-[#1A2A38] hover:bg-[#3cc3b8] w-full"
+                  onClick={() => handleExternalNavigation('https://gaming.pronetsolutions.com')}
+                >
+                  Visit Gaming Platform
+                </Button>
+              </div>
+            </div>
+            
+            {/* Dropshipping Service */}
+            <div className="bg-[#1A2A38] rounded-xl overflow-hidden shadow-2xl transform transition-all duration-300 hover:scale-105">
+              <div className="h-48 overflow-hidden">
+                <img 
+                  src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80" 
+                  alt="Dropshipping Solutions" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold text-[#4CD3C8] mb-2">Dropshipping Solutions</h3>
+                <p className="text-gray-300 mb-6">
+                  Start your e-commerce journey with our curated collection of products, tools, and Shopify integration.
+                </p>
+                <div className="space-y-3 mb-6">
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Curated product collection</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Shopify integration</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-[#4CD3C8]/20 p-1 rounded-full mr-3">
+                      <svg className="w-4 h-4 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                    </div>
+                    <p className="text-sm text-gray-300">Marketing support</p>
+                  </div>
+                </div>
+                <Button 
+                  className="bg-[#4CD3C8] text-[#1A2A38] hover:bg-[#3cc3b8] w-full"
+                  onClick={() => handleExternalNavigation('https://dropship.pronetsolutions.com')}
+                >
+                  Explore Dropshipping
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Alert Providers Section */}
       <section className="py-16 bg-background">
         <div className="container mx-auto px-4">
@@ -303,7 +464,7 @@ const Index = () => {
       </section>
 
       {/* Lifestyle Fund Section */}
-      <section className="py-16 bg-[#1A2A38]">
+      <section className="py-16 bg-[#1E2E3C]">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-white mb-4">
@@ -315,7 +476,7 @@ const Index = () => {
           </div>
           
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-[#1E2E3C] rounded-lg overflow-hidden shadow-lg">
+            <div className="bg-[#1A2A38] rounded-lg overflow-hidden shadow-lg">
               <img 
                 src="https://images.unsplash.com/photo-1610375461246-83df859d849d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80" 
                 alt="Gold Trading" 
@@ -335,7 +496,7 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="bg-[#1E2E3C] rounded-lg overflow-hidden shadow-lg">
+            <div className="bg-[#1A2A38] rounded-lg overflow-hidden shadow-lg">
               <img 
                 src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80" 
                 alt="Travel" 
@@ -355,7 +516,7 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="bg-[#1E2E3C] rounded-lg overflow-hidden shadow-lg">
+            <div className="bg-[#1A2A38] rounded-lg overflow-hidden shadow-lg">
               <img 
                 src="https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=700&q=80" 
                 alt="Real Estate" 
