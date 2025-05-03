@@ -184,35 +184,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Banner Section */}
-      <section className="bg-[#4CD3C8] py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center justify-between">
-            <div className="md:w-1/2 mb-8 md:mb-0">
-              <img 
-                src="/lovable-uploads/796c2510-a8a2-47f5-9127-81950f4dc7fa.png" 
-                alt="Pro Net Solutions Dashboard" 
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-            <div className="md:w-1/2 md:pl-12">
-              <h2 className="text-3xl font-bold mb-6 text-[#1A2A38]">
-                Access Premium Trading Resources
-              </h2>
-              <p className="text-lg mb-6 text-[#1A2A38]">
-                Join our community to get exclusive access to professional trading signals, educational content, and mentorship from industry experts.
-              </p>
-              <Button 
-                className="bg-[#1A2A38] text-white hover:bg-[#223143]"
-                onClick={() => handleNavigation('/subscriptions')}
-              >
-                Subscribe Now
-              </Button>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Mentors Section */}
       <section className="py-16 bg-[#1A2A38]">
         <div className="container mx-auto px-4">
@@ -335,7 +306,7 @@ const Index = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Sparkle Through Gold Trading</h3>
+                <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Sparkle Through Gold Trading</h3>
                 <p className="text-gray-300 mb-4">
                   A smart money move that has proven profitable throughout economic uncertainties.
                 </p>
@@ -351,7 +322,7 @@ const Index = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Travel the World on Earnings</h3>
+                <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Travel the World on Earnings</h3>
                 <p className="text-gray-300 mb-4">
                   Learn how our members use market knowledge to fund their worldly adventures.
                 </p>
@@ -367,7 +338,7 @@ const Index = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-6">
-                <h3 className="text-xl font-bold mb-2">Build Dreams, Brick by Brick</h3>
+                <h3 className="text-xl font-bold mb-2 text-[#4CD3C8]">Build Dreams, Brick by Brick</h3>
                 <p className="text-gray-300 mb-4">
                   See how our top traders built their real estate portfolios with consistent market wins.
                 </p>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
@@ -275,7 +276,7 @@ const Subscriptions = () => {
                   <div className="text-sm font-medium mb-1">Billing Details</div>
                   <div className="text-2xl font-bold">${activeSubscription.price}</div>
                   <div className="text-xs text-muted-foreground mt-1">
-                    {activeSubscription.billingCycle === 'yearly' ? 'Annual' : 'Monthly'} billing
+                    28-day billing cycle
                   </div>
                 </div>
                 
@@ -367,7 +368,9 @@ const Subscriptions = () => {
                 )}
                 <CardHeader>
                   <CardTitle>{plan.name}</CardTitle>
-                  <CardDescription>${plan.price} / {plan.billingCycle}</CardDescription>
+                  <CardDescription>
+                    ${plan.price} / {plan.id === 'standard' ? '28 days' : plan.billingCycle}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <ul className="space-y-2">
