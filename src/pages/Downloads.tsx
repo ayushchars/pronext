@@ -1,11 +1,11 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Download, FileText, Book, Video } from 'lucide-react';
+import { Download, FileText, Book, Video, Search } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
+import { Input } from '@/components/ui/input';
 
 interface DownloadItem {
   id: string;
@@ -81,11 +81,33 @@ const iconComponents = {
 const Downloads = () => {
   const [downloads, setDownloads] = useState<DownloadItem[]>(mockDownloads);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [filteredDownloads, setFilteredDownloads] = useState<DownloadItem[]>(downloads);
   const { toast } = useToast();
   
-  const filteredDownloads = selectedCategory === 'all'
-    ? downloads
-    : downloads.filter(item => item.category === selectedCategory);
+  // Filter downloads based on category and search term
+  useEffect(() => {
+    let filtered = downloads;
+    
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(item => item.category === selectedCategory);
+    }
+    
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.name.toLowerCase().includes(searchLower) ||
+        item.description.toLowerCase().includes(searchLower) ||
+        item.category.toLowerCase().includes(searchLower)
+      );
+    }
+    
+    setFilteredDownloads(filtered);
+  }, [downloads, selectedCategory, searchTerm]);
+  
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
     
   const handleDownload = (id: string, name: string) => {
     // In a real app, this would trigger an actual file download
@@ -114,37 +136,49 @@ const Downloads = () => {
           </p>
         </div>
         
-        <div className="flex flex-wrap gap-2">
-          <Button
-            variant={selectedCategory === 'all' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('all')}
-          >
-            All Resources
-          </Button>
-          <Button
-            variant={selectedCategory === 'guide' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('guide')}
-          >
-            <FileText className="mr-1 h-4 w-4" /> Guides
-          </Button>
-          <Button
-            variant={selectedCategory === 'ebook' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('ebook')}
-          >
-            <Book className="mr-1 h-4 w-4" /> E-Books
-          </Button>
-          <Button
-            variant={selectedCategory === 'video' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('video')}
-          >
-            <Video className="mr-1 h-4 w-4" /> Videos
-          </Button>
-          <Button
-            variant={selectedCategory === 'tool' ? 'default' : 'outline'}
-            onClick={() => setSelectedCategory('tool')}
-          >
-            <Download className="mr-1 h-4 w-4" /> Tools
-          </Button>
+        <div className="flex flex-col md:flex-row gap-4 md:items-center md:justify-between">
+          <div className="relative w-full md:w-64">
+            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search resources..."
+              className="pl-8"
+              value={searchTerm}
+              onChange={handleSearchChange}
+            />
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={selectedCategory === 'all' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('all')}
+            >
+              All Resources
+            </Button>
+            <Button
+              variant={selectedCategory === 'guide' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('guide')}
+            >
+              <FileText className="mr-1 h-4 w-4" /> Guides
+            </Button>
+            <Button
+              variant={selectedCategory === 'ebook' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('ebook')}
+            >
+              <Book className="mr-1 h-4 w-4" /> E-Books
+            </Button>
+            <Button
+              variant={selectedCategory === 'video' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('video')}
+            >
+              <Video className="mr-1 h-4 w-4" /> Videos
+            </Button>
+            <Button
+              variant={selectedCategory === 'tool' ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory('tool')}
+            >
+              <Download className="mr-1 h-4 w-4" /> Tools
+            </Button>
+          </div>
         </div>
         
         <Card>
@@ -152,6 +186,7 @@ const Downloads = () => {
             <CardTitle>Available Resources</CardTitle>
             <CardDescription>
               Download the latest trading resources and educational materials
+              {searchTerm && <span className="ml-2 text-primary">(Filtered by: {searchTerm})</span>}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -167,30 +202,38 @@ const Downloads = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filteredDownloads.map((item) => (
-                  <TableRow key={item.id}>
-                    <TableCell className="font-medium">
-                      <div className="flex items-center gap-2">
-                        {iconComponents[item.icon]}
-                        {item.name}
-                      </div>
-                    </TableCell>
-                    <TableCell>{item.description}</TableCell>
-                    <TableCell>{item.fileSize}</TableCell>
-                    <TableCell>{item.downloadCount}</TableCell>
-                    <TableCell>{item.dateAdded}</TableCell>
-                    <TableCell>
-                      <Button 
-                        size="sm" 
-                        onClick={() => handleDownload(item.id, item.name)}
-                        className="flex items-center gap-1"
-                      >
-                        <Download className="h-4 w-4" />
-                        Download
-                      </Button>
+                {filteredDownloads.length > 0 ? (
+                  filteredDownloads.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">
+                        <div className="flex items-center gap-2">
+                          {iconComponents[item.icon]}
+                          {item.name}
+                        </div>
+                      </TableCell>
+                      <TableCell>{item.description}</TableCell>
+                      <TableCell>{item.fileSize}</TableCell>
+                      <TableCell>{item.downloadCount}</TableCell>
+                      <TableCell>{item.dateAdded}</TableCell>
+                      <TableCell>
+                        <Button 
+                          size="sm" 
+                          onClick={() => handleDownload(item.id, item.name)}
+                          className="flex items-center gap-1"
+                        >
+                          <Download className="h-4 w-4" />
+                          Download
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-4">
+                      No resources found
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </CardContent>

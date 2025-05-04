@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
@@ -148,8 +147,29 @@ const Invoices = () => {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [selectedInvoice, setSelectedInvoice] = useState<Invoice | null>(null);
   const [isInvoiceModalOpen, setIsInvoiceModalOpen] = useState(false);
+  const [filteredAndSortedInvoices, setFilteredAndSortedInvoices] = useState<Invoice[]>([]);
   const { toast } = useToast();
   
+  useEffect(() => {
+    const filteredInvoices = invoices.filter(invoice => 
+      invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      invoice.status.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    
+    const sortedInvoices = [...filteredInvoices].sort((a, b) => {
+      const dateA = new Date(a.date).getTime();
+      const dateB = new Date(b.date).getTime();
+      return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+    
+    setFilteredAndSortedInvoices(sortedInvoices);
+  }, [searchTerm, sortDirection, invoices]);
+  
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(e.target.value);
+  };
+
   const handleDownloadInvoice = (invoice: Invoice) => {
     toast({
       title: "Invoice downloaded",
@@ -216,17 +236,6 @@ const Invoices = () => {
     setSortDirection(prev => prev === 'asc' ? 'desc' : 'asc');
   };
   
-  const filteredAndSortedInvoices = [...invoices]
-    .filter(invoice => 
-      invoice.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      invoice.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      const dateA = new Date(a.date).getTime();
-      const dateB = new Date(b.date).getTime();
-      return sortDirection === 'asc' ? dateA - dateB : dateB - dateA;
-    });
-  
   return (
     <DashboardLayout>
       <div className="space-y-6">
@@ -244,7 +253,7 @@ const Invoices = () => {
               placeholder="Search invoices..."
               className="pl-8"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={handleSearchChange}
             />
           </div>
           

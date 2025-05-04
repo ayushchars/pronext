@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   GitBranch, 
   GitFork,
@@ -24,6 +23,35 @@ import OrganizationTree from '@/components/hierarchy/OrganizationTree';
 const HierarchyTree = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
+  const [searchedNodes, setSearchedNodes] = useState<string[]>([]);
+  
+  // This is a placeholder for the actual search functionality
+  // In a real app, you would search through the actual tree data
+  useEffect(() => {
+    if (searchQuery.trim() === '') {
+      setSearchedNodes([]);
+      return;
+    }
+    
+    // Simulate searching through tree nodes
+    // This would be replaced with actual tree node filtering logic
+    setTimeout(() => {
+      console.log(`Searching for: ${searchQuery} with filter: ${filter}`);
+      
+      // Example: highlight matching nodes in the tree
+      // This is just a placeholder - in real implementation
+      // you would update the tree component with the search results
+      const mockMatchingNodeIds = ['node-1', 'node-5', 'node-12'].filter(
+        id => Math.random() > 0.5
+      );
+      
+      setSearchedNodes(mockMatchingNodeIds);
+    }, 300);
+  }, [searchQuery, filter]);
+  
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
   
   return (
     <DashboardLayout>
@@ -44,7 +72,7 @@ const HierarchyTree = () => {
               placeholder="Search affiliates..." 
               className="max-w-sm"
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
             />
           </div>
           <div className="flex gap-2 items-center">
@@ -63,6 +91,12 @@ const HierarchyTree = () => {
             </Select>
           </div>
         </div>
+
+        {searchQuery && searchedNodes.length > 0 && (
+          <div className="text-sm text-muted-foreground">
+            Found {searchedNodes.length} matches for "{searchQuery}"
+          </div>
+        )}
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
           <Card>
@@ -110,6 +144,7 @@ const HierarchyTree = () => {
             </CardTitle>
             <CardDescription>
               Visual representation of your team structure
+              {searchQuery && <span className="ml-2 text-primary">(Filtered by search: {searchQuery})</span>}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0 overflow-auto">

@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Key, 
   KeyRound, 
@@ -24,6 +23,7 @@ const EpinCenter = () => {
   const [isGenerateDialogOpen, setIsGenerateDialogOpen] = useState(false);
   const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('unused');
 
   const mockEpins = [
     { id: 'EP12345', amount: '$100', generatedOn: '2023-04-20', status: 'Unused', expiry: '2024-04-20' },
@@ -40,6 +40,61 @@ const EpinCenter = () => {
     { id: 'T1004', epinId: 'EP12347', type: 'Generated', amount: '$200', date: '2023-04-15', by: 'You' },
     { id: 'T1005', epinId: 'EP12349', type: 'Generated', amount: '$500', date: '2023-04-10', by: 'You' },
   ];
+
+  // Handle filtered data based on search query
+  const [filteredEpins, setFilteredEpins] = useState<any[]>([]);
+  const [filteredTransactions, setFilteredTransactions] = useState<any[]>([]);
+
+  useEffect(() => {
+    const mockEpins = [
+      { id: 'EP12345', amount: '$100', generatedOn: '2023-04-20', status: 'Unused', expiry: '2024-04-20' },
+      { id: 'EP12346', amount: '$50', generatedOn: '2023-04-18', status: 'Used', usedBy: 'John Doe', usedOn: '2023-04-19' },
+      { id: 'EP12347', amount: '$200', generatedOn: '2023-04-15', status: 'Unused', expiry: '2024-04-15' },
+      { id: 'EP12348', amount: '$100', generatedOn: '2023-04-12', status: 'Transferred', transferredTo: 'Alice Smith', transferredOn: '2023-04-14' },
+      { id: 'EP12349', amount: '$500', generatedOn: '2023-04-10', status: 'Unused', expiry: '2024-04-10' },
+    ];
+
+    const mockTransactions = [
+      { id: 'T1001', epinId: 'EP12346', type: 'Used', amount: '$50', date: '2023-04-19', by: 'John Doe' },
+      { id: 'T1002', epinId: 'EP12348', type: 'Transfer', amount: '$100', date: '2023-04-14', from: 'You', to: 'Alice Smith' },
+      { id: 'T1003', epinId: 'EP12345', type: 'Generated', amount: '$100', date: '2023-04-20', by: 'You' },
+      { id: 'T1004', epinId: 'EP12347', type: 'Generated', amount: '$200', date: '2023-04-15', by: 'You' },
+      { id: 'T1005', epinId: 'EP12349', type: 'Generated', amount: '$500', date: '2023-04-10', by: 'You' },
+    ];
+    
+    // Filter E-Pins based on search query
+    if (searchQuery) {
+      const searchLower = searchQuery.toLowerCase();
+      const filteredEpins = mockEpins.filter(epin => 
+        epin.id.toLowerCase().includes(searchLower) || 
+        epin.amount.toLowerCase().includes(searchLower) ||
+        epin.status.toLowerCase().includes(searchLower)
+      );
+      setFilteredEpins(filteredEpins);
+      
+      // Filter transactions based on search query
+      const filteredTransactions = mockTransactions.filter(transaction => 
+        transaction.id.toLowerCase().includes(searchLower) || 
+        transaction.epinId.toLowerCase().includes(searchLower) ||
+        transaction.type.toLowerCase().includes(searchLower) ||
+        transaction.amount.toLowerCase().includes(searchLower) ||
+        (transaction.by && transaction.by.toLowerCase().includes(searchLower)) ||
+        (transaction.to && transaction.to.toLowerCase().includes(searchLower))
+      );
+      setFilteredTransactions(filteredTransactions);
+    } else {
+      setFilteredEpins(mockEpins);
+      setFilteredTransactions(mockTransactions);
+    }
+  }, [searchQuery]);
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+  };
 
   const handleGenerateEpin = (data: any) => {
     // In a real app, this would call an API
@@ -104,11 +159,11 @@ const EpinCenter = () => {
             placeholder="Search E-pins..." 
             className="max-w-sm"
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchChange}
           />
         </div>
 
-        <Tabs defaultValue="unused">
+        <Tabs defaultValue={activeTab} onValueChange={handleTabChange}>
           <TabsList className="grid grid-cols-2 md:grid-cols-4 mb-6">
             <TabsTrigger value="unused">Unused E-Pins</TabsTrigger>
             <TabsTrigger value="used">Used E-Pins</TabsTrigger>
@@ -125,6 +180,7 @@ const EpinCenter = () => {
                 </CardTitle>
                 <CardDescription>
                   Available E-Pins ready for use or transfer
+                  {searchQuery && <span className="ml-2 text-primary">(Filtered by: {searchQuery})</span>}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -139,19 +195,27 @@ const EpinCenter = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockEpins.filter(epin => epin.status === 'Unused').map((epin) => (
-                      <TableRow key={epin.id}>
-                        <TableCell className="font-medium">{epin.id}</TableCell>
-                        <TableCell>{epin.amount}</TableCell>
-                        <TableCell>{epin.generatedOn}</TableCell>
-                        <TableCell>{epin.expiry}</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="ghost" size="sm" onClick={() => setIsTransferDialogOpen(true)}>
-                            Transfer
-                          </Button>
+                    {filteredEpins.filter(epin => epin.status === 'Unused').length > 0 ? (
+                      filteredEpins.filter(epin => epin.status === 'Unused').map((epin) => (
+                        <TableRow key={epin.id}>
+                          <TableCell className="font-medium">{epin.id}</TableCell>
+                          <TableCell>{epin.amount}</TableCell>
+                          <TableCell>{epin.generatedOn}</TableCell>
+                          <TableCell>{epin.expiry}</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="ghost" size="sm" onClick={() => setIsTransferDialogOpen(true)}>
+                              Transfer
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-4">
+                          No unused E-Pins found{searchQuery ? ` for "${searchQuery}"` : ''}
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -167,6 +231,7 @@ const EpinCenter = () => {
                 </CardTitle>
                 <CardDescription>
                   E-Pins that have been used or transferred
+                  {searchQuery && <span className="ml-2 text-primary">(Filtered by: {searchQuery})</span>}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -181,15 +246,23 @@ const EpinCenter = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockEpins.filter(epin => epin.status !== 'Unused').map((epin) => (
-                      <TableRow key={epin.id}>
-                        <TableCell className="font-medium">{epin.id}</TableCell>
-                        <TableCell>{epin.amount}</TableCell>
-                        <TableCell>{epin.status}</TableCell>
-                        <TableCell>{epin.usedBy || epin.transferredTo}</TableCell>
-                        <TableCell>{epin.usedOn || epin.transferredOn}</TableCell>
+                    {filteredEpins.filter(epin => epin.status !== 'Unused').length > 0 ? (
+                      filteredEpins.filter(epin => epin.status !== 'Unused').map((epin) => (
+                        <TableRow key={epin.id}>
+                          <TableCell className="font-medium">{epin.id}</TableCell>
+                          <TableCell>{epin.amount}</TableCell>
+                          <TableCell>{epin.status}</TableCell>
+                          <TableCell>{epin.usedBy || epin.transferredTo}</TableCell>
+                          <TableCell>{epin.usedOn || epin.transferredOn}</TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-4">
+                          No used E-Pins found{searchQuery ? ` for "${searchQuery}"` : ''}
+                        </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -205,6 +278,7 @@ const EpinCenter = () => {
                 </CardTitle>
                 <CardDescription>
                   Complete list of all E-Pins in your account
+                  {searchQuery && <span className="ml-2 text-primary">(Filtered by: {searchQuery})</span>}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -219,27 +293,35 @@ const EpinCenter = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockEpins.map((epin) => (
-                      <TableRow key={epin.id}>
-                        <TableCell className="font-medium">{epin.id}</TableCell>
-                        <TableCell>{epin.amount}</TableCell>
-                        <TableCell>{epin.generatedOn}</TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded-full text-xs ${
-                            epin.status === 'Unused' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
-                            epin.status === 'Used' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' : 
-                            'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                          }`}>
-                            {epin.status}
-                          </span>
-                        </TableCell>
-                        <TableCell>
-                          {epin.status === 'Unused' ? epin.expiry : 
-                           epin.status === 'Used' ? `Used by ${epin.usedBy} on ${epin.usedOn}` :
-                           `Transferred to ${epin.transferredTo} on ${epin.transferredOn}`}
+                    {filteredEpins.length > 0 ? (
+                      filteredEpins.map((epin) => (
+                        <TableRow key={epin.id}>
+                          <TableCell className="font-medium">{epin.id}</TableCell>
+                          <TableCell>{epin.amount}</TableCell>
+                          <TableCell>{epin.generatedOn}</TableCell>
+                          <TableCell>
+                            <span className={`px-2 py-1 rounded-full text-xs ${
+                              epin.status === 'Unused' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
+                              epin.status === 'Used' ? 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200' : 
+                              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                            }`}>
+                              {epin.status}
+                            </span>
+                          </TableCell>
+                          <TableCell>
+                            {epin.status === 'Unused' ? epin.expiry : 
+                             epin.status === 'Used' ? `Used by ${epin.usedBy} on ${epin.usedOn}` :
+                             `Transferred to ${epin.transferredTo} on ${epin.transferredOn}`}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={5} className="text-center py-4">
+                          No E-Pins found{searchQuery ? ` for "${searchQuery}"` : ''}
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -255,6 +337,7 @@ const EpinCenter = () => {
                 </CardTitle>
                 <CardDescription>
                   Complete history of E-Pin related transactions
+                  {searchQuery && <span className="ml-2 text-primary">(Filtered by: {searchQuery})</span>}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -270,28 +353,36 @@ const EpinCenter = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {mockTransactions.map((transaction) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell className="font-medium">{transaction.id}</TableCell>
-                        <TableCell>{transaction.epinId}</TableCell>
-                        <TableCell>
-                          <span className={`px-2 py-1 rounded-full text-xs ${
-                            transaction.type === 'Generated' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
-                            transaction.type === 'Used' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200' : 
-                            'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                          }`}>
-                            {transaction.type}
-                          </span>
-                        </TableCell>
-                        <TableCell>{transaction.amount}</TableCell>
-                        <TableCell>{transaction.date}</TableCell>
-                        <TableCell>
-                          {transaction.type === 'Generated' ? `Generated by ${transaction.by}` : 
-                           transaction.type === 'Used' ? `Used by ${transaction.by}` :
-                           `Transferred from ${transaction.from} to ${transaction.to}`}
+                    {filteredTransactions.length > 0 ? (
+                      filteredTransactions.map((transaction) => (
+                        <TableRow key={transaction.id}>
+                          <TableCell className="font-medium">{transaction.id}</TableCell>
+                          <TableCell>{transaction.epinId}</TableCell>
+                          <TableCell>
+                            <span className={`px-2 py-1 rounded-full text-xs ${
+                              transaction.type === 'Generated' ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' : 
+                              transaction.type === 'Used' ? 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200' : 
+                              'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                            }`}>
+                              {transaction.type}
+                            </span>
+                          </TableCell>
+                          <TableCell>{transaction.amount}</TableCell>
+                          <TableCell>{transaction.date}</TableCell>
+                          <TableCell>
+                            {transaction.type === 'Generated' ? `Generated by ${transaction.by}` : 
+                             transaction.type === 'Used' ? `Used by ${transaction.by}` :
+                             `Transferred from ${transaction.from} to ${transaction.to}`}
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={6} className="text-center py-4">
+                          No transactions found{searchQuery ? ` for "${searchQuery}"` : ''}
                         </TableCell>
                       </TableRow>
-                    ))}
+                    )}
                   </TableBody>
                 </Table>
               </CardContent>
