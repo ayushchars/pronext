@@ -16,6 +16,7 @@ import AddAffiliateForm from '@/components/team/AddAffiliateForm';
 import PlacementAffiliateForm from '@/components/team/PlacementAffiliateForm';
 import DirectAffiliates from '@/components/team/DirectAffiliates';
 import LevelStructure from '@/components/team/LevelStructure';
+import BinaryTree from '@/components/hierarchy/BinaryTree';
 
 const TeamManagement = () => {
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
@@ -131,12 +132,7 @@ const TeamManagement = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent className="min-h-[400px] relative overflow-x-auto">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <p>Binary Tree component will be rendered here.</p>
-                    <p className="text-muted-foreground mt-2">Complete binary tree visualization coming soon.</p>
-                  </div>
-                </div>
+                <BinaryTree />
               </CardContent>
             </Card>
           </TabsContent>
