@@ -26,6 +26,7 @@ import Downloads from "./pages/Downloads";
 import Payouts from "./pages/Payouts";
 import Invoices from "./pages/Invoices";
 import Referral from "./pages/Referral";
+import FAQ from "./pages/FAQ";
 
 // New Landing Pages
 import AboutUs from "./pages/AboutUs";
@@ -65,6 +66,7 @@ const App = () => (
             <Route path="/payouts" element={<Payouts />} />
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/referral" element={<Referral />} />
+            <Route path="/faq" element={<FAQ />} />
             
             {/* New Landing Pages */}
             <Route path="/about" element={<AboutUs />} />
