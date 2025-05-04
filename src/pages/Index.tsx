@@ -33,6 +33,36 @@ const Index = () => {
             />
             <span className="text-xl font-bold">Pro Net Solutions</span>
           </div>
+          <div className="hidden md:flex space-x-4">
+            <Button 
+              variant="link" 
+              className="text-white" 
+              onClick={() => navigate('/about')}
+            >
+              About Us
+            </Button>
+            <Button 
+              variant="link" 
+              className="text-white" 
+              onClick={() => navigate('/services')}
+            >
+              Our Services
+            </Button>
+            <Button 
+              variant="link" 
+              className="text-white" 
+              onClick={() => navigate('/testimonials')}
+            >
+              Testimonials
+            </Button>
+            <Button 
+              variant="link" 
+              className="text-white" 
+              onClick={() => navigate('/contact')}
+            >
+              Contact Us
+            </Button>
+          </div>
           <div className="space-x-4">
             <Button 
               variant="link" 
@@ -584,20 +614,20 @@ const Index = () => {
             <div>
               <h3 className="font-bold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">About Us</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Our Services</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Testimonials</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Contact Us</a></li>
+                <li><a href="/about" className="text-gray-300 hover:text-[#4CD3C8]">About Us</a></li>
+                <li><a href="/services" className="text-gray-300 hover:text-[#4CD3C8]">Our Services</a></li>
+                <li><a href="/testimonials" className="text-gray-300 hover:text-[#4CD3C8]">Testimonials</a></li>
+                <li><a href="/contact" className="text-gray-300 hover:text-[#4CD3C8]">Contact Us</a></li>
               </ul>
             </div>
             
             <div>
               <h3 className="font-bold mb-4">Legal</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Terms of Service</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Privacy Policy</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Refund Policy</a></li>
-                <li><a href="#" className="text-gray-300 hover:text-[#4CD3C8]">Disclaimer</a></li>
+                <li><a href="/terms" className="text-gray-300 hover:text-[#4CD3C8]">Terms of Service</a></li>
+                <li><a href="/privacy" className="text-gray-300 hover:text-[#4CD3C8]">Privacy Policy</a></li>
+                <li><a href="/refund" className="text-gray-300 hover:text-[#4CD3C8]">Refund Policy</a></li>
+                <li><a href="/disclaimer" className="text-gray-300 hover:text-[#4CD3C8]">Disclaimer</a></li>
               </ul>
             </div>
             

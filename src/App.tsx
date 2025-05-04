@@ -27,6 +27,16 @@ import Payouts from "./pages/Payouts";
 import Invoices from "./pages/Invoices";
 import Referral from "./pages/Referral";
 
+// New Landing Pages
+import AboutUs from "./pages/AboutUs";
+import OurServices from "./pages/OurServices";
+import Testimonials from "./pages/Testimonials";
+import ContactUs from "./pages/ContactUs";
+import TermsOfService from "./pages/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import RefundPolicy from "./pages/RefundPolicy";
+import Disclaimer from "./pages/Disclaimer";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -55,6 +65,17 @@ const App = () => (
             <Route path="/payouts" element={<Payouts />} />
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/referral" element={<Referral />} />
+            
+            {/* New Landing Pages */}
+            <Route path="/about" element={<AboutUs />} />
+            <Route path="/services" element={<OurServices />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/contact" element={<ContactUs />} />
+            <Route path="/terms" element={<TermsOfService />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/refund" element={<RefundPolicy />} />
+            <Route path="/disclaimer" element={<Disclaimer />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
