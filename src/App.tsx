@@ -50,6 +50,14 @@ import NetworkManagement from "./pages/admin/NetworkManagement";
 import EpinManagement from "./pages/admin/EpinManagement";
 import SupportTickets from "./pages/admin/SupportTickets";
 
+// New Admin Pages
+import AdminAnalytics from "./pages/admin/AdminAnalytics";
+import AdminAnnouncements from "./pages/admin/AdminAnnouncements";
+import AdminDownloads from "./pages/admin/AdminDownloads";
+import BlockedAffiliates from "./pages/admin/BlockedAffiliates";
+import AffiliateTree from "./pages/admin/AffiliateTree";
+import AdminWallets from "./pages/admin/AdminWallets";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -101,6 +109,14 @@ const App = () => (
             <Route path="/admin/network" element={<NetworkManagement />} />
             <Route path="/admin/epins" element={<EpinManagement />} />
             <Route path="/admin/support" element={<SupportTickets />} />
+            
+            {/* New Admin Routes */}
+            <Route path="/admin/analytics" element={<AdminAnalytics />} />
+            <Route path="/admin/announcements" element={<AdminAnnouncements />} />
+            <Route path="/admin/downloads" element={<AdminDownloads />} />
+            <Route path="/admin/blocked" element={<BlockedAffiliates />} />
+            <Route path="/admin/tree" element={<AffiliateTree />} />
+            <Route path="/admin/wallets" element={<AdminWallets />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
