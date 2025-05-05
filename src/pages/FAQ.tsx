@@ -2,7 +2,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { HelpCircle, Home } from 'lucide-react';
+import { HelpCircle, Home, Facebook, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 import { 
   Accordion,
   AccordionContent,
