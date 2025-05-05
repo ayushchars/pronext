@@ -10,10 +10,11 @@ interface StatCardProps {
     value: number;
     isPositive: boolean;
   };
+  description?: string; // Add the missing description prop
   className?: string;
 }
 
-const StatCard = ({ title, value, icon, trend, className }: StatCardProps) => {
+const StatCard = ({ title, value, icon, trend, description, className }: StatCardProps) => {
   return (
     <div className={cn("stat-card", className)}>
       <div className="flex items-start justify-between">
@@ -31,6 +32,12 @@ const StatCard = ({ title, value, icon, trend, className }: StatCardProps) => {
                 {trend.isPositive ? '+' : ''}{trend.value}%
               </span>
               <span className="text-xs text-gray-500 ml-1">vs last period</span>
+            </div>
+          )}
+          
+          {description && (
+            <div className="mt-1">
+              <span className="text-xs text-gray-500">{description}</span>
             </div>
           )}
         </div>

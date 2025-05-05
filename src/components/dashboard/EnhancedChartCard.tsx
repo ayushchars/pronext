@@ -5,10 +5,13 @@ import { ResponsiveContainer, AreaChart, Area, BarChart, Bar, XAxis, YAxis, Cart
 
 interface ChartCardProps {
   title: string;
+  description?: string; // Add the missing description prop
   data: any[];
-  dataKeys: string[];
+  categories: string[]; // Changed from dataKeys to categories to match usage in AdminAnalytics
   colors?: string[];
+  valueFormatter?: (value: any) => string; // Add the missing valueFormatter prop
   chartType?: 'area' | 'bar';
+  showLegend?: boolean; // Add the missing showLegend prop
 }
 
 const formatCurrency = (value: number) => {
@@ -21,16 +24,20 @@ const formatCurrency = (value: number) => {
 };
 
 const EnhancedChartCard = ({ 
-  title, 
+  title,
+  description,
   data, 
-  dataKeys,
+  categories,
   colors = ['#8b5cf6', '#10b981', '#f59e0b', '#ef4444'], 
-  chartType = 'area' 
+  chartType = 'area',
+  valueFormatter = formatCurrency,
+  showLegend = false
 }: ChartCardProps) => {
   return (
     <Card className="col-span-1">
       <CardHeader>
         <CardTitle className="text-base font-medium">{title}</CardTitle>
+        {description && <p className="text-sm text-muted-foreground">{description}</p>}
       </CardHeader>
       <CardContent>
         <div className="h-[300px] w-full">
@@ -41,7 +48,7 @@ const EnhancedChartCard = ({
                 margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
               >
                 <defs>
-                  {dataKeys.map((key, index) => (
+                  {categories.map((key, index) => (
                     <linearGradient key={key} id={`color-${key}`} x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor={colors[index % colors.length]} stopOpacity={0.8} />
                       <stop offset="95%" stopColor={colors[index % colors.length]} stopOpacity={0.1} />
@@ -61,14 +68,14 @@ const EnhancedChartCard = ({
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => valueFormatter ? valueFormatter(value).toString() : value.toString()}
                 />
                 <Tooltip 
-                  formatter={(value: any) => formatCurrency(value)}
+                  formatter={(value: any) => valueFormatter ? valueFormatter(value) : value}
                   labelFormatter={(label) => `Month: ${label}`}
                 />
-                <Legend />
-                {dataKeys.map((key, index) => (
+                {showLegend && <Legend />}
+                {categories.map((key, index) => (
                   <Area
                     key={key}
                     type="monotone"
@@ -98,14 +105,14 @@ const EnhancedChartCard = ({
                   fontSize={12}
                   tickLine={false}
                   axisLine={false}
-                  tickFormatter={(value) => `$${value}`}
+                  tickFormatter={(value) => valueFormatter ? valueFormatter(value).toString() : value.toString()}
                 />
                 <Tooltip 
-                  formatter={(value: any) => formatCurrency(value)}
+                  formatter={(value: any) => valueFormatter ? valueFormatter(value) : value}
                   labelFormatter={(label) => `Month: ${label}`}
                 />
-                <Legend />
-                {dataKeys.map((key, index) => (
+                {showLegend && <Legend />}
+                {categories.map((key, index) => (
                   <Bar
                     key={key}
                     dataKey={key}

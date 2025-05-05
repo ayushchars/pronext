@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,8 +11,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { BinaryTree } from '@/components/hierarchy/BinaryTree';
-import { OrganizationTree } from '@/components/hierarchy/OrganizationTree';
+import BinaryTree from '@/components/hierarchy/BinaryTree';
+import OrganizationTree from '@/components/hierarchy/OrganizationTree';
 
 const AffiliateTree = () => {
   const [searchTerm, setSearchTerm] = useState('');
