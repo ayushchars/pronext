@@ -55,7 +55,7 @@ const AdminDashboard = () => {
                 Reports
               </Button>
             </Link>
-            <Link to="/admin/settings">
+            <Link to="/admin/analytics">
               <Button>
                 Advanced Analytics
               </Button>

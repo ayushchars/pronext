@@ -1,13 +1,15 @@
+
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { 
+  DollarSign, Calendar, Download, Filter, ChevronDown, ChevronUp, 
+  Check, X, ArrowRight, WalletCards, Wallet, BarChart2
+} from 'lucide-react';
 import { 
   Table, TableHeader, TableRow, TableHead, TableBody, TableCell 
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { 
-  Download, ArrowUp, ArrowDown, Filter, DollarSign, Wallet, FileText, BarChart
-} from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -15,305 +17,251 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import EnhancedChartCard from '@/components/dashboard/EnhancedChartCard';
-
-// Mock data for finance
-const financeOverview = {
-  totalRevenue: '$148,652.20',
-  netProfit: '$76,325.60',
-  commissionsPaid: '$42,550.40',
-  operatingCosts: '$29,776.20',
-  profitMargin: '51.3%',
-  pendingPayouts: '$5,860.20',
-  thisMonthRevenue: '$28,800.00',
-  thisMonthProfit: '$14,750.40',
-};
-
-// Mock historical data
-const monthlyData = [
-  { name: 'Jan', revenue: 12400, profit: 6325, commission: 3720, costs: 2355 },
-  { name: 'Feb', revenue: 16600, profit: 8460, commission: 4980, costs: 3160 },
-  { name: 'Mar', revenue: 18800, profit: 9590, commission: 5640, costs: 3570 },
-  { name: 'Apr', revenue: 21200, profit: 10815, commission: 6360, costs: 4025 },
-  { name: 'May', revenue: 19000, profit: 9690, commission: 5700, costs: 3610 },
-  { name: 'Jun', revenue: 25500, profit: 13005, commission: 7650, costs: 4845 },
-  { name: 'Jul', revenue: 28800, profit: 14688, commission: 8640, costs: 5472 },
-];
-
-// Mock transactions
-const recentTransactions = [
-  {
-    id: 'TRX001',
-    date: '2023-07-28',
-    type: 'Commission Payout',
-    affiliate: 'John Doe (AF001)',
-    amount: '-$1,240.50',
-    status: 'Completed',
-    isNegative: true
-  },
-  {
-    id: 'TRX002',
-    date: '2023-07-27',
-    type: 'Subscription Revenue',
-    affiliate: 'System',
-    amount: '+$3,580.00',
-    status: 'Completed',
-    isNegative: false
-  },
-  {
-    id: 'TRX003',
-    date: '2023-07-26',
-    type: 'Product Sale',
-    affiliate: 'Alice Smith (AF002)',
-    amount: '+$750.25',
-    status: 'Completed',
-    isNegative: false
-  },
-  {
-    id: 'TRX004',
-    date: '2023-07-25',
-    type: 'Refund',
-    affiliate: 'Mary Williams (AF004)',
-    amount: '-$129.99',
-    status: 'Completed',
-    isNegative: true
-  },
-  {
-    id: 'TRX005',
-    date: '2023-07-24',
-    type: 'Commission Payout',
-    affiliate: 'James Brown (AF005)',
-    amount: '-$845.30',
-    status: 'Pending',
-    isNegative: true
-  },
-  {
-    id: 'TRX006',
-    date: '2023-07-23',
-    type: 'Subscription Revenue',
-    affiliate: 'System',
-    amount: '+$2,860.00',
-    status: 'Completed',
-    isNegative: false
-  },
-];
+import ChartCard from '@/components/dashboard/ChartCard';
+import { Input } from '@/components/ui/input';
 
 const FinanceManagement = () => {
-  const [dateRange, setDateRange] = useState('lastMonth');
-  const [transactionType, setTransactionType] = useState('all');
-
-  // Filter transactions based on type
-  const filteredTransactions = recentTransactions.filter((transaction) => {
-    if (transactionType === 'all') return true;
-    if (transactionType === 'income' && !transaction.isNegative) return true;
-    if (transactionType === 'expense' && transaction.isNegative) return true;
-    if (transactionType === 'commission' && transaction.type.includes('Commission')) return true;
-    return false;
-  });
+  const [dateRange, setDateRange] = useState('this-month');
+  const [statusFilter, setStatusFilter] = useState('all');
+  
+  // Helper function for formatting currency
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 0,
+    }).format(amount);
+  };
+  
+  // Mock data for financial metrics
+  const financialMetrics = [
+    { name: 'Total Revenue', value: formatCurrency(562450), change: '+12.5%', isPositive: true },
+    { name: 'Net Profit', value: formatCurrency(287620), change: '+8.3%', isPositive: true },
+    { name: 'Commissions Paid', value: formatCurrency(145780), change: '+15.7%', isPositive: true },
+    { name: 'Operating Costs', value: formatCurrency(129050), change: '+4.2%', isPositive: false },
+    { name: 'Total Deposits', value: formatCurrency(412630), change: '+18.1%', isPositive: true },
+    { name: 'Total Withdrawals', value: formatCurrency(198420), change: '+22.3%', isPositive: false },
+  ];
+  
+  // Mock data for transactions
+  const transactions = [
+    { id: 'TRX-1234', date: '2023-07-28', type: 'Commission', amount: 1250, status: 'Completed', affiliate: 'John Doe' },
+    { id: 'TRX-1235', date: '2023-07-27', type: 'Withdrawal', amount: 5000, status: 'Pending', affiliate: 'Alice Smith' },
+    { id: 'TRX-1236', date: '2023-07-27', type: 'Deposit', amount: 10000, status: 'Completed', affiliate: 'Robert Johnson' },
+    { id: 'TRX-1237', date: '2023-07-26', type: 'Commission', amount: 850, status: 'Completed', affiliate: 'Mary Williams' },
+    { id: 'TRX-1238', date: '2023-07-25', type: 'Withdrawal', amount: 2500, status: 'Processing', affiliate: 'James Brown' },
+    { id: 'TRX-1239', date: '2023-07-25', type: 'Deposit', amount: 7500, status: 'Completed', affiliate: 'Patricia Davis' },
+    { id: 'TRX-1240', date: '2023-07-24', type: 'Commission', amount: 1100, status: 'Completed', affiliate: 'Linda Wilson' },
+    { id: 'TRX-1241', date: '2023-07-23', type: 'Withdrawal', amount: 3500, status: 'Declined', affiliate: 'Michael Moore' },
+  ];
+  
+  // Mock data for financial chart
+  const financialChartData = [
+    { name: 'Jan', revenue: 38000, profit: 22000, commission: 10500, costs: 5500 },
+    { name: 'Feb', revenue: 42000, profit: 25000, commission: 11200, costs: 5800 },
+    { name: 'Mar', revenue: 45000, profit: 27000, commission: 12300, costs: 5700 },
+    { name: 'Apr', revenue: 52000, profit: 31000, commission: 14100, costs: 6900 },
+    { name: 'May', revenue: 48000, profit: 29000, commission: 13200, costs: 5800 },
+    { name: 'Jun', revenue: 58000, profit: 35000, commission: 15600, costs: 7400 },
+    { name: 'Jul', revenue: 65000, profit: 39000, commission: 17500, costs: 8500 },
+  ];
+  
+  // Function to get status badge class
+  const getStatusBadgeClass = (status: string) => {
+    switch (status) {
+      case 'Completed':
+        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-100';
+      case 'Pending':
+        return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100';
+      case 'Processing':
+        return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100';
+      case 'Declined':
+        return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-100';
+      default:
+        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+    }
+  };
+  
+  // Function to get transaction type icon
+  const getTransactionTypeIcon = (type: string) => {
+    switch (type) {
+      case 'Commission':
+        return <DollarSign className="h-4 w-4 text-green-500" />;
+      case 'Withdrawal':
+        return <Wallet className="h-4 w-4 text-red-500" />;
+      case 'Deposit':
+        return <WalletCards className="h-4 w-4 text-blue-500" />;
+      default:
+        return <BarChart2 className="h-4 w-4 text-gray-500" />;
+    }
+  };
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Financial Management</h1>
+          <h1 className="text-2xl font-bold">Finance Management</h1>
           <div className="flex gap-2">
             <Button variant="outline">
-              <FileText className="mr-2 h-4 w-4" />
-              Generate Report
-            </Button>
-            <Button>
               <Download className="mr-2 h-4 w-4" />
-              Export Data
+              Export
             </Button>
+            <Select value={dateRange} onValueChange={setDateRange}>
+              <SelectTrigger className="w-[180px]">
+                <div className="flex items-center">
+                  <Calendar className="mr-2 h-4 w-4" />
+                  <SelectValue placeholder="This Month" />
+                </div>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="today">Today</SelectItem>
+                <SelectItem value="this-week">This Week</SelectItem>
+                <SelectItem value="this-month">This Month</SelectItem>
+                <SelectItem value="last-month">Last Month</SelectItem>
+                <SelectItem value="this-year">This Year</SelectItem>
+                <SelectItem value="custom">Custom Range</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
-
-        {/* Financial Overview */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-base font-medium">Financial Overview</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <DollarSign className="h-5 w-5 mr-2 text-primary" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Revenue</p>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {financialMetrics.slice(0, 6).map((metric, index) => (
+            <Card key={index}>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-sm font-medium">{metric.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{metric.value}</div>
+                <div className={`flex items-center text-xs ${metric.isPositive ? 'text-green-600' : 'text-red-600'}`}>
+                  {metric.isPositive ? <ChevronUp className="h-3 w-3 mr-1" /> : <ChevronDown className="h-3 w-3 mr-1" />}
+                  {metric.change} from previous period
                 </div>
-                <p className="text-2xl font-bold">{financeOverview.totalRevenue}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+15.3% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <Wallet className="h-5 w-5 mr-2 text-emerald-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Net Profit</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.netProfit}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+12.8% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <FileText className="h-5 w-5 mr-2 text-orange-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Commissions Paid</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.commissionsPaid}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+8.2% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <BarChart className="h-5 w-5 mr-2 text-blue-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Profit Margin</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.profitMargin}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+3.5% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <DollarSign className="h-5 w-5 mr-2 text-primary" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">This Month Revenue</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.thisMonthRevenue}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+12.9% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <Wallet className="h-5 w-5 mr-2 text-emerald-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">This Month Profit</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.thisMonthProfit}</p>
-                <div className="text-xs text-green-600 flex items-center mt-1">
-                  <span>+13.2% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <FileText className="h-5 w-5 mr-2 text-orange-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Operating Costs</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.operatingCosts}</p>
-                <div className="text-xs text-red-600 flex items-center mt-1">
-                  <span>+5.1% vs last month</span>
-                  <ArrowUp className="h-3 w-3 ml-1" />
-                </div>
-              </div>
-              
-              <div className="bg-gray-50 dark:bg-gray-800/50 p-4 rounded-lg">
-                <div className="flex items-center mb-2">
-                  <DollarSign className="h-5 w-5 mr-2 text-red-500" />
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Pending Payouts</p>
-                </div>
-                <p className="text-2xl font-bold">{financeOverview.pendingPayouts}</p>
-                <div className="text-xs text-amber-600 flex items-center mt-1">
-                  <span>8 pending requests</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Financial Charts */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <EnhancedChartCard
-            title="Revenue vs Profit"
-            data={monthlyData}
-            dataKeys={["revenue", "profit"]}
-            colors={["#8b5cf6", "#10b981"]}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <ChartCard
+            title="Revenue & Profit"
+            data={financialChartData}
+            categories={['revenue', 'profit']}
+            colors={['#3B82F6', '#10B981']}
           />
           
-          <EnhancedChartCard
-            title="Commissions vs Operating Costs"
-            data={monthlyData}
-            dataKeys={["commission", "costs"]}
-            colors={["#f59e0b", "#ef4444"]}
+          <ChartCard
+            title="Commissions & Costs"
+            data={financialChartData}
+            categories={['commission', 'costs']}
+            colors={['#F59E0B', '#EF4444']}
           />
         </div>
-
-        {/* Recent Transactions */}
+        
         <Card>
-          <CardHeader className="flex flex-col md:flex-row justify-between items-start md:items-center">
-            <CardTitle>Recent Transactions</CardTitle>
-            <div className="flex flex-col sm:flex-row gap-2 mt-2 md:mt-0">
-              <Select value={dateRange} onValueChange={setDateRange}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select Date Range" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="today">Today</SelectItem>
-                  <SelectItem value="lastWeek">Last 7 Days</SelectItem>
-                  <SelectItem value="lastMonth">Last 30 Days</SelectItem>
-                  <SelectItem value="lastQuarter">Last Quarter</SelectItem>
-                  <SelectItem value="lastYear">Last Year</SelectItem>
-                </SelectContent>
-              </Select>
-              
-              <Select value={transactionType} onValueChange={setTransactionType}>
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Transaction Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Transactions</SelectItem>
-                  <SelectItem value="income">Income Only</SelectItem>
-                  <SelectItem value="expense">Expenses Only</SelectItem>
-                  <SelectItem value="commission">Commissions Only</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+          <CardHeader>
+            <CardTitle className="text-base font-medium">Recent Transactions</CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="flex flex-col sm:flex-row justify-between mb-4 gap-4">
+              <div className="w-full sm:w-1/3 relative">
+                <Input placeholder="Search transactions..." className="pl-8" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4 absolute left-2.5 top-2.5 text-gray-500"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </div>
+              
+              <div className="flex gap-2">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-[180px]">
+                    <div className="flex items-center">
+                      <Filter className="mr-2 h-4 w-4" />
+                      <SelectValue placeholder="Status" />
+                    </div>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Statuses</SelectItem>
+                    <SelectItem value="completed">Completed</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                    <SelectItem value="processing">Processing</SelectItem>
+                    <SelectItem value="declined">Declined</SelectItem>
+                  </SelectContent>
+                </Select>
+                
+                <Button variant="outline">
+                  <Filter className="mr-2 h-4 w-4" />
+                  More Filters
+                </Button>
+              </div>
+            </div>
+            
             <div className="rounded-md border overflow-hidden">
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Transaction ID</TableHead>
+                    <TableHead>ID</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Type</TableHead>
                     <TableHead>Affiliate</TableHead>
+                    <TableHead>Amount</TableHead>
                     <TableHead>Status</TableHead>
-                    <TableHead className="text-right">Amount</TableHead>
+                    <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {filteredTransactions.map((transaction) => (
+                  {transactions.map((transaction) => (
                     <TableRow key={transaction.id}>
                       <TableCell className="font-medium">{transaction.id}</TableCell>
                       <TableCell>{transaction.date}</TableCell>
-                      <TableCell>{transaction.type}</TableCell>
-                      <TableCell>{transaction.affiliate}</TableCell>
                       <TableCell>
-                        <span className={`px-2 py-1 rounded-full text-xs ${
-                          transaction.status === 'Completed' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-amber-100 text-amber-800'
-                        }`}>
+                        <div className="flex items-center">
+                          {getTransactionTypeIcon(transaction.type)}
+                          <span className="ml-2">{transaction.type}</span>
+                        </div>
+                      </TableCell>
+                      <TableCell>{transaction.affiliate}</TableCell>
+                      <TableCell className={`font-medium ${
+                        transaction.type === 'Withdrawal' ? 'text-red-600' : 
+                        transaction.type === 'Deposit' ? 'text-blue-600' : 'text-green-600'
+                      }`}>
+                        {transaction.type === 'Withdrawal' ? '-' : ''}
+                        {formatCurrency(transaction.amount)}
+                      </TableCell>
+                      <TableCell>
+                        <span className={`px-2 py-1 rounded-full text-xs ${getStatusBadgeClass(transaction.status)}`}>
                           {transaction.status}
                         </span>
                       </TableCell>
                       <TableCell className="text-right">
-                        <span className={transaction.isNegative ? 'text-red-600' : 'text-green-600'}>
-                          {transaction.amount}
-                        </span>
+                        <div className="flex justify-end space-x-1">
+                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                            <span className="sr-only">View details</span>
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                          {transaction.status === 'Pending' && (
+                            <>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-green-600">
+                                <span className="sr-only">Approve</span>
+                                <Check className="h-4 w-4" />
+                              </Button>
+                              <Button variant="ghost" size="sm" className="h-8 w-8 p-0 text-red-600">
+                                <span className="sr-only">Reject</span>
+                                <X className="h-4 w-4" />
+                              </Button>
+                            </>
+                          )}
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))}
@@ -321,13 +269,8 @@ const FinanceManagement = () => {
               </Table>
             </div>
             
-            <div className="flex justify-between items-center mt-4">
-              <p className="text-sm text-gray-500">
-                Showing {filteredTransactions.length} of {recentTransactions.length} transactions
-              </p>
-              <div className="flex space-x-2">
-                <Button variant="outline" size="sm">View Complete Ledger</Button>
-              </div>
+            <div className="flex justify-center mt-4">
+              <Button variant="outline" className="w-full sm:w-auto">Load More Transactions</Button>
             </div>
           </CardContent>
         </Card>

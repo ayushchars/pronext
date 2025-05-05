@@ -1,9 +1,13 @@
+
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Search, ZoomIn, ZoomOut, GitFork, Users, Network, UserPlus } from 'lucide-react';
+import { 
+  Search, ZoomIn, ZoomOut, Download, RefreshCw, Network, GitFork
+} from 'lucide-react';
 import {
   Select,
   SelectContent,
@@ -11,171 +15,246 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+// Fix imports - import as default
 import BinaryTree from '@/components/hierarchy/BinaryTree';
 import OrganizationTree from '@/components/hierarchy/OrganizationTree';
 
 const AffiliateTree = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [treeView, setTreeView] = useState('organization'); // 'organization' or 'binary'
   const [zoomLevel, setZoomLevel] = useState(100);
-
+  const [treeType, setTreeType] = useState('organization');
+  
   const handleZoomIn = () => {
-    setZoomLevel(prev => Math.min(prev + 10, 150));
+    if (zoomLevel < 150) {
+      setZoomLevel(zoomLevel + 10);
+    }
   };
-
+  
   const handleZoomOut = () => {
-    setZoomLevel(prev => Math.max(prev - 10, 50));
+    if (zoomLevel > 50) {
+      setZoomLevel(zoomLevel - 10);
+    }
+  };
+  
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Searching for:', searchTerm);
+    // Implement search logic here
   };
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Affiliate Network Tree</h1>
+          <h1 className="text-2xl font-bold">Affiliate Tree Structure</h1>
           <div className="flex gap-2">
-            <Select value={treeView} onValueChange={setTreeView}>
-              <SelectTrigger className="w-[180px]">
-                <SelectValue placeholder="Tree View" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="organization">Organization Tree</SelectItem>
-                <SelectItem value="binary">Binary Tree</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button variant="outline" onClick={handleZoomOut}>
-              <ZoomOut className="h-4 w-4" />
-            </Button>
             <Button variant="outline">
-              {zoomLevel}%
+              <Download className="mr-2 h-4 w-4" />
+              Export Tree
             </Button>
-            <Button variant="outline" onClick={handleZoomIn}>
-              <ZoomIn className="h-4 w-4" />
+            <Button variant="outline" onClick={() => setZoomLevel(100)}>
+              <RefreshCw className="mr-2 h-4 w-4" />
+              Reset View
             </Button>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="bg-blue-50 dark:bg-blue-900/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Total Network</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">182</p>
-              <p className="text-sm text-gray-500">Affiliates in network</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-green-50 dark:bg-green-900/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Direct Referrals</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">24</p>
-              <p className="text-sm text-gray-500">Level 1 affiliates</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-purple-50 dark:bg-purple-900/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Network Depth</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">7</p>
-              <p className="text-sm text-gray-500">Levels deep</p>
-            </CardContent>
-          </Card>
-          
-          <Card className="bg-amber-50 dark:bg-amber-900/20">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Top Performers</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-2xl font-bold">18</p>
-              <p className="text-sm text-gray-500">Gold & above affiliates</p>
-            </CardContent>
-          </Card>
-        </div>
-
+        
         <Card>
           <CardHeader>
-            <CardTitle className="flex justify-between items-center">
-              <span>{treeView === 'organization' ? 'Organization Tree View' : 'Binary Tree View'}</span>
-              <div className="flex gap-2">
-                <div className="relative w-64">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-                  <Input
-                    placeholder="Search affiliate..."
-                    className="pl-8"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <Button variant="outline" size="sm">
-                  Find
+            <CardTitle className="text-base font-medium flex justify-between items-center">
+              <span>Network Visualization</span>
+              <div className="flex items-center space-x-2 text-sm">
+                <span>Zoom: {zoomLevel}%</span>
+                <Button variant="ghost" size="sm" onClick={handleZoomOut}>
+                  <ZoomOut className="h-4 w-4" />
+                </Button>
+                <Button variant="ghost" size="sm" onClick={handleZoomIn}>
+                  <ZoomIn className="h-4 w-4" />
                 </Button>
               </div>
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="p-4 border rounded-lg bg-gray-50 dark:bg-gray-900 overflow-auto min-h-[500px]" 
-                 style={{transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center'}}>
-              {treeView === 'organization' ? (
-                <OrganizationTree />
-              ) : (
-                <BinaryTree />
-              )}
+            <div className="mb-4 flex flex-col sm:flex-row gap-4 items-start sm:items-center">
+              <form onSubmit={handleSearch} className="flex w-full sm:w-1/3 relative">
+                <Input 
+                  placeholder="Search affiliate by name or ID..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="pr-8"
+                />
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  type="submit"
+                  className="absolute right-0 top-0 h-full"
+                >
+                  <Search className="h-4 w-4" />
+                </Button>
+              </form>
+              
+              <div className="flex items-center space-x-2 ml-auto">
+                <span className="text-sm">Tree Type:</span>
+                <Select 
+                  value={treeType} 
+                  onValueChange={setTreeType}
+                >
+                  <SelectTrigger className="w-40">
+                    <SelectValue>
+                      {treeType === 'organization' ? (
+                        <div className="flex items-center">
+                          <Network className="mr-2 h-4 w-4" />
+                          <span>Organization</span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center">
+                          <GitFork className="mr-2 h-4 w-4" />
+                          <span>Binary</span>
+                        </div>
+                      )}
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="organization">
+                      <div className="flex items-center">
+                        <Network className="mr-2 h-4 w-4" />
+                        <span>Organization Tree</span>
+                      </div>
+                    </SelectItem>
+                    <SelectItem value="binary">
+                      <div className="flex items-center">
+                        <GitFork className="mr-2 h-4 w-4" />
+                        <span>Binary Tree</span>
+                      </div>
+                    </SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            
+            <Tabs value={treeType} onValueChange={setTreeType}>
+              <TabsList className="grid grid-cols-2 mb-4">
+                <TabsTrigger value="organization">Organization Tree</TabsTrigger>
+                <TabsTrigger value="binary">Binary Tree</TabsTrigger>
+              </TabsList>
+              <TabsContent value="organization" className="border rounded-lg p-4">
+                <div style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center', minHeight: '500px' }}>
+                  <OrganizationTree />
+                </div>
+              </TabsContent>
+              <TabsContent value="binary" className="border rounded-lg p-4">
+                <div style={{ transform: `scale(${zoomLevel / 100})`, transformOrigin: 'top center', minHeight: '500px' }}>
+                  <BinaryTree />
+                </div>
+              </TabsContent>
+            </Tabs>
+            
+            <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+              <p>
+                <strong>Note:</strong> Click on an affiliate to see their details and expand/collapse their downline. 
+                Use the search box to find specific affiliates in the structure.
+              </p>
             </div>
           </CardContent>
         </Card>
-
+        
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card>
-            <CardHeader>
-              <CardTitle className="text-base font-medium flex items-center">
-                <GitFork className="mr-2 h-5 w-5 text-primary" />
-                Network Actions
-              </CardTitle>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-medium">Network Stats</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <Button className="w-full" variant="outline">
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Add New Affiliate
-                </Button>
-                <Button className="w-full" variant="outline">
-                  <Network className="mr-2 h-4 w-4" />
-                  Adjust Network Structure
-                </Button>
-                <Button className="w-full" variant="outline">
-                  <Users className="mr-2 h-4 w-4" />
-                  View Team Performance
-                </Button>
+              <div className="space-y-2">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Total Affiliates</span>
+                  <span className="font-medium">285</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Maximum Depth</span>
+                  <span className="font-medium">8 levels</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Width at Level 1</span>
+                  <span className="font-medium">12 affiliates</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Most Active Branch</span>
+                  <span className="font-medium">Left branch</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Weakest Branch</span>
+                  <span className="font-medium">Right branch</span>
+                </div>
               </div>
             </CardContent>
           </Card>
           
-          <Card className="col-span-1 md:col-span-2">
-            <CardHeader>
-              <CardTitle className="text-base font-medium">Top Performing Branches</CardTitle>
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-medium">Level Distribution</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-2">
                 {[
-                  { id: "AF006", name: "Patricia Davis", members: 47, earnings: "$8,750.60", growth: "+12.5%" },
-                  { id: "AF004", name: "Mary Williams", members: 31, earnings: "$4,280.90", growth: "+8.3%" },
-                  { id: "AF001", name: "John Doe", members: 24, earnings: "$3,450.75", growth: "+5.2%" },
-                ].map((branch, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 border rounded-lg">
-                    <div>
-                      <p className="font-medium">{branch.name}</p>
-                      <p className="text-sm text-gray-500">ID: {branch.id} | {branch.members} members</p>
+                  { level: 'Level 1', count: 12, percentage: 90 },
+                  { level: 'Level 2', count: 35, percentage: 80 },
+                  { level: 'Level 3', count: 68, percentage: 65 },
+                  { level: 'Level 4', count: 85, percentage: 50 },
+                  { level: 'Level 5+', count: 85, percentage: 30 },
+                ].map((level) => (
+                  <div key={level.level} className="space-y-1">
+                    <div className="flex justify-between text-xs">
+                      <span>{level.level}</span>
+                      <span>{level.count} affiliates</span>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium">{branch.earnings}</p>
-                      <p className="text-xs text-green-600">{branch.growth}</p>
+                    <div className="w-full bg-gray-200 rounded-full h-1.5 dark:bg-gray-700">
+                      <div 
+                        className="bg-primary h-1.5 rounded-full" 
+                        style={{ width: `${level.percentage}%` }}
+                      ></div>
                     </div>
                   </div>
                 ))}
+              </div>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-base font-medium">Performance by Branch</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Left Branch</span>
+                  <span className="font-medium">157 affiliates</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                  <div className="bg-blue-500 h-2 rounded-full" style={{ width: '65%' }}></div>
+                </div>
+                
+                <div className="flex justify-between">
+                  <span className="text-gray-600 dark:text-gray-400">Right Branch</span>
+                  <span className="font-medium">128 affiliates</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-2 dark:bg-gray-700">
+                  <div className="bg-purple-500 h-2 rounded-full" style={{ width: '35%' }}></div>
+                </div>
+                
+                <div className="pt-2 mt-2 border-t">
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Left Sales Volume</span>
+                    <span className="font-medium">$124,580</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-600 dark:text-gray-400">Right Sales Volume</span>
+                    <span className="font-medium">$86,320</span>
+                  </div>
+                  <div className="flex justify-between mt-1">
+                    <span className="text-gray-600 dark:text-gray-400">Balance</span>
+                    <span className="font-medium text-amber-600">69.3%</span>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -1,407 +1,299 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { CheckCircle, XCircle, AlertCircle, MessageSquare } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
-import { useToast } from '@/components/ui/use-toast';
+import { Check, X, ArrowRight, Download } from 'lucide-react';
 import SubscriptionConfirmation from '@/components/subscription/SubscriptionConfirmation';
-import { useSearchParams } from 'react-router-dom';
-
-// Mock subscription data
-const mockActiveSubscription = {
-  id: 'sub_12345',
-  plan: 'Standard Plan',
-  status: 'active',
-  startDate: '2025-01-15T00:00:00Z',
-  endDate: '2025-02-12T00:00:00Z', // 28 days from start date
-  renewalDate: '2025-02-12T00:00:00Z', // 28 days from start date
-  price: 60.00,
-  billingCycle: 'monthly',
-  features: [
-    'Live meetings and education on forex',
-    'Gold (XAUUSD) trading education',
-    'Access to multiple telegram channels',
-    'ProNet Announcement channel',
-    'ProNet Crypto Premium channel',
-    'ProNet Currency channel',
-    'ProNet Gold Mentor channel',
-    'ProNet Gold Scalper channel',
-    'ProNet I Options channel',
-    'ProNet I Stocks channel',
-    'ProNet Indices channel',
-    'ProNet Live Sessions channel',
-  ],
-};
-
-interface PlanOption {
-  id: string;
-  name: string;
-  price: number;
-  billingCycle: string;
-  popular: boolean;
-  features: {
-    name: string;
-    included: boolean;
-  }[];
-}
-
-const planOptions: PlanOption[] = [
-  {
-    id: 'standard',
-    name: 'Standard Plan',
-    price: 60.00,
-    billingCycle: 'monthly',
-    popular: true,
-    features: [
-      { name: 'Live meetings and education on forex', included: true },
-      { name: 'Gold (XAUUSD) trading education', included: true },
-      { name: 'Access to multiple telegram channels', included: true },
-      { name: 'ProNet Announcement channel', included: true },
-      { name: 'ProNet Crypto Premium channel', included: true },
-      { name: 'ProNet Currency channel', included: true },
-      { name: 'ProNet Gold Mentor channel', included: true },
-      { name: 'ProNet Gold Scalper channel', included: true },
-      { name: 'ProNet I Options channel', included: true },
-      { name: 'ProNet I Stocks channel', included: true },
-      { name: 'ProNet Indices channel', included: true },
-      { name: 'ProNet Live Sessions channel', included: true },
-    ],
-  },
-  {
-    id: 'real-estate-addon',
-    name: 'Real Estate Add-on',
-    price: 25.00,
-    billingCycle: 'monthly',
-    popular: false,
-    features: [
-      { name: 'Real estate investment strategies', included: true },
-      { name: 'Property market analysis', included: true },
-      { name: 'Weekly real estate webinars', included: true },
-      { name: 'Real estate investment guides', included: true },
-      { name: 'Access to ProNet Real Estate channel', included: true },
-      { name: 'Property valuation tools', included: true },
-    ],
-  },
-  {
-    id: 'dropshipping-addon',
-    name: 'Drop Shipping Add-on',
-    price: 20.00,
-    billingCycle: 'monthly',
-    popular: false,
-    features: [
-      { name: 'Dropshipping business strategies', included: true },
-      { name: 'Product sourcing guidance', included: true },
-      { name: 'E-commerce platform setup help', included: true },
-      { name: 'Marketing strategies for dropshipping', included: true },
-      { name: 'Access to ProNet Dropshipping channel', included: true },
-      { name: 'Supplier connection resources', included: true },
-    ],
-  },
-  {
-    id: 'esports-addon',
-    name: 'Esports Add-on',
-    price: 15.00,
-    billingCycle: 'monthly',
-    popular: false,
-    features: [
-      { name: 'Esports market analysis', included: true },
-      { name: 'Gaming team investment strategies', included: true },
-      { name: 'Tournament predictions and insights', included: true },
-      { name: 'Weekly esports industry updates', included: true },
-      { name: 'Access to ProNet Esports channel', included: true },
-      { name: 'Exclusive gaming event information', included: true },
-    ],
-  },
-  {
-    id: 'fantasy-gaming-addon',
-    name: 'Fantasy Gaming Add-on',
-    price: 15.00,
-    billingCycle: 'monthly',
-    popular: false,
-    features: [
-      { name: 'Fantasy sports strategies', included: true },
-      { name: 'Player performance analysis', included: true },
-      { name: 'Weekly fantasy sports tips', included: true },
-      { name: 'League-specific guides', included: true },
-      { name: 'Access to ProNet Fantasy Gaming channel', included: true },
-      { name: 'Exclusive odds and predictions', included: true },
-    ],
-  },
-];
 
 const Subscriptions = () => {
-  const { toast } = useToast();
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [hasActiveSubscription] = useState(true);
-  const [activeSubscription] = useState(mockActiveSubscription);
+  const [planPeriod, setPlanPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [showConfirmation, setShowConfirmation] = useState(false);
-  const [subscribedPlan, setSubscribedPlan] = useState<PlanOption | null>(null);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
 
-  useEffect(() => {
-    // Show confirmation dialog if subscription success parameter is present
-    const success = searchParams.get('success');
-    const planId = searchParams.get('plan');
-    
-    if (success === 'true' && planId) {
-      const plan = planOptions.find(p => p.id === planId);
-      if (plan) {
-        setSubscribedPlan(plan);
-        setShowConfirmation(true);
-      }
-    }
-  }, [searchParams]);
-
-  // Calculate days left in subscription
-  const calculateDaysRemaining = () => {
-    const now = new Date();
-    const end = new Date(activeSubscription.endDate);
-    const diffTime = Math.abs(end.getTime() - now.getTime());
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    return diffDays;
+  const handleSelectPlan = (planName: string) => {
+    setSelectedPlan(planName);
+    setShowConfirmation(true);
   };
 
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return new Intl.DateTimeFormat('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric',
-    }).format(date);
-  };
-
-  const handleRenewSubscription = () => {
-    toast({
-      title: "Renewal in progress",
-      description: "We're processing your renewal request.",
-    });
-  };
-
-  const handleManageSubscription = () => {
-    toast({
-      title: "Redirecting to subscription management",
-      description: "You'll be redirected to manage your subscription settings.",
-    });
-  };
-
-  const handleUpgradeSubscription = (planId: string) => {
-    // Simulate subscription upgrade process
-    const plan = planOptions.find(p => p.id === planId);
-    if (plan) {
-      setSubscribedPlan(plan);
-      setShowConfirmation(true);
-      
-      // Update URL to simulate success parameter
-      const newParams = new URLSearchParams(searchParams);
-      newParams.set('success', 'true');
-      newParams.set('plan', planId);
-      setSearchParams(newParams);
-      
-      toast({
-        title: `Subscribing to ${plan.name}`,
-        description: "We're processing your subscription request.",
-      });
+  const handleToggleAddOn = (addon: string) => {
+    if (selectedAddOns.includes(addon)) {
+      setSelectedAddOns(selectedAddOns.filter(item => item !== addon));
+    } else {
+      setSelectedAddOns([...selectedAddOns, addon]);
     }
   };
-
-  const handleCloseConfirmation = () => {
-    setShowConfirmation(false);
-    
-    // Remove URL parameters
-    const newParams = new URLSearchParams(searchParams);
-    newParams.delete('success');
-    newParams.delete('plan');
-    setSearchParams(newParams, { replace: true });
-  };
-
-  const handleTelegramAccess = () => {
-    window.open('https://t.me/ProNetSolutions', '_blank');
-    toast({
-      title: "Opening Telegram",
-      description: "Redirecting you to the ProNet Solutions Telegram channels.",
-    });
-  };
-
-  const daysRemaining = calculateDaysRemaining();
-  const percentComplete = 100 - ((daysRemaining / 28) * 100); // 28 days cycle
+  
+  const plans = [
+    {
+      name: 'Starter',
+      monthlyPrice: 49,
+      yearlyPrice: 490,
+      features: [
+        'Up to 5 active affiliates',
+        'Basic commission structure',
+        'Standard dashboard',
+        'Email support',
+      ],
+      notIncluded: [
+        'Advanced analytics',
+        'Multi-level commissions',
+        'Priority support',
+        'Custom branding',
+      ],
+    },
+    {
+      name: 'Professional',
+      monthlyPrice: 99,
+      yearlyPrice: 990,
+      popular: true,
+      features: [
+        'Up to 50 active affiliates',
+        'Multi-level commissions',
+        'Advanced dashboard',
+        'Priority email support',
+        'Performance reports',
+        'Team management tools',
+      ],
+      notIncluded: [
+        'Custom branding',
+        'API access',
+        'Dedicated account manager',
+      ],
+    },
+    {
+      name: 'Enterprise',
+      monthlyPrice: 199,
+      yearlyPrice: 1990,
+      features: [
+        'Unlimited affiliates',
+        'Custom commission structures',
+        'Premium dashboard',
+        'Priority 24/7 support',
+        'Advanced analytics',
+        'White-label solution',
+        'API access',
+        'Dedicated account manager',
+      ],
+      notIncluded: [],
+    },
+  ];
+  
+  const addOns = [
+    {
+      name: 'AI Trading Bot',
+      description: 'Automated trading solutions with advanced algorithms',
+      monthlyPrice: 59,
+      yearlyPrice: 590,
+      icon: '🤖',
+    },
+    {
+      name: 'Money Managers',
+      description: 'Professional fund managers to optimize your portfolio',
+      monthlyPrice: 79,
+      yearlyPrice: 790,
+      icon: '💼',
+    },
+    {
+      name: 'Copy Trading',
+      description: 'Automatically copy trades from successful traders',
+      monthlyPrice: 39,
+      yearlyPrice: 390,
+      icon: '🔄',
+    },
+  ];
 
   return (
     <DashboardLayout>
-      {/* Subscription Confirmation Dialog */}
-      {subscribedPlan && (
-        <SubscriptionConfirmation 
-          isOpen={showConfirmation}
-          onClose={handleCloseConfirmation}
-          subscriptionData={{
-            plan: subscribedPlan.name,
-            price: subscribedPlan.price
-          }}
-        />
-      )}
-      
-      <div className="space-y-6">
+      <div className="container mx-auto py-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Manage Subscriptions</h1>
-          <p className="text-muted-foreground">
-            View and manage your subscription plans
-          </p>
+          <h1 className="text-3xl font-bold">Subscription Plans</h1>
+          <p className="text-muted-foreground mt-2">Choose the perfect plan for your affiliate business needs</p>
         </div>
-
-        {hasActiveSubscription ? (
-          <Card className="border-primary/50">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-2xl">{activeSubscription.plan}</CardTitle>
-                  <CardDescription>
-                    Your subscription is active until {formatDate(activeSubscription.endDate)}
-                  </CardDescription>
+        
+        <div className="flex justify-center pb-6">
+          <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
+            <Button
+              variant={planPeriod === 'monthly' ? 'default' : 'ghost'}
+              className={`rounded-full ${planPeriod === 'monthly' ? '' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+              onClick={() => setPlanPeriod('monthly')}
+            >
+              Monthly
+            </Button>
+            <Button
+              variant={planPeriod === 'yearly' ? 'default' : 'ghost'}
+              className={`rounded-full ${planPeriod === 'yearly' ? '' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+              onClick={() => setPlanPeriod('yearly')}
+            >
+              Yearly <Badge variant="outline" className="ml-2 bg-primary/20">Save 15%</Badge>
+            </Button>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {plans.map((plan) => (
+            <Card key={plan.name} className={`relative ${plan.popular ? 'border-primary shadow-lg' : ''}`}>
+              {plan.popular && (
+                <div className="absolute top-0 right-0 transform translate-x-2 -translate-y-2">
+                  <Badge className="bg-primary hover:bg-primary">Most Popular</Badge>
                 </div>
-                <Badge variant="default" className="bg-green-600">Active</Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span>Subscription Progress</span>
-                  <span>{daysRemaining} days remaining</span>
-                </div>
-                <Progress value={percentComplete} className="h-2" />
-              </div>
-              
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="border rounded-md p-4">
-                  <div className="text-sm font-medium mb-1">Billing Details</div>
-                  <div className="text-2xl font-bold">${activeSubscription.price}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    28-day billing cycle
+              )}
+              <CardHeader>
+                <CardTitle>{plan.name}</CardTitle>
+                <CardDescription>
+                  <div className="flex items-baseline mt-2">
+                    <span className="text-3xl font-bold">
+                      ${planPeriod === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice}
+                    </span>
+                    <span className="ml-1 text-muted-foreground">/{planPeriod === 'monthly' ? 'month' : 'year'}</span>
+                  </div>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    {plan.features.map((feature, index) => (
+                      <div key={index} className="flex items-center">
+                        <Check className="mr-2 h-4 w-4 text-green-500" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
+                    {plan.notIncluded.map((feature, index) => (
+                      <div key={index} className="flex items-center text-muted-foreground">
+                        <X className="mr-2 h-4 w-4" />
+                        <span>{feature}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
-                
-                <div className="border rounded-md p-4">
-                  <div className="text-sm font-medium mb-1">Next Renewal</div>
-                  <div className="text-base font-medium">
-                    {formatDate(activeSubscription.renewalDate)}
-                  </div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    Auto-renewal is enabled
-                  </div>
-                </div>
-              </div>
-              
-              <div className="border rounded-md p-4">
-                <div className="text-sm font-medium mb-2">Plan Features</div>
-                <ul className="grid gap-2 sm:grid-cols-2">
-                  {activeSubscription.features.map((feature, index) => (
-                    <li key={index} className="flex items-center">
-                      <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                      <span className="text-sm">{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <Button 
-                className="w-full bg-[#229ED9] hover:bg-[#1A7AB0] flex items-center justify-center"
-                onClick={handleTelegramAccess}
-              >
-                <MessageSquare className="mr-2 h-5 w-5" />
-                Access Telegram Channels
-              </Button>
-            </CardContent>
-            <CardFooter className="flex justify-between flex-wrap gap-2">
-              <Button variant="outline" onClick={handleManageSubscription}>
-                Manage Subscription
-              </Button>
-              <Button onClick={handleRenewSubscription}>
-                Renew Subscription
-              </Button>
-            </CardFooter>
-          </Card>
-        ) : (
-          <Card className="border-yellow-500/50">
-            <CardHeader>
-              <div className="flex justify-between items-start">
-                <div>
-                  <CardTitle className="text-2xl">No Active Subscription</CardTitle>
-                  <CardDescription>
-                    Subscribe to unlock premium features
-                  </CardDescription>
-                </div>
-                <Badge variant="outline" className="text-yellow-500 border-yellow-500">
-                  <AlertCircle className="h-4 w-4 mr-1" /> Required
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
-                Please select a subscription plan below to access all features of our affiliate program.
-              </p>
-            </CardContent>
-          </Card>
-        )}
-
-        <div className="space-y-4">
-          <h2 className="text-2xl font-bold">Available Plans</h2>
-          
-          <div className="grid gap-4 md:grid-cols-3">
-            {planOptions.map((plan) => (
-              <Card 
-                key={plan.id}
-                className={`${
-                  plan.popular ? 'border-primary' : ''
-                } ${
-                  activeSubscription && activeSubscription.plan === plan.name
-                    ? 'bg-primary/5'
-                    : ''
-                } relative`}
-              >
-                {plan.popular && (
-                  <Badge className="absolute top-2 right-2">Popular</Badge>
-                )}
-                {activeSubscription && activeSubscription.plan === plan.name && (
-                  <Badge variant="secondary" className="absolute top-2 left-2">
-                    Your Plan
-                  </Badge>
-                )}
+              </CardContent>
+              <CardFooter>
+                <Button 
+                  className="w-full" 
+                  onClick={() => handleSelectPlan(plan.name)}
+                  variant={plan.popular ? 'default' : 'outline'}
+                >
+                  {plan.name === selectedPlan ? 'Current Plan' : 'Subscribe'}
+                </Button>
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        
+        <div className="pt-8">
+          <h2 className="text-2xl font-bold mb-4">Available Add-ons</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {addOns.map((addon) => (
+              <Card key={addon.name} className={selectedAddOns.includes(addon.name) ? 'border-primary' : ''}>
                 <CardHeader>
-                  <CardTitle>{plan.name}</CardTitle>
+                  <CardTitle className="flex items-center">
+                    <span className="text-2xl mr-2">{addon.icon}</span>
+                    {addon.name}
+                  </CardTitle>
                   <CardDescription>
-                    ${plan.price} / {plan.id === 'standard' ? '28 days' : plan.billingCycle}
+                    {addon.description}
                   </CardDescription>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <ul className="space-y-2">
-                    {plan.features.map((feature, i) => (
-                      <li key={i} className="flex items-center text-sm">
-                        {feature.included ? (
-                          <CheckCircle className="h-4 w-4 text-green-500 mr-2" />
-                        ) : (
-                          <XCircle className="h-4 w-4 text-gray-300 mr-2" />
-                        )}
-                        <span className={feature.included ? '' : 'text-gray-400'}>
-                          {feature.name}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                <CardContent>
+                  <div className="flex items-baseline">
+                    <span className="text-2xl font-bold">
+                      ${planPeriod === 'monthly' ? addon.monthlyPrice : addon.yearlyPrice}
+                    </span>
+                    <span className="ml-1 text-muted-foreground">
+                      /{planPeriod === 'monthly' ? 'month' : 'year'}
+                    </span>
+                  </div>
                 </CardContent>
                 <CardFooter>
                   <Button 
-                    className="w-full" 
-                    variant={activeSubscription && activeSubscription.plan === plan.name ? 'outline' : 'default'}
-                    onClick={() => handleUpgradeSubscription(plan.id)}
-                    disabled={activeSubscription && activeSubscription.plan === plan.name}
+                    variant={selectedAddOns.includes(addon.name) ? 'default' : 'outline'} 
+                    className="w-full"
+                    onClick={() => handleToggleAddOn(addon.name)}
                   >
-                    {activeSubscription && activeSubscription.plan === plan.name ? 'Current Plan' : plan.id.includes('addon') ? 'Add to Plan' : 'Subscribe'}
+                    {selectedAddOns.includes(addon.name) ? 'Selected' : 'Add to Subscription'}
                   </Button>
                 </CardFooter>
               </Card>
             ))}
           </div>
         </div>
+        
+        <Card className="bg-gray-50 dark:bg-gray-900 mt-6">
+          <CardHeader>
+            <CardTitle>Compare All Plans</CardTitle>
+            <CardDescription>Detailed feature comparison for all subscription plans</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b">
+                    <th className="py-2 px-4 text-left">Feature</th>
+                    <th className="py-2 px-4 text-center">Starter</th>
+                    <th className="py-2 px-4 text-center">Professional</th>
+                    <th className="py-2 px-4 text-center">Enterprise</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">Affiliate Limit</td>
+                    <td className="py-2 px-4 text-center">5</td>
+                    <td className="py-2 px-4 text-center">50</td>
+                    <td className="py-2 px-4 text-center">Unlimited</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">Commission Levels</td>
+                    <td className="py-2 px-4 text-center">1 level</td>
+                    <td className="py-2 px-4 text-center">3 levels</td>
+                    <td className="py-2 px-4 text-center">Unlimited levels</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">Analytics</td>
+                    <td className="py-2 px-4 text-center">Basic</td>
+                    <td className="py-2 px-4 text-center">Advanced</td>
+                    <td className="py-2 px-4 text-center">Enterprise-grade</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">Support</td>
+                    <td className="py-2 px-4 text-center">Email only</td>
+                    <td className="py-2 px-4 text-center">Priority email</td>
+                    <td className="py-2 px-4 text-center">24/7 dedicated</td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">Custom Branding</td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                    <td className="py-2 px-4 text-center"><Check className="mx-auto h-4 w-4 text-green-500" /></td>
+                  </tr>
+                  <tr className="border-b">
+                    <td className="py-2 px-4">API Access</td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                    <td className="py-2 px-4 text-center"><Check className="mx-auto h-4 w-4 text-green-500" /></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-4">
+              <Button variant="outline" className="flex items-center">
+                <Download className="mr-2 h-4 w-4" />
+                Download Full Plan Comparison
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* Display confirmation dialog when a plan is selected */}
+        <SubscriptionConfirmation
+          open={showConfirmation}
+          onClose={() => setShowConfirmation(false)}
+          plan={plans.find(p => p.name === selectedPlan)}
+          addons={addOns.filter(addon => selectedAddOns.includes(addon.name))}
+          period={planPeriod}
+        />
       </div>
     </DashboardLayout>
   );
