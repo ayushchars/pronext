@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -8,7 +7,8 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { 
-  Search, Download, Eye, Edit, User, UserCheck, UserX
+  Search, Download, Eye, Edit, User, UserCheck, UserX,
+  ArrowUp, ArrowDown
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import {

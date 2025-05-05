@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -16,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import ChartCard from '@/components/dashboard/ChartCard';
+import EnhancedChartCard from '@/components/dashboard/EnhancedChartCard';
 
 // Mock data for finance
 const financeOverview = {
@@ -236,14 +235,14 @@ const FinanceManagement = () => {
 
         {/* Financial Charts */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <ChartCard
+          <EnhancedChartCard
             title="Revenue vs Profit"
             data={monthlyData}
             dataKeys={["revenue", "profit"]}
             colors={["#8b5cf6", "#10b981"]}
           />
           
-          <ChartCard
+          <EnhancedChartCard
             title="Commissions vs Operating Costs"
             data={monthlyData}
             dataKeys={["commission", "costs"]}
