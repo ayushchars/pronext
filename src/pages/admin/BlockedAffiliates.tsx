@@ -110,11 +110,11 @@ const BlockedAffiliates = () => {
   // Get level badge color
   const getLevelColor = (level: string) => {
     switch (level.toLowerCase()) {
-      case 'platinum': return 'bg-violet-100 text-violet-800';
-      case 'gold': return 'bg-yellow-100 text-yellow-800';
-      case 'silver': return 'bg-blue-100 text-blue-800';
-      case 'bronze': return 'bg-orange-100 text-orange-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'platinum': return 'bg-violet-700 text-white';
+      case 'gold': return 'bg-yellow-700 text-white';
+      case 'silver': return 'bg-blue-700 text-white';
+      case 'bronze': return 'bg-orange-700 text-white';
+      default: return 'bg-gray-700 text-white';
     }
   };
 
@@ -126,33 +126,33 @@ const BlockedAffiliates = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card className="bg-red-50 dark:bg-red-900/20">
+          <Card className="bg-red-900/30 border border-red-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Total Blocked</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold">{mockBlockedAffiliates.length}</p>
-              <p className="text-sm text-gray-500">Blocked affiliates</p>
+              <p className="text-sm text-gray-300">Blocked affiliates</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-amber-50 dark:bg-amber-900/20">
+          <Card className="bg-amber-900/30 border border-amber-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">This Month</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold">2</p>
-              <p className="text-sm text-gray-500">Recently blocked</p>
+              <p className="text-sm text-gray-300">Recently blocked</p>
             </CardContent>
           </Card>
           
-          <Card className="bg-blue-50 dark:bg-blue-900/20">
+          <Card className="bg-blue-900/30 border border-blue-800/50">
             <CardHeader className="pb-2">
               <CardTitle className="text-base font-medium">Potential Revenue Loss</CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-2xl font-bold">$6,702.00</p>
-              <p className="text-sm text-gray-500">From blocked affiliates</p>
+              <p className="text-sm text-gray-300">From blocked affiliates</p>
             </CardContent>
           </Card>
         </div>
@@ -194,7 +194,7 @@ const BlockedAffiliates = () => {
                       <TableCell>
                         <div className="flex flex-col">
                           <span className="font-medium">{affiliate.name}</span>
-                          <span className="text-xs text-gray-500">{affiliate.email}</span>
+                          <span className="text-xs text-gray-400">{affiliate.email}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -204,7 +204,7 @@ const BlockedAffiliates = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2 text-gray-500" />
+                          <Calendar className="h-4 w-4 mr-2 text-gray-400" />
                           {affiliate.blockedDate}
                         </div>
                       </TableCell>
@@ -247,22 +247,22 @@ const BlockedAffiliates = () => {
               <div className="flex flex-col space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Affiliate ID</p>
+                    <p className="text-sm font-medium text-gray-400">Affiliate ID</p>
                     <p>{selectedAffiliate.id}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-500">Name</p>
+                    <p className="text-sm font-medium text-gray-400">Name</p>
                     <p>{selectedAffiliate.name}</p>
                   </div>
                 </div>
                 
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Blocked Reason</p>
+                  <p className="text-sm font-medium text-gray-400">Blocked Reason</p>
                   <p className="text-sm">{selectedAffiliate.reason}</p>
                 </div>
                 
                 <div>
-                  <p className="text-sm font-medium text-gray-500">Notes for Reinstatement</p>
+                  <p className="text-sm font-medium text-gray-400">Notes for Reinstatement</p>
                   <Textarea placeholder="Add notes about why this affiliate is being unblocked..." />
                 </div>
               </div>

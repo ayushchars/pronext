@@ -45,7 +45,7 @@
 
 /* Landing page specific styles */
 .hero-gradient {
-  background: linear-gradient(to right bottom, rgba(26, 42, 56, 0.9), rgba(26, 42, 56, 0.8));
+  background: linear-gradient(to right bottom, rgba(26, 42, 56, 0.95), rgba(26, 42, 56, 0.9));
 }
 
 /* Animation classes */
@@ -71,5 +71,5 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
 }
