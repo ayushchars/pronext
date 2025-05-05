@@ -4,7 +4,12 @@ import DashboardLayout from '@/components/layout/DashboardLayout';
 import StatCard from '@/components/dashboard/StatCard';
 import ChartCard from '@/components/dashboard/ChartCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, DollarSign, TrendingUp, Lock, BarChart } from 'lucide-react';
+import { 
+  Users, DollarSign, TrendingUp, Lock, BarChart, 
+  ArrowUp, ArrowDown, WalletCards, Receipt, Percent
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const AdminDashboard = () => {
   // Mock data
@@ -27,39 +32,102 @@ const AdminDashboard = () => {
     { name: 'Jun', count: 155 },
     { name: 'Jul', count: 180 },
   ];
+  
+  const commissionData = [
+    { name: 'Jan', amount: 3720 },
+    { name: 'Feb', amount: 4980 },
+    { name: 'Mar', amount: 5640 },
+    { name: 'Apr', amount: 6360 },
+    { name: 'May', amount: 5700 },
+    { name: 'Jun', amount: 7650 },
+    { name: 'Jul', amount: 8640 },
+  ];
 
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+          <div className="flex gap-2">
+            <Link to="/admin/reports">
+              <Button variant="outline">
+                <Receipt className="mr-2 h-4 w-4" />
+                Reports
+              </Button>
+            </Link>
+            <Link to="/admin/settings">
+              <Button>
+                Advanced Analytics
+              </Button>
+            </Link>
+          </div>
+        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <StatCard
-            title="Total Team"
-            value="182"
-            icon={<Users className="h-5 w-5 text-primary" />}
-            trend={{ value: 12.5, isPositive: true }}
-          />
-          
-          <StatCard
-            title="Active Team"
-            value="156"
-            icon={<Users className="h-5 w-5 text-primary" />}
-            trend={{ value: 8.2, isPositive: true }}
-          />
-          
-          <StatCard
-            title="Admin Total Income"
-            value="$48,652.20"
-            icon={<DollarSign className="h-5 w-5 text-primary" />}
-            trend={{ value: 15.3, isPositive: true }}
-          />
-          
-          <StatCard
-            title="Locked Bonus"
-            value="$5,240.50"
-            icon={<Lock className="h-5 w-5 text-primary" />}
-          />
+        {/* Financial overview */}
+        <div>
+          <h2 className="text-lg font-medium mb-3">Financial Overview</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard
+              title="Total Revenue"
+              value="$148,652.20"
+              icon={<DollarSign className="h-5 w-5 text-primary" />}
+              trend={{ value: 15.3, isPositive: true }}
+            />
+            
+            <StatCard
+              title="Net Profit"
+              value="$76,325.60"
+              icon={<WalletCards className="h-5 w-5 text-emerald-500" />}
+              trend={{ value: 12.8, isPositive: true }}
+            />
+            
+            <StatCard
+              title="Commissions Paid"
+              value="$42,550.40"
+              icon={<Receipt className="h-5 w-5 text-orange-500" />}
+              trend={{ value: 8.2, isPositive: true }}
+            />
+            
+            <StatCard
+              title="Average Margin"
+              value="51.3%"
+              icon={<Percent className="h-5 w-5 text-blue-500" />}
+              trend={{ value: 3.5, isPositive: true }}
+            />
+          </div>
+        </div>
+        
+        {/* Affiliate statistics */}
+        <div>
+          <h2 className="text-lg font-medium mb-3">Affiliate Statistics</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <StatCard
+              title="Total Affiliates"
+              value="182"
+              icon={<Users className="h-5 w-5 text-primary" />}
+              trend={{ value: 12.5, isPositive: true }}
+            />
+            
+            <StatCard
+              title="Active Affiliates"
+              value="156"
+              icon={<Users className="h-5 w-5 text-green-500" />}
+              trend={{ value: 8.2, isPositive: true }}
+            />
+            
+            <StatCard
+              title="Inactive Affiliates"
+              value="26"
+              icon={<Users className="h-5 w-5 text-red-500" />}
+              trend={{ value: 3.1, isPositive: false }}
+            />
+            
+            <StatCard
+              title="Locked Bonus"
+              value="$5,240.50"
+              icon={<Lock className="h-5 w-5 text-primary" />}
+            />
+          </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -70,13 +138,19 @@ const AdminDashboard = () => {
           />
           
           <ChartCard
+            title="Commissions Paid"
+            data={commissionData}
+            dataKey="amount"
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <ChartCard
             title="Affiliate Growth"
             data={userGrowthData}
             dataKey="count"
           />
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
           <Card className="col-span-1">
             <CardHeader>
               <CardTitle className="text-base font-medium">Latest Affiliates</CardTitle>
@@ -105,9 +179,14 @@ const AdminDashboard = () => {
                   </div>
                 ))}
               </div>
+              <Link to="/admin/affiliates" className="block mt-4">
+                <Button variant="outline" className="w-full">View All Affiliates</Button>
+              </Link>
             </CardContent>
           </Card>
-          
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <Card className="col-span-1">
             <CardHeader>
               <CardTitle className="text-base font-medium">Bonus Distribution</CardTitle>
@@ -131,6 +210,9 @@ const AdminDashboard = () => {
                   </div>
                 ))}
               </div>
+              <Link to="/admin/bonus" className="block mt-4">
+                <Button variant="outline" className="w-full">Manage Bonus Structure</Button>
+              </Link>
             </CardContent>
           </Card>
           
@@ -152,6 +234,54 @@ const AdminDashboard = () => {
                     <span className="font-medium">{item.value}</span>
                   </div>
                 ))}
+              </div>
+              <Link to="/admin/finance" className="block mt-4">
+                <Button variant="outline" className="w-full">Financial Details</Button>
+              </Link>
+            </CardContent>
+          </Card>
+          
+          <Card className="col-span-1">
+            <CardHeader>
+              <CardTitle className="flex items-center justify-between text-base font-medium">
+                <span>Pending Actions</span>
+                <span className="bg-red-100 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded">5 New</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { action: 'Withdrawal Approval', count: 3, status: 'Urgent' },
+                  { action: 'KYC Verification', count: 8, status: 'Normal' },
+                  { action: 'Support Tickets', count: 12, status: 'Normal' },
+                  { action: 'Affiliate Applications', count: 5, status: 'Normal' },
+                ].map((item, index) => (
+                  <div key={index} className="flex justify-between items-center pb-2 border-b last:border-b-0">
+                    <div>
+                      <p className="font-medium">{item.action}</p>
+                      <p className="text-xs text-gray-500">{item.count} pending</p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      item.status === 'Urgent' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                    }`}>
+                      {item.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                <Link to="/admin/withdrawals">
+                  <Button variant="outline" size="sm" className="w-full">Process Withdrawals</Button>
+                </Link>
+                <Link to="/admin/kyc">
+                  <Button variant="outline" size="sm" className="w-full">Review KYC</Button>
+                </Link>
+                <Link to="/admin/support">
+                  <Button variant="outline" size="sm" className="w-full">Support Tickets</Button>
+                </Link>
+                <Link to="/admin/applications">
+                  <Button variant="outline" size="sm" className="w-full">Applications</Button>
+                </Link>
               </div>
             </CardContent>
           </Card>

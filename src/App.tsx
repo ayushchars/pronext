@@ -38,6 +38,10 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPolicy from "./pages/RefundPolicy";
 import Disclaimer from "./pages/Disclaimer";
 
+// Admin Pages
+import AffiliateManagement from "./pages/admin/AffiliateManagement";
+import FinanceManagement from "./pages/admin/FinanceManagement";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -77,6 +81,10 @@ const App = () => (
             <Route path="/privacy" element={<PrivacyPolicy />} />
             <Route path="/refund" element={<RefundPolicy />} />
             <Route path="/disclaimer" element={<Disclaimer />} />
+            
+            {/* Admin Routes */}
+            <Route path="/admin/affiliates" element={<AffiliateManagement />} />
+            <Route path="/admin/finance" element={<FinanceManagement />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
