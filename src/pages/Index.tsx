@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -488,4 +489,168 @@ const Index = () => {
             
             <div className="bg-[#1E2E3C] rounded-lg p-6 shadow-lg animate-fade-in" style={{ animationDelay: "0.4s" }}>
               <div className="w-12 h-12 bg-[#4CD3C8]/20 rounded-full flex items-center justify-center mb-4">
-                <svg className="w-6 h-6 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/
+                <svg className="w-6 h-6 text-[#4CD3C8]" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">Passive Income</h3>
+              <p className="text-gray-300">
+                Create a sustainable income stream that continues to grow even when you're not actively working.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#1A2A38] text-white py-8">
+        <div className="container mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">Pro Net Solutions</h3>
+              <p className="text-gray-300 mb-4">
+                Your gateway to financial freedom through multiple income streams.
+              </p>
+              <div className="flex space-x-4">
+                <a href="https://facebook.com" className="text-white hover:text-[#4CD3C8]">
+                  <Facebook className="h-5 w-5" />
+                  <span className="sr-only">Facebook</span>
+                </a>
+                <a href="https://instagram.com" className="text-white hover:text-[#4CD3C8]">
+                  <Instagram className="h-5 w-5" />
+                  <span className="sr-only">Instagram</span>
+                </a>
+                <a href="https://twitter.com" className="text-white hover:text-[#4CD3C8]">
+                  <Twitter className="h-5 w-5" />
+                  <span className="sr-only">Twitter</span>
+                </a>
+                <a href="https://linkedin.com" className="text-white hover:text-[#4CD3C8]">
+                  <Linkedin className="h-5 w-5" />
+                  <span className="sr-only">LinkedIn</span>
+                </a>
+                <a href="https://youtube.com" className="text-white hover:text-[#4CD3C8]">
+                  <Youtube className="h-5 w-5" />
+                  <span className="sr-only">YouTube</span>
+                </a>
+              </div>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/about')}
+                  >
+                    About Us
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/services')}
+                  >
+                    Our Services
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/testimonials')}
+                  >
+                    Testimonials
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/faq')}
+                  >
+                    FAQ
+                  </Button>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Legal</h3>
+              <ul className="space-y-2">
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/terms')}
+                  >
+                    Terms of Service
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/privacy')}
+                  >
+                    Privacy Policy
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/refund')}
+                  >
+                    Refund Policy
+                  </Button>
+                </li>
+                <li>
+                  <Button 
+                    variant="link" 
+                    className="text-gray-300 hover:text-white p-0"
+                    onClick={() => navigate('/disclaimer')}
+                  >
+                    Disclaimer
+                  </Button>
+                </li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <Button
+                variant="link" 
+                className="text-gray-300 hover:text-white p-0 mb-4 block"
+                onClick={() => navigate('/contact')}
+              >
+                Contact Us
+              </Button>
+              <p className="text-gray-300">support@pronetsolutions.com</p>
+              <p className="text-gray-300">+1 (555) 123-4567</p>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-700 pt-6 flex flex-col md:flex-row justify-between items-center">
+            <p className="text-gray-400 mb-4 md:mb-0">&copy; {new Date().getFullYear()} Pro Net Solutions. All rights reserved.</p>
+            <div className="space-x-4">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-gray-400 hover:text-white"
+                onClick={() => navigate('/faq')}
+              >
+                <HelpCircle className="mr-1 h-4 w-4" />
+                Help
+              </Button>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default Index;
