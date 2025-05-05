@@ -17,7 +17,12 @@ import {
   Shield,
   LifeBuoy,
   UserCheck,
-  LayoutDashboard
+  LayoutDashboard,
+  Percent,
+  SendHorizontal,
+  MessageSquare,
+  UserPlus,
+  GitFork
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -30,18 +35,19 @@ const AdminSidebar = ({ collapsed }: AdminSidebarProps) => {
   
   const menuItems = [
     { icon: Home, label: 'Dashboard', path: '/admin' },
-    { icon: BarChart, label: 'Analytics', path: '/admin/analytics' },
+    { icon: BarChart, label: 'Reports', path: '/admin/reports' },
     { icon: Users, label: 'Affiliates', path: '/admin/affiliates' },
     { icon: UserCheck, label: 'KYC Verification', path: '/admin/kyc' },
     { icon: DollarSign, label: 'Finance', path: '/admin/finance' },
+    { icon: Percent, label: 'Bonus Structure', path: '/admin/bonus' },
     { icon: Receipt, label: 'Commissions', path: '/admin/commissions' },
-    { icon: Wallet, label: 'Withdrawals', path: '/admin/withdrawals' },
+    { icon: SendHorizontal, label: 'Withdrawals', path: '/admin/withdrawals' },
     { icon: Network, label: 'Network', path: '/admin/network' },
+    { icon: UserPlus, label: 'Applications', path: '/admin/applications' },
     { icon: Key, label: 'EPins', path: '/admin/epins' },
     { icon: FileText, label: 'Reports', path: '/admin/reports' },
     { icon: Bell, label: 'Announcements', path: '/admin/announcements' },
-    { icon: LayoutDashboard, label: 'Applications', path: '/admin/applications' },
-    { icon: LifeBuoy, label: 'Support', path: '/admin/support' },
+    { icon: MessageSquare, label: 'Support', path: '/admin/support' },
     { icon: Shield, label: 'Permissions', path: '/admin/permissions' },
     { icon: Settings, label: 'Settings', path: '/admin/settings' },
   ];

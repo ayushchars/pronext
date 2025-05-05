@@ -41,6 +41,14 @@ import Disclaimer from "./pages/Disclaimer";
 // Admin Pages
 import AffiliateManagement from "./pages/admin/AffiliateManagement";
 import FinanceManagement from "./pages/admin/FinanceManagement";
+import ManageBonusStructure from "./pages/admin/ManageBonusStructure";
+import AdminReports from "./pages/admin/AdminReports";
+import KYCVerification from "./pages/admin/KYCVerification";
+import WithdrawalManagement from "./pages/admin/WithdrawalManagement";
+import ApplicationManagement from "./pages/admin/ApplicationManagement";
+import NetworkManagement from "./pages/admin/NetworkManagement";
+import EpinManagement from "./pages/admin/EpinManagement";
+import SupportTickets from "./pages/admin/SupportTickets";
 
 const queryClient = new QueryClient();
 
@@ -85,6 +93,14 @@ const App = () => (
             {/* Admin Routes */}
             <Route path="/admin/affiliates" element={<AffiliateManagement />} />
             <Route path="/admin/finance" element={<FinanceManagement />} />
+            <Route path="/admin/bonus" element={<ManageBonusStructure />} />
+            <Route path="/admin/reports" element={<AdminReports />} />
+            <Route path="/admin/kyc" element={<KYCVerification />} />
+            <Route path="/admin/withdrawals" element={<WithdrawalManagement />} />
+            <Route path="/admin/applications" element={<ApplicationManagement />} />
+            <Route path="/admin/network" element={<NetworkManagement />} />
+            <Route path="/admin/epins" element={<EpinManagement />} />
+            <Route path="/admin/support" element={<SupportTickets />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
