@@ -27,6 +27,7 @@ import Payouts from "./pages/Payouts";
 import Invoices from "./pages/Invoices";
 import Referral from "./pages/Referral";
 import FAQ from "./pages/FAQ";
+import Meetings from "./pages/Meetings";
 
 // New Landing Pages
 import AboutUs from "./pages/AboutUs";
@@ -88,6 +89,7 @@ const App = () => (
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/referral" element={<Referral />} />
             <Route path="/faq" element={<FAQ />} />
+            <Route path="/meetings" element={<Meetings />} />
             
             {/* New Landing Pages */}
             <Route path="/about" element={<AboutUs />} />
@@ -119,6 +121,8 @@ const App = () => (
             <Route path="/admin/tree" element={<AffiliateTree />} />
             <Route path="/admin/wallets" element={<AdminWallets />} />
             <Route path="/admin/meetings" element={<AdminMeetings />} />
+            <Route path="/admin/settings" element={<AdminDashboard />} /> {/* Placeholder for settings page */}
+            <Route path="/admin/permissions" element={<AdminDashboard />} /> {/* Placeholder for permissions page */}
             
             <Route path="*" element={<NotFound />} />
           </Routes>

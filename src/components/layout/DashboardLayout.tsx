@@ -1,21 +1,45 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import AdminSidebar from './AdminSidebar';
 import AffiliateSidebar from './AffiliateSidebar';
 import TopBar from './TopBar';
 import { Facebook, Instagram, Twitter, Linkedin, Youtube, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const { isAdmin } = useAuth();
+  const { isAdmin, user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    // Check if user is trying to access admin pages
+    if (location.pathname.startsWith('/admin') && !isAdmin) {
+      toast({
+        title: "Access Denied",
+        description: "You don't have permission to access admin pages.",
+        variant: "destructive",
+      });
+      navigate('/dashboard');
+    }
+    
+    // Redirect unauthenticated users
+    if (!user) {
+      if (location.pathname.startsWith('/admin')) {
+        navigate('/admin-login');
+      } else {
+        navigate('/login');
+      }
+    }
+  }, [user, isAdmin, location.pathname, navigate, toast]);
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -30,7 +54,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       <TopBar toggleSidebar={toggleSidebar} />
       <div className="flex flex-1 overflow-hidden">
         <div 
-          className={`transition-all duration-300 bg-sidebar ${
+          className={`transition-all duration-300 bg-card border-r border-border ${
             sidebarOpen ? 'w-64' : 'w-16'
           }`}
         >

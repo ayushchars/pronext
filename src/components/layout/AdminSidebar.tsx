@@ -54,7 +54,6 @@ const AdminSidebar = ({ collapsed }: AdminSidebarProps) => {
   const financeItems = [
     { icon: DollarSign, label: 'Finance', path: '/admin/finance' },
     { icon: Percent, label: 'Bonus Structure', path: '/admin/bonus' },
-    { icon: Receipt, label: 'Commissions', path: '/admin/commissions' },
     { icon: SendHorizontal, label: 'Withdrawals', path: '/admin/withdrawals' },
     { icon: Key, label: 'EPins', path: '/admin/epins' },
     { icon: Wallet, label: 'Wallets', path: '/admin/wallets' },
@@ -80,7 +79,11 @@ const AdminSidebar = ({ collapsed }: AdminSidebarProps) => {
         <Link
           key={item.path}
           to={item.path}
-          className={`sidebar-link mb-1 ${isActive(item.path) ? 'active' : ''}`}
+          className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors hover:bg-secondary mb-1 ${
+            isActive(item.path) 
+              ? 'bg-primary text-primary-foreground' 
+              : 'text-card-foreground hover:text-card-foreground'
+          }`}
         >
           <item.icon className="h-5 w-5" />
           {!collapsed && <span>{item.label}</span>}

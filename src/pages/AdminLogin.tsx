@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
@@ -12,9 +12,16 @@ const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, isAdmin, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  // If already logged in as admin, redirect to admin dashboard
+  useEffect(() => {
+    if (user && isAdmin) {
+      navigate('/admin');
+    }
+  }, [user, isAdmin, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,7 +33,7 @@ const AdminLogin = () => {
         throw new Error('Invalid admin credentials');
       }
       
-      await login(email, password);
+      await login(email, password, true); // Pass true to indicate admin login
       
       toast({
         title: 'Admin login successful',
