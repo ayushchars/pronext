@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, ChevronRight } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -45,7 +47,7 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Rest of the landing page */}
+      {/* Features section */}
       <section className="py-16">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-8">Why Choose Pro Net Solutions?</h2>
@@ -66,6 +68,7 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Services section */}
       <section className="py-16 bg-[#2C3E50]">
         <div className="container mx-auto px-6 text-center">
           <h2 className="text-3xl font-bold mb-8">Our Services</h2>
@@ -86,7 +89,46 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="bg-[#1A2A38] py-8 text-center">
+      {/* Navigation Links */}
+      <section className="py-12">
+        <div className="container mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="text-center md:text-left">
+              <h4 className="text-lg font-bold mb-4 text-[#4CD3C8]">About Us</h4>
+              <ul className="space-y-2">
+                <li><Link to="/about" className="text-gray-300 hover:text-white">Our Story</Link></li>
+                <li><Link to="/testimonials" className="text-gray-300 hover:text-white">Testimonials</Link></li>
+                <li><Link to="/contact" className="text-gray-300 hover:text-white">Contact Us</Link></li>
+              </ul>
+            </div>
+            <div className="text-center md:text-left">
+              <h4 className="text-lg font-bold mb-4 text-[#4CD3C8]">Services</h4>
+              <ul className="space-y-2">
+                <li><Link to="/services" className="text-gray-300 hover:text-white">Our Services</Link></li>
+                <li><Link to="/faq" className="text-gray-300 hover:text-white">FAQ</Link></li>
+              </ul>
+            </div>
+            <div className="text-center md:text-left">
+              <h4 className="text-lg font-bold mb-4 text-[#4CD3C8]">Resources</h4>
+              <ul className="space-y-2">
+                <li><Link to="/dashboard" className="text-gray-300 hover:text-white">Affiliate Dashboard</Link></li>
+                <li><Link to="/admin" className="text-gray-300 hover:text-white">Admin Portal</Link></li>
+              </ul>
+            </div>
+            <div className="text-center md:text-left">
+              <h4 className="text-lg font-bold mb-4 text-[#4CD3C8]">Legal</h4>
+              <ul className="space-y-2">
+                <li><Link to="/terms" className="text-gray-300 hover:text-white">Terms of Service</Link></li>
+                <li><Link to="/privacy" className="text-gray-300 hover:text-white">Privacy Policy</Link></li>
+                <li><Link to="/refund" className="text-gray-300 hover:text-white">Refund Policy</Link></li>
+                <li><Link to="/disclaimer" className="text-gray-300 hover:text-white">Disclaimer</Link></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="bg-[#1A2A38] py-8 text-center border-t border-gray-800">
         <p className="text-gray-400">
           &copy; {new Date().getFullYear()} Pro Net Solutions. All rights reserved.
         </p>
