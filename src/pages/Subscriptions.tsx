@@ -106,26 +106,30 @@ const Subscriptions = () => {
     },
   ];
 
+  // Get selected plan and add-ons for confirmation
+  const selectedPlanData = plans.find(p => p.name === selectedPlan);
+  const selectedAddOnsData = addOns.filter(addon => selectedAddOns.includes(addon.name));
+
   return (
     <DashboardLayout>
       <div className="container mx-auto py-6 space-y-6">
         <div>
-          <h1 className="text-3xl font-bold">Subscription Plans</h1>
+          <h1 className="text-3xl font-bold text-foreground">Subscription Plans</h1>
           <p className="text-muted-foreground mt-2">Choose the perfect plan for your affiliate business needs</p>
         </div>
         
         <div className="flex justify-center pb-6">
-          <div className="bg-gray-100 dark:bg-gray-800 p-1 rounded-full">
+          <div className="bg-secondary p-1 rounded-full">
             <Button
               variant={planPeriod === 'monthly' ? 'default' : 'ghost'}
-              className={`rounded-full ${planPeriod === 'monthly' ? '' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+              className={`rounded-full ${planPeriod === 'monthly' ? '' : 'hover:bg-muted'}`}
               onClick={() => setPlanPeriod('monthly')}
             >
               Monthly
             </Button>
             <Button
               variant={planPeriod === 'yearly' ? 'default' : 'ghost'}
-              className={`rounded-full ${planPeriod === 'yearly' ? '' : 'hover:bg-gray-200 dark:hover:bg-gray-700'}`}
+              className={`rounded-full ${planPeriod === 'yearly' ? '' : 'hover:bg-muted'}`}
               onClick={() => setPlanPeriod('yearly')}
             >
               Yearly <Badge variant="outline" className="ml-2 bg-primary/20">Save 15%</Badge>
@@ -142,10 +146,10 @@ const Subscriptions = () => {
                 </div>
               )}
               <CardHeader>
-                <CardTitle>{plan.name}</CardTitle>
+                <CardTitle className="text-foreground">{plan.name}</CardTitle>
                 <CardDescription>
                   <div className="flex items-baseline mt-2">
-                    <span className="text-3xl font-bold">
+                    <span className="text-3xl font-bold text-foreground">
                       ${planPeriod === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice}
                     </span>
                     <span className="ml-1 text-muted-foreground">/{planPeriod === 'monthly' ? 'month' : 'year'}</span>
@@ -158,7 +162,7 @@ const Subscriptions = () => {
                     {plan.features.map((feature, index) => (
                       <div key={index} className="flex items-center">
                         <Check className="mr-2 h-4 w-4 text-green-500" />
-                        <span>{feature}</span>
+                        <span className="text-foreground">{feature}</span>
                       </div>
                     ))}
                     {plan.notIncluded.map((feature, index) => (
@@ -184,12 +188,12 @@ const Subscriptions = () => {
         </div>
         
         <div className="pt-8">
-          <h2 className="text-2xl font-bold mb-4">Available Add-ons</h2>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Available Add-ons</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {addOns.map((addon) => (
               <Card key={addon.name} className={selectedAddOns.includes(addon.name) ? 'border-primary' : ''}>
                 <CardHeader>
-                  <CardTitle className="flex items-center">
+                  <CardTitle className="flex items-center text-foreground">
                     <span className="text-2xl mr-2">{addon.icon}</span>
                     {addon.name}
                   </CardTitle>
@@ -199,7 +203,7 @@ const Subscriptions = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-baseline">
-                    <span className="text-2xl font-bold">
+                    <span className="text-2xl font-bold text-foreground">
                       ${planPeriod === 'monthly' ? addon.monthlyPrice : addon.yearlyPrice}
                     </span>
                     <span className="ml-1 text-muted-foreground">
@@ -221,57 +225,57 @@ const Subscriptions = () => {
           </div>
         </div>
         
-        <Card className="bg-gray-50 dark:bg-gray-900 mt-6">
+        <Card className="bg-secondary mt-6">
           <CardHeader>
-            <CardTitle>Compare All Plans</CardTitle>
+            <CardTitle className="text-foreground">Compare All Plans</CardTitle>
             <CardDescription>Detailed feature comparison for all subscription plans</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b">
-                    <th className="py-2 px-4 text-left">Feature</th>
-                    <th className="py-2 px-4 text-center">Starter</th>
-                    <th className="py-2 px-4 text-center">Professional</th>
-                    <th className="py-2 px-4 text-center">Enterprise</th>
+                  <tr className="border-b border-border">
+                    <th className="py-2 px-4 text-left text-foreground">Feature</th>
+                    <th className="py-2 px-4 text-center text-foreground">Starter</th>
+                    <th className="py-2 px-4 text-center text-foreground">Professional</th>
+                    <th className="py-2 px-4 text-center text-foreground">Enterprise</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">Affiliate Limit</td>
-                    <td className="py-2 px-4 text-center">5</td>
-                    <td className="py-2 px-4 text-center">50</td>
-                    <td className="py-2 px-4 text-center">Unlimited</td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">Affiliate Limit</td>
+                    <td className="py-2 px-4 text-center text-foreground">5</td>
+                    <td className="py-2 px-4 text-center text-foreground">50</td>
+                    <td className="py-2 px-4 text-center text-foreground">Unlimited</td>
                   </tr>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">Commission Levels</td>
-                    <td className="py-2 px-4 text-center">1 level</td>
-                    <td className="py-2 px-4 text-center">3 levels</td>
-                    <td className="py-2 px-4 text-center">Unlimited levels</td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">Commission Levels</td>
+                    <td className="py-2 px-4 text-center text-foreground">1 level</td>
+                    <td className="py-2 px-4 text-center text-foreground">3 levels</td>
+                    <td className="py-2 px-4 text-center text-foreground">Unlimited levels</td>
                   </tr>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">Analytics</td>
-                    <td className="py-2 px-4 text-center">Basic</td>
-                    <td className="py-2 px-4 text-center">Advanced</td>
-                    <td className="py-2 px-4 text-center">Enterprise-grade</td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">Analytics</td>
+                    <td className="py-2 px-4 text-center text-foreground">Basic</td>
+                    <td className="py-2 px-4 text-center text-foreground">Advanced</td>
+                    <td className="py-2 px-4 text-center text-foreground">Enterprise-grade</td>
                   </tr>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">Support</td>
-                    <td className="py-2 px-4 text-center">Email only</td>
-                    <td className="py-2 px-4 text-center">Priority email</td>
-                    <td className="py-2 px-4 text-center">24/7 dedicated</td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">Support</td>
+                    <td className="py-2 px-4 text-center text-foreground">Email only</td>
+                    <td className="py-2 px-4 text-center text-foreground">Priority email</td>
+                    <td className="py-2 px-4 text-center text-foreground">24/7 dedicated</td>
                   </tr>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">Custom Branding</td>
-                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
-                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">Custom Branding</td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4 text-muted-foreground" /></td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4 text-muted-foreground" /></td>
                     <td className="py-2 px-4 text-center"><Check className="mx-auto h-4 w-4 text-green-500" /></td>
                   </tr>
-                  <tr className="border-b">
-                    <td className="py-2 px-4">API Access</td>
-                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
-                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4" /></td>
+                  <tr className="border-b border-border">
+                    <td className="py-2 px-4 text-foreground">API Access</td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4 text-muted-foreground" /></td>
+                    <td className="py-2 px-4 text-center"><X className="mx-auto h-4 w-4 text-muted-foreground" /></td>
                     <td className="py-2 px-4 text-center"><Check className="mx-auto h-4 w-4 text-green-500" /></td>
                   </tr>
                 </tbody>
@@ -286,12 +290,12 @@ const Subscriptions = () => {
           </CardContent>
         </Card>
         
-        {/* Display confirmation dialog when a plan is selected */}
+        {/* Pass the correct props to SubscriptionConfirmation */}
         <SubscriptionConfirmation
           open={showConfirmation}
           onClose={() => setShowConfirmation(false)}
-          plan={plans.find(p => p.name === selectedPlan)}
-          addons={addOns.filter(addon => selectedAddOns.includes(addon.name))}
+          plan={selectedPlanData}
+          addons={selectedAddOnsData}
           period={planPeriod}
         />
       </div>

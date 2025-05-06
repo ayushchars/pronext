@@ -5,28 +5,48 @@ import { Button } from '@/components/ui/button';
 import { PartyPopper, MessageSquare } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 
+interface Plan {
+  name: string;
+  monthlyPrice: number;
+  yearlyPrice: number;
+}
+
+interface Addon {
+  name: string;
+  monthlyPrice: number;
+  yearlyPrice: number;
+}
+
 interface SubscriptionConfirmationProps {
-  isOpen: boolean;
+  open: boolean;
   onClose: () => void;
-  subscriptionData: {
-    plan: string;
-    price: number;
-  };
+  plan: Plan | undefined;
+  addons: Addon[];
+  period: 'monthly' | 'yearly';
 }
 
 const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
-  isOpen,
+  open,
   onClose,
-  subscriptionData
+  plan,
+  addons,
+  period
 }) => {
   const { user } = useAuth();
+  
+  if (!plan) return null;
+  
+  const planPrice = period === 'monthly' ? plan.monthlyPrice : plan.yearlyPrice;
+  const addonsTotal = addons.reduce((total, addon) => 
+    total + (period === 'monthly' ? addon.monthlyPrice : addon.yearlyPrice), 0);
+  const totalPrice = planPrice + addonsTotal;
 
   const handleTelegramAccess = () => {
     window.open('https://t.me/ProNetSolutions', '_blank');
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Dialog open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <DialogContent className="bg-[#1A2A38] text-white border-none sm:max-w-[500px] p-8">
         <div className="text-center">
           <DialogHeader className="space-y-2">
@@ -35,7 +55,7 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
               <DialogTitle className="text-2xl font-bold text-[#4CD3C8]">Congratulations, {user?.name?.split(' ')[0] || 'Affiliate'}!</DialogTitle>
             </div>
             <DialogDescription className="text-white text-lg">
-              You have successfully subscribed to {subscriptionData.plan}.
+              You have successfully subscribed to {plan.name}.
               <p className="mt-2">Your subscription is now active.</p>
             </DialogDescription>
           </DialogHeader>
@@ -43,18 +63,27 @@ const SubscriptionConfirmation: React.FC<SubscriptionConfirmationProps> = ({
           <div className="my-6 pt-4 border-t border-gray-600">
             <div className="space-y-3">
               <p className="flex justify-between">
-                <span className="text-gray-300">Subscription Amount:</span>
-                <span className="font-semibold">${subscriptionData.price}</span>
+                <span className="text-gray-300">Plan:</span>
+                <span className="font-semibold">{plan.name} (${planPrice}/{period === 'monthly' ? 'month' : 'year'})</span>
               </p>
+              
+              {addons.length > 0 && (
+                <>
+                  <p className="flex justify-between">
+                    <span className="text-gray-300">Add-ons:</span>
+                    <span className="font-semibold">${addonsTotal}/{period === 'monthly' ? 'month' : 'year'}</span>
+                  </p>
+                  
+                  <p className="flex justify-between font-bold border-t border-gray-600 pt-2">
+                    <span className="text-gray-300">Total:</span>
+                    <span>${totalPrice}/{period === 'monthly' ? 'month' : 'year'}</span>
+                  </p>
+                </>
+              )}
               
               <p className="flex justify-between">
                 <span className="text-gray-300">Email:</span>
                 <span className="font-semibold">{user?.email || 'user@example.com'}</span>
-              </p>
-              
-              <p className="flex justify-between">
-                <span className="text-gray-300">Phone:</span>
-                <span className="font-semibold">{user?.phone || 'Not provided'}</span>
               </p>
             </div>
           </div>

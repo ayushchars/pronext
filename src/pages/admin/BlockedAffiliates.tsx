@@ -122,61 +122,61 @@ const BlockedAffiliates = () => {
     <DashboardLayout>
       <div className="space-y-6">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Blocked Affiliates</h1>
+          <h1 className="text-2xl font-bold text-foreground">Blocked Affiliates</h1>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-red-900/30 border border-red-800/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Total Blocked</CardTitle>
+              <CardTitle className="text-base font-medium text-foreground">Total Blocked</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">{mockBlockedAffiliates.length}</p>
-              <p className="text-sm text-gray-300">Blocked affiliates</p>
+              <p className="text-2xl font-bold text-foreground">{mockBlockedAffiliates.length}</p>
+              <p className="text-sm text-muted-foreground">Blocked affiliates</p>
             </CardContent>
           </Card>
           
           <Card className="bg-amber-900/30 border border-amber-800/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">This Month</CardTitle>
+              <CardTitle className="text-base font-medium text-foreground">This Month</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">2</p>
-              <p className="text-sm text-gray-300">Recently blocked</p>
+              <p className="text-2xl font-bold text-foreground">2</p>
+              <p className="text-sm text-muted-foreground">Recently blocked</p>
             </CardContent>
           </Card>
           
           <Card className="bg-blue-900/30 border border-blue-800/50">
             <CardHeader className="pb-2">
-              <CardTitle className="text-base font-medium">Potential Revenue Loss</CardTitle>
+              <CardTitle className="text-base font-medium text-foreground">Potential Revenue Loss</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-2xl font-bold">$6,702.00</p>
-              <p className="text-sm text-gray-300">From blocked affiliates</p>
+              <p className="text-2xl font-bold text-foreground">$6,702.00</p>
+              <p className="text-sm text-muted-foreground">From blocked affiliates</p>
             </CardContent>
           </Card>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Blocked Affiliate List</CardTitle>
+            <CardTitle className="text-foreground">Blocked Affiliate List</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col md:flex-row gap-4 mb-6">
               <div className="w-full md:w-1/2 relative">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                 <Input
                   placeholder="Search blocked affiliates..."
-                  className="pl-8"
+                  className="pl-8 bg-secondary text-foreground"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
 
-            <div className="rounded-md border overflow-hidden">
+            <div className="rounded-md border border-border overflow-hidden">
               <Table>
-                <TableHeader>
+                <TableHeader className="bg-secondary">
                   <TableRow>
                     <TableHead>ID</TableHead>
                     <TableHead>Affiliate</TableHead>
@@ -189,12 +189,12 @@ const BlockedAffiliates = () => {
                 </TableHeader>
                 <TableBody>
                   {filteredAffiliates.map((affiliate) => (
-                    <TableRow key={affiliate.id}>
+                    <TableRow key={affiliate.id} className="hover:bg-muted/50">
                       <TableCell className="font-medium">{affiliate.id}</TableCell>
                       <TableCell>
                         <div className="flex flex-col">
                           <span className="font-medium">{affiliate.name}</span>
-                          <span className="text-xs text-gray-400">{affiliate.email}</span>
+                          <span className="text-xs text-muted-foreground">{affiliate.email}</span>
                         </div>
                       </TableCell>
                       <TableCell>
@@ -204,7 +204,7 @@ const BlockedAffiliates = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center">
-                          <Calendar className="h-4 w-4 mr-2 text-gray-400" />
+                          <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
                           {affiliate.blockedDate}
                         </div>
                       </TableCell>
@@ -234,10 +234,10 @@ const BlockedAffiliates = () => {
       </div>
 
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
+        <DialogContent className="bg-card border-border">
           <DialogHeader>
-            <DialogTitle>Unblock Affiliate</DialogTitle>
-            <DialogDescription>
+            <DialogTitle className="text-foreground">Unblock Affiliate</DialogTitle>
+            <DialogDescription className="text-muted-foreground">
               Are you sure you want to unblock this affiliate? They will regain access to the platform.
             </DialogDescription>
           </DialogHeader>
@@ -247,23 +247,26 @@ const BlockedAffiliates = () => {
               <div className="flex flex-col space-y-4">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Affiliate ID</p>
-                    <p>{selectedAffiliate.id}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Affiliate ID</p>
+                    <p className="text-foreground">{selectedAffiliate.id}</p>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-400">Name</p>
-                    <p>{selectedAffiliate.name}</p>
+                    <p className="text-sm font-medium text-muted-foreground">Name</p>
+                    <p className="text-foreground">{selectedAffiliate.name}</p>
                   </div>
                 </div>
                 
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Blocked Reason</p>
-                  <p className="text-sm">{selectedAffiliate.reason}</p>
+                  <p className="text-sm font-medium text-muted-foreground">Blocked Reason</p>
+                  <p className="text-sm text-foreground">{selectedAffiliate.reason}</p>
                 </div>
                 
                 <div>
-                  <p className="text-sm font-medium text-gray-400">Notes for Reinstatement</p>
-                  <Textarea placeholder="Add notes about why this affiliate is being unblocked..." />
+                  <p className="text-sm font-medium text-muted-foreground">Notes for Reinstatement</p>
+                  <Textarea 
+                    placeholder="Add notes about why this affiliate is being unblocked..." 
+                    className="bg-secondary text-foreground"
+                  />
                 </div>
               </div>
             </div>

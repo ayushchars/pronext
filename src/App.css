@@ -71,5 +71,51 @@
 
 .feature-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Admin panel specific styles */
+.admin-card {
+  background-color: hsl(var(--secondary));
+  border: 1px solid hsl(var(--border));
+}
+
+.admin-table th {
+  background-color: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+}
+
+.admin-table tr:hover {
+  background-color: hsl(var(--muted));
+}
+
+/* Dark theme enhancements */
+.dialog-content {
+  background-color: hsl(var(--card));
+  border-color: hsl(var(--border));
+}
+
+.table-container {
+  border-color: hsl(var(--border));
+}
+
+.table-header {
+  background-color: hsl(var(--secondary));
+}
+
+/* Fix for text visibility in input fields */
+input, textarea, select {
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--input));
+}
+
+/* Fix for badges in dark mode */
+.badge {
+  color: hsl(var(--primary-foreground));
+}
+
+/* Fix for background in blocked affiliates page */
+.blocked-report-card {
+  background-color: hsl(var(--background));
+  border-color: hsl(var(--border));
 }
