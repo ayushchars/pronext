@@ -28,12 +28,11 @@ const AdminLogin = () => {
     setIsLoading(true);
 
     try {
-      // In this demo we're using admin@example.com as the admin email
-      if (email !== 'admin@example.com') {
+      // Accept both admin@example.com and admin@pronetsolutions.com as valid admin emails
+      if (email !== 'admin@example.com' && email !== 'admin@pronetsolutions.com') {
         throw new Error('Invalid admin credentials');
       }
       
-      // Update: Removing the third argument as AuthContext's login only accepts 2 args
       await login(email, password);
       
       toast({
@@ -118,7 +117,7 @@ const AdminLogin = () => {
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              For demo purposes: Use <span className="font-semibold">admin@example.com</span> with any password
+              For demo purposes: Use <span className="font-semibold">admin@example.com</span> or <span className="font-semibold">admin@pronetsolutions.com</span> with any password
             </p>
           </div>
         </form>
