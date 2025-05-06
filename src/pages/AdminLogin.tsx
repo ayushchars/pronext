@@ -33,7 +33,8 @@ const AdminLogin = () => {
         throw new Error('Invalid admin credentials');
       }
       
-      await login(email, password, true); // Pass true to indicate admin login
+      // Update: Removing the third argument as AuthContext's login only accepts 2 args
+      await login(email, password);
       
       toast({
         title: 'Admin login successful',
