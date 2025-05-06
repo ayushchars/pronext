@@ -1,11 +1,14 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, ExternalLink } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Calendar, ExternalLink, Search } from 'lucide-react';
 import { format } from 'date-fns';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 // Mock data for meetings
 const upcomingMeetings = [
@@ -66,112 +69,159 @@ const formatMeetingDateTime = (dateString: string) => {
 };
 
 const Meetings = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  
+  // Filter meetings based on search term
+  const filteredUpcomingMeetings = upcomingMeetings.filter(meeting => 
+    meeting.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    meeting.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  
+  const filteredPastMeetings = pastMeetings.filter(meeting =>
+    meeting.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    meeting.id.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <h1 className="text-2xl font-bold">Meetings</h1>
+        <div className="flex justify-between items-center">
+          <h1 className="text-2xl font-bold">Meetings</h1>
+          <Button variant="outline" onClick={() => window.open('https://calendar.google.com', '_blank')}>
+            Add to Calendar
+          </Button>
+        </div>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Meetings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {upcomingMeetings.length > 0 ? (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Date & Time</TableHead>
-                      <TableHead>Duration</TableHead>
-                      <TableHead>Type</TableHead>
-                      <TableHead>Join</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {upcomingMeetings.map((meeting) => (
-                      <TableRow key={meeting.id}>
-                        <TableCell className="font-medium">{meeting.title}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                            {formatMeetingDateTime(meeting.date)}
-                          </div>
-                        </TableCell>
-                        <TableCell>{meeting.duration} min</TableCell>
-                        <TableCell>
-                          <Badge variant={meeting.type === 'webinar' ? 'secondary' : 'outline'}>
-                            {meeting.type}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>
-                          <a 
-                            href={meeting.link} 
-                            target="_blank" 
-                            rel="noopener noreferrer"
-                            className="flex items-center text-primary hover:underline"
-                          >
-                            <ExternalLink className="h-4 w-4 mr-1" />
-                            Join
-                          </a>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            ) : (
-              <div className="text-center py-10 text-muted-foreground">
-                No upcoming meetings scheduled
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <div className="flex justify-between items-center mb-4">
+          <div className="w-full md:w-1/2 relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search meetings..."
+              className="pl-8 bg-secondary text-foreground"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+        </div>
         
-        <Card>
-          <CardHeader>
-            <CardTitle>Past Meetings</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {pastMeetings.length > 0 ? (
-              <div className="rounded-md border">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Date & Time</TableHead>
-                      <TableHead>Duration</TableHead>
-                      <TableHead>Type</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {pastMeetings.map((meeting) => (
-                      <TableRow key={meeting.id}>
-                        <TableCell className="font-medium">{meeting.title}</TableCell>
-                        <TableCell>
-                          <div className="flex items-center">
-                            <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
-                            {formatMeetingDateTime(meeting.date)}
-                          </div>
-                        </TableCell>
-                        <TableCell>{meeting.duration} min</TableCell>
-                        <TableCell>
-                          <Badge variant="outline">
-                            {meeting.type}
-                          </Badge>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </div>
-            ) : (
-              <div className="text-center py-10 text-muted-foreground">
-                No past meetings found
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <Tabs defaultValue="upcoming" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-6">
+            <TabsTrigger value="upcoming">Upcoming</TabsTrigger>
+            <TabsTrigger value="past">Past Meetings</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="upcoming">
+            <Card>
+              <CardHeader>
+                <CardTitle>Upcoming Meetings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {filteredUpcomingMeetings.length > 0 ? (
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Title</TableHead>
+                          <TableHead>Date & Time</TableHead>
+                          <TableHead>Duration</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Join</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredUpcomingMeetings.map((meeting) => (
+                          <TableRow key={meeting.id}>
+                            <TableCell className="font-medium">{meeting.title}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                                {formatMeetingDateTime(meeting.date)}
+                              </div>
+                            </TableCell>
+                            <TableCell>{meeting.duration} min</TableCell>
+                            <TableCell>
+                              <Badge variant={meeting.type === 'webinar' ? 'secondary' : 'outline'}>
+                                {meeting.type}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <a 
+                                href={meeting.link} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="flex items-center text-primary hover:underline"
+                              >
+                                <ExternalLink className="h-4 w-4 mr-1" />
+                                Join
+                              </a>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div className="text-center py-10 text-muted-foreground">
+                    No upcoming meetings found matching your search
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+          
+          <TabsContent value="past">
+            <Card>
+              <CardHeader>
+                <CardTitle>Past Meetings</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {filteredPastMeetings.length > 0 ? (
+                  <div className="rounded-md border">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Title</TableHead>
+                          <TableHead>Date & Time</TableHead>
+                          <TableHead>Duration</TableHead>
+                          <TableHead>Type</TableHead>
+                          <TableHead>Recording</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredPastMeetings.map((meeting) => (
+                          <TableRow key={meeting.id}>
+                            <TableCell className="font-medium">{meeting.title}</TableCell>
+                            <TableCell>
+                              <div className="flex items-center">
+                                <Calendar className="h-4 w-4 mr-2 text-muted-foreground" />
+                                {formatMeetingDateTime(meeting.date)}
+                              </div>
+                            </TableCell>
+                            <TableCell>{meeting.duration} min</TableCell>
+                            <TableCell>
+                              <Badge variant="outline">
+                                {meeting.type}
+                              </Badge>
+                            </TableCell>
+                            <TableCell>
+                              <Button variant="outline" size="sm">
+                                View Recording
+                              </Button>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                ) : (
+                  <div className="text-center py-10 text-muted-foreground">
+                    No past meetings found matching your search
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </DashboardLayout>
   );

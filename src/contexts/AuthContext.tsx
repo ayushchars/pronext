@@ -1,3 +1,4 @@
+
 import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 // Roles available in the application
@@ -43,9 +44,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     // In a real app, this would validate credentials against an API
     const mockUser: User = {
       id: '1',
-      name: email === 'admin@example.com' ? 'Admin User' : 'Affiliate User',
+      name: email.includes('admin') ? 'Admin User' : 'Affiliate User',
       email,
-      role: email === 'admin@example.com' ? 'admin' : 'affiliate',
+      role: email.includes('admin') ? 'admin' : 'affiliate',
       avatar: 'https://ui-avatars.com/api/?name=User',
     };
     

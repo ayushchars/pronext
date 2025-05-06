@@ -49,7 +49,11 @@ const AffiliateSidebar = ({ collapsed }: AffiliateSidebarProps) => {
         <Link
           key={item.path}
           to={item.path}
-          className={`sidebar-link mb-1 ${isActive(item.path) ? 'active' : ''}`}
+          className={`flex items-center gap-3 px-3 py-2 rounded-md transition-colors hover:bg-secondary mb-1 ${
+            isActive(item.path) 
+              ? 'bg-primary text-primary-foreground' 
+              : 'text-card-foreground hover:text-card-foreground'
+          }`}
         >
           <item.icon className="h-5 w-5" />
           {!collapsed && <span>{item.label}</span>}
