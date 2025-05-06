@@ -1,13 +1,14 @@
 
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { Shield } from 'lucide-react';
 
-const Login = () => {
+const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -20,24 +21,24 @@ const Login = () => {
     setIsLoading(true);
 
     try {
+      // In this demo we're using admin@example.com as the admin email
+      if (email !== 'admin@example.com') {
+        throw new Error('Invalid admin credentials');
+      }
+      
       await login(email, password);
       
       toast({
-        title: 'Login successful',
-        description: 'Welcome back to the dashboard.',
+        title: 'Admin login successful',
+        description: 'Welcome to the admin dashboard.',
         variant: 'default',
       });
       
-      // Redirect based on login credentials
-      if (email === 'admin@example.com') {
-        navigate('/admin');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/admin');
     } catch (error) {
       toast({
         title: 'Login failed',
-        description: 'Please check your credentials and try again.',
+        description: 'Invalid admin credentials. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -50,31 +51,29 @@ const Login = () => {
       <div className="max-w-md w-full p-8 bg-card text-card-foreground rounded-lg shadow-lg">
         <div className="text-center mb-8">
           <div className="flex justify-center mb-3">
-            <img 
-              src="/lovable-uploads/1dc005c5-1f18-4598-92dc-030b0afec31f.png" 
-              alt="Pro Net Solutions Logo" 
-              className="h-16"
-            />
+            <div className="h-16 w-16 rounded-full bg-primary/20 flex items-center justify-center">
+              <Shield className="h-8 w-8 text-primary" />
+            </div>
           </div>
           <h1 className="text-2xl font-bold text-card-foreground">
-            Pro Net Solutions
+            Admin Panel Access
           </h1>
           <p className="text-muted-foreground mt-2">
-            Login to your affiliate dashboard
+            Enter your credentials to access the admin dashboard
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">Admin Email</Label>
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="admin@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full"
+              className="w-full bg-secondary border-input"
             />
           </div>
 
@@ -95,33 +94,24 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full"
+              className="w-full bg-secondary border-input"
             />
           </div>
 
           <div>
             <Button
               type="submit"
-              className="w-full btn-primary"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
               disabled={isLoading}
             >
-              {isLoading ? "Logging in..." : "Login"}
+              {isLoading ? "Verifying..." : "Admin Login"}
             </Button>
           </div>
 
           <div className="text-center text-sm text-muted-foreground">
             <p>
-              For demo purposes: Use <span className="font-semibold">admin@example.com</span> or <span className="font-semibold">affiliate@example.com</span> with any password
+              For demo purposes: Use <span className="font-semibold">admin@example.com</span> with any password
             </p>
-          </div>
-          
-          <div className="text-center mt-4 pt-4 border-t border-border">
-            <p className="text-sm text-muted-foreground mb-2">Are you an administrator?</p>
-            <Link to="/admin-login">
-              <Button variant="outline" size="sm" className="w-full">
-                Go to Admin Login
-              </Button>
-            </Link>
           </div>
         </form>
       </div>
@@ -129,4 +119,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

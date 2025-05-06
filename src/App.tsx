@@ -9,6 +9,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 // Pages
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import AdminLogin from "./pages/AdminLogin";
 import SignUp from "./pages/SignUp";
 import AffiliateDashboard from "./pages/AffiliateDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -21,7 +22,6 @@ import Announcements from "./pages/Announcements";
 import Support from "./pages/Support";
 import ProfileSettings from "./pages/ProfileSettings";
 import Subscriptions from "./pages/Subscriptions";
-import Meetings from "./pages/Meetings";
 import Downloads from "./pages/Downloads";
 import Payouts from "./pages/Payouts";
 import Invoices from "./pages/Invoices";
@@ -57,6 +57,7 @@ import AdminDownloads from "./pages/admin/AdminDownloads";
 import BlockedAffiliates from "./pages/admin/BlockedAffiliates";
 import AffiliateTree from "./pages/admin/AffiliateTree";
 import AdminWallets from "./pages/admin/AdminWallets";
+import AdminMeetings from "./pages/admin/AdminMeetings";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +71,7 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/dashboard" element={<AffiliateDashboard />} />
             <Route path="/admin" element={<AdminDashboard />} />
@@ -81,7 +83,6 @@ const App = () => (
             <Route path="/support" element={<Support />} />
             <Route path="/profile/settings" element={<ProfileSettings />} />
             <Route path="/subscriptions" element={<Subscriptions />} />
-            <Route path="/meetings" element={<Meetings />} />
             <Route path="/downloads" element={<Downloads />} />
             <Route path="/payouts" element={<Payouts />} />
             <Route path="/invoices" element={<Invoices />} />
@@ -117,6 +118,7 @@ const App = () => (
             <Route path="/admin/blocked" element={<BlockedAffiliates />} />
             <Route path="/admin/tree" element={<AffiliateTree />} />
             <Route path="/admin/wallets" element={<AdminWallets />} />
+            <Route path="/admin/meetings" element={<AdminMeetings />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

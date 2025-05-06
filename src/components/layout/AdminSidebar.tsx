@@ -23,7 +23,8 @@ import {
   MessageSquare,
   GitFork,
   Download,
-  UserX
+  UserX,
+  Calendar
 } from 'lucide-react';
 
 interface AdminSidebarProps {
@@ -63,6 +64,7 @@ const AdminSidebar = ({ collapsed }: AdminSidebarProps) => {
     { icon: Bell, label: 'Announcements', path: '/admin/announcements' },
     { icon: Download, label: 'Download Center', path: '/admin/downloads' },
     { icon: MessageSquare, label: 'Support', path: '/admin/support' },
+    { icon: Calendar, label: 'Meetings', path: '/admin/meetings' },
   ];
 
   const systemItems = [
