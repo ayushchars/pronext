@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -59,6 +58,10 @@ import BlockedAffiliates from "./pages/admin/BlockedAffiliates";
 import AffiliateTree from "./pages/admin/AffiliateTree";
 import AdminWallets from "./pages/admin/AdminWallets";
 import AdminMeetings from "./pages/admin/AdminMeetings";
+
+// Adding the new Admin Pages
+import AdminPermissions from "./pages/admin/AdminPermissions";
+import AdminSettings from "./pages/admin/AdminSettings";
 
 const queryClient = new QueryClient();
 
@@ -121,8 +124,8 @@ const App = () => (
             <Route path="/admin/tree" element={<AffiliateTree />} />
             <Route path="/admin/wallets" element={<AdminWallets />} />
             <Route path="/admin/meetings" element={<AdminMeetings />} />
-            <Route path="/admin/settings" element={<AdminDashboard />} /> {/* Placeholder for settings page */}
-            <Route path="/admin/permissions" element={<AdminDashboard />} /> {/* Placeholder for permissions page */}
+            <Route path="/admin/settings" element={<AdminSettings />} /> {/* Updated from placeholder */}
+            <Route path="/admin/permissions" element={<AdminPermissions />} /> {/* Updated from placeholder */}
             
             <Route path="*" element={<NotFound />} />
           </Routes>

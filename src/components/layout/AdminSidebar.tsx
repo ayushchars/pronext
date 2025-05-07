@@ -62,13 +62,13 @@ const AdminSidebar = ({ collapsed }: AdminSidebarProps) => {
   const contentItems = [
     { icon: Bell, label: 'Announcements', path: '/admin/announcements' },
     { icon: Download, label: 'Download Center', path: '/admin/downloads' },
-    { icon: MessageSquare, label: 'Support', path: '/admin/support' },
+    { icon: MessageSquare, label: 'Support Tickets', path: '/admin/support' }, // Updated to correct path
     { icon: Calendar, label: 'Meetings', path: '/admin/meetings' },
   ];
 
   const systemItems = [
-    { icon: Shield, label: 'Permissions', path: '/admin/permissions' },
-    { icon: Settings, label: 'Settings', path: '/admin/settings' },
+    { icon: Shield, label: 'Permissions', path: '/admin/permissions' }, // Now linked to working page
+    { icon: Settings, label: 'Settings', path: '/admin/settings' }, // Now linked to working page
   ];
 
   // Helper function to render a group of menu items
