@@ -23,34 +23,71 @@ import OrganizationTree from '@/components/hierarchy/OrganizationTree';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import AffiliateProfile, { AffiliateData } from '@/components/affiliate/AffiliateProfile';
 
+// Mock data for affiliates
+const mockAffiliates = [
+  { id: 'node-1', name: 'John Doe', role: 'Root Affiliate', level: 'Gold' },
+  { id: 'node-2', name: 'Alice Smith', role: 'Gold Affiliate', level: 'Gold' },
+  { id: 'node-3', name: 'Bob Johnson', role: 'Silver Affiliate', level: 'Silver' },
+  { id: 'node-4', name: 'Carol Williams', role: 'Gold Affiliate', level: 'Gold' },
+  { id: 'node-5', name: 'Dave Brown', role: 'Bronze Affiliate', level: 'Bronze' },
+  { id: 'node-6', name: 'Eve Davis', role: 'Bronze Affiliate', level: 'Bronze' },
+  { id: 'node-7', name: 'Frank Miller', role: 'Bronze Affiliate', level: 'Bronze' },
+  { id: 'node-8', name: 'Grace Wilson', role: 'Silver Affiliate', level: 'Silver' },
+  { id: 'node-9', name: 'Henry Moore', role: 'Bronze Affiliate', level: 'Bronze' },
+];
+
 const HierarchyTree = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
   const [searchedNodes, setSearchedNodes] = useState<string[]>([]);
   const [selectedAffiliate, setSelectedAffiliate] = useState<AffiliateData | null>(null);
+  const [searchResults, setSearchResults] = useState<typeof mockAffiliates>([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
   
-  // This is a placeholder for the actual search functionality
-  // In a real app, you would search through the actual tree data
+  // Handle search functionality
   useEffect(() => {
     if (searchQuery.trim() === '') {
+      setSearchResults([]);
       setSearchedNodes([]);
+      setShowSearchResults(false);
       return;
     }
     
-    // Simulate searching through tree nodes
-    // This would be replaced with actual tree node filtering logic
-    setTimeout(() => {
-      console.log(`Searching for: ${searchQuery} with filter: ${filter}`);
-      
-      // Example: highlight matching nodes in the tree
-      // This is just a placeholder - in real implementation
-      // you would update the tree component with the search results
-      const mockMatchingNodeIds = ['node-1', 'node-5', 'node-12'].filter(
-        id => Math.random() > 0.5
+    // Perform search based on filter and query
+    const filterAffiliates = () => {
+      const query = searchQuery.toLowerCase();
+      let filtered = mockAffiliates.filter(
+        affiliate => affiliate.name.toLowerCase().includes(query)
       );
       
-      setSearchedNodes(mockMatchingNodeIds);
-    }, 300);
+      // Apply additional filtering if needed
+      if (filter !== 'all') {
+        filtered = filtered.filter(affiliate => {
+          switch (filter) {
+            case 'active':
+              return true; // In a real app, check if active
+            case 'inactive':
+              return false; // In a real app, check if inactive
+            case 'direct':
+              return affiliate.id === 'node-2' || affiliate.id === 'node-3' || affiliate.id === 'node-4'; // Mock direct referrals
+            case 'recent':
+              return affiliate.id === 'node-8' || affiliate.id === 'node-9'; // Mock recent affiliates
+            default:
+              return true;
+          }
+        });
+      }
+      
+      setSearchResults(filtered);
+      setShowSearchResults(filtered.length > 0);
+      
+      // Extract node IDs for highlighting in the tree
+      const nodeIds = filtered.map(a => a.id);
+      setSearchedNodes(nodeIds);
+    };
+    
+    const timeoutId = setTimeout(filterAffiliates, 300);
+    return () => clearTimeout(timeoutId);
   }, [searchQuery, filter]);
   
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,27 +96,36 @@ const HierarchyTree = () => {
 
   // Mock function to show the affiliate profile when a node is clicked
   const handleNodeClick = (affiliateId: string) => {
+    // Find the affiliate from our mock data
+    const affiliate = mockAffiliates.find(a => a.id === affiliateId);
+    
+    if (!affiliate) return;
+    
     // In a real app, you would fetch the affiliate data from your API
-    // For now, we'll use mock data
     const mockAffiliate: AffiliateData = {
       id: affiliateId,
-      name: `Jane Smith (${affiliateId})`,
-      email: 'janesmith@example.com',
+      name: affiliate.name,
+      email: `${affiliate.name.toLowerCase().replace(' ', '.')}@example.com`,
       phone: '+1987654321',
       address: '456 Oak St, Town, Country',
       joinDate: '2023-03-10',
       status: 'active',
-      level: 'Silver',
-      teamSize: 12,
-      directReferrals: 3,
+      level: affiliate.level,
+      teamSize: Math.floor(Math.random() * 20) + 1,
+      directReferrals: Math.floor(Math.random() * 5) + 1,
       earnings: {
-        total: 2450,
-        monthly: 320,
-        pending: 80
+        total: Math.floor(Math.random() * 5000) + 500,
+        monthly: Math.floor(Math.random() * 500) + 100,
+        pending: Math.floor(Math.random() * 200)
       }
     };
     
     setSelectedAffiliate(mockAffiliate);
+  };
+  
+  const handleSearchResultClick = (affiliateId: string) => {
+    handleNodeClick(affiliateId);
+    setShowSearchResults(false);
   };
 
   useEffect(() => {
@@ -120,7 +166,7 @@ const HierarchyTree = () => {
         </div>
 
         <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-grow flex items-center">
+          <div className="flex-grow flex items-center relative">
             <Search className="mr-2 h-4 w-4 text-muted-foreground" />
             <Input 
               placeholder="Search affiliates..." 
@@ -128,6 +174,23 @@ const HierarchyTree = () => {
               value={searchQuery}
               onChange={handleSearchChange}
             />
+            
+            {showSearchResults && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-gray-800 shadow-lg rounded-md z-10 max-h-60 overflow-y-auto">
+                <ul className="py-1">
+                  {searchResults.map((affiliate) => (
+                    <li 
+                      key={affiliate.id} 
+                      className="px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
+                      onClick={() => handleSearchResultClick(affiliate.id)}
+                    >
+                      <div className="font-medium">{affiliate.name}</div>
+                      <div className="text-xs text-gray-500">{affiliate.role}</div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
           <div className="flex gap-2 items-center">
             <Filter className="h-4 w-4 text-muted-foreground" />
@@ -146,9 +209,9 @@ const HierarchyTree = () => {
           </div>
         </div>
 
-        {searchQuery && searchedNodes.length > 0 && (
+        {searchQuery && searchResults.length > 0 && (
           <div className="text-sm text-muted-foreground">
-            Found {searchedNodes.length} matches for "{searchQuery}"
+            Found {searchResults.length} matches for "{searchQuery}"
           </div>
         )}
 
@@ -198,12 +261,14 @@ const HierarchyTree = () => {
             </CardTitle>
             <CardDescription>
               Visual representation of your team structure
-              {searchQuery && <span className="ml-2 text-primary">(Filtered by search: {searchQuery})</span>}
+              {searchQuery && searchedNodes.length > 0 && (
+                <span className="ml-2 text-primary">(Filtered by search: {searchQuery})</span>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="p-0 overflow-auto">
             <div className="relative min-h-[600px] overflow-x-auto">
-              <OrganizationTree />
+              <OrganizationTree highlightNodes={searchedNodes} />
             </div>
           </CardContent>
         </Card>
@@ -215,7 +280,7 @@ const HierarchyTree = () => {
               <AffiliateProfile 
                 affiliate={selectedAffiliate}
                 onClose={() => setSelectedAffiliate(null)}
-                isAdmin={false}
+                isAdmin={true}
               />
             )}
           </DialogContent>

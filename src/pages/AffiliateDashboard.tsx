@@ -1,12 +1,16 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import StatCard from '@/components/dashboard/StatCard';
 import ChartCard from '@/components/dashboard/ChartCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Users, DollarSign, TrendingUp, Award, Wallet } from 'lucide-react';
+import { 
+  Users, DollarSign, TrendingUp, Award, Wallet, 
+  UserCheck, AlertCircle, FileCheck, UploadCloud
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { Badge } from '@/components/ui/badge';
 
 const AffiliateDashboard = () => {
   // Mock data
@@ -29,6 +33,59 @@ const AffiliateDashboard = () => {
     { name: 'Jun', count: 25 },
     { name: 'Jul', count: 30 },
   ];
+
+  // KYC status - in a real app this would come from API
+  const [kycStatus, setKycStatus] = useState('pending');
+
+  const renderKYCStatus = () => {
+    switch (kycStatus) {
+      case 'verified':
+        return (
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 p-3 rounded-full mb-3">
+              <UserCheck className="h-8 w-8" />
+            </div>
+            <h3 className="font-medium text-lg text-center">KYC Verified</h3>
+            <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 mt-2">Verified</Badge>
+            <p className="text-sm text-gray-500 mt-2 text-center">Your identity has been verified. You have full access to all platform features.</p>
+          </div>
+        );
+      case 'rejected':
+        return (
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 p-3 rounded-full mb-3">
+              <AlertCircle className="h-8 w-8" />
+            </div>
+            <h3 className="font-medium text-lg text-center">KYC Rejected</h3>
+            <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 mt-2">Rejected</Badge>
+            <p className="text-sm text-gray-500 mt-2 text-center">Your verification was declined. Please review the feedback and submit again.</p>
+            <Button className="mt-4">Resubmit Documents</Button>
+          </div>
+        );
+      case 'pending':
+        return (
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300 p-3 rounded-full mb-3">
+              <FileCheck className="h-8 w-8" />
+            </div>
+            <h3 className="font-medium text-lg text-center">KYC In Review</h3>
+            <Badge variant="outline" className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300 mt-2">Pending</Badge>
+            <p className="text-sm text-gray-500 mt-2 text-center">Your documents are being reviewed. This usually takes 24-48 hours.</p>
+          </div>
+        );
+      default:
+        return (
+          <div className="flex flex-col items-center justify-center">
+            <div className="bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300 p-3 rounded-full mb-3">
+              <UploadCloud className="h-8 w-8" />
+            </div>
+            <h3 className="font-medium text-lg text-center">Submit KYC Documents</h3>
+            <p className="text-sm text-gray-500 mt-2 text-center">Please upload your identity documents to verify your account.</p>
+            <Button className="mt-4">Upload Documents</Button>
+          </div>
+        );
+    }
+  };
 
   return (
     <DashboardLayout>
@@ -127,29 +184,11 @@ const AffiliateDashboard = () => {
           
           <Card className="col-span-1">
             <CardHeader>
-              <CardTitle className="text-base font-medium">Next Achievements</CardTitle>
+              <CardTitle className="text-base font-medium">KYC Verification</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                {[
-                  { name: 'Gold Level', progress: 70, remaining: '2 more direct referrals' },
-                  { name: 'Car Fund', progress: 45, remaining: '$5,000 more in team volume' },
-                  { name: 'Travel Bonus', progress: 20, remaining: '10 more team members' },
-                ].map((achievement, index) => (
-                  <div key={index} className="space-y-1">
-                    <div className="flex justify-between text-sm">
-                      <span>{achievement.name}</span>
-                      <span>{achievement.progress}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-primary h-2 rounded-full" 
-                        style={{ width: `${achievement.progress}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-xs text-gray-500">{achievement.remaining}</p>
-                  </div>
-                ))}
+              <div className="flex flex-col items-center justify-center py-4">
+                {renderKYCStatus()}
               </div>
             </CardContent>
           </Card>

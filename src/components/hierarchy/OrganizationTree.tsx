@@ -4,7 +4,11 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { User } from 'lucide-react';
 
-const OrganizationTree = () => {
+interface OrganizationTreeProps {
+  highlightNodes?: string[];
+}
+
+const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
   // This is a simplified version of an organizational tree component
   // In a real app, this would receive data to render a dynamic tree
   
@@ -12,7 +16,14 @@ const OrganizationTree = () => {
     <div className="flex flex-col items-center min-w-[800px] p-4">
       {/* Root Node */}
       <div className="pb-10 relative">
-        <NodeCard id="node-1" name="John Doe" role="Root Affiliate" statusColor="green" isRoot={true} />
+        <NodeCard 
+          id="node-1" 
+          name="John Doe" 
+          role="Root Affiliate" 
+          statusColor="green" 
+          isRoot={true} 
+          isHighlighted={highlightNodes.includes('node-1')} 
+        />
         
         <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
       </div>
@@ -20,15 +31,33 @@ const OrganizationTree = () => {
       {/* Level 1 */}
       <div className="flex justify-center gap-10 pb-10">
         <div className="relative">
-          <NodeCard id="node-2" name="Alice Smith" role="Gold Affiliate" statusColor="amber" />
+          <NodeCard 
+            id="node-2" 
+            name="Alice Smith" 
+            role="Gold Affiliate" 
+            statusColor="amber" 
+            isHighlighted={highlightNodes.includes('node-2')} 
+          />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
         <div className="relative">
-          <NodeCard id="node-3" name="Bob Johnson" role="Silver Affiliate" statusColor="blue" />
+          <NodeCard 
+            id="node-3" 
+            name="Bob Johnson" 
+            role="Silver Affiliate" 
+            statusColor="blue" 
+            isHighlighted={highlightNodes.includes('node-3')} 
+          />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
         <div className="relative">
-          <NodeCard id="node-4" name="Carol Williams" role="Gold Affiliate" statusColor="amber" />
+          <NodeCard 
+            id="node-4" 
+            name="Carol Williams" 
+            role="Gold Affiliate" 
+            statusColor="amber" 
+            isHighlighted={highlightNodes.includes('node-4')} 
+          />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
       </div>
@@ -36,19 +65,49 @@ const OrganizationTree = () => {
       {/* Level 2 - Under Alice */}
       <div className="flex justify-center gap-6 pb-10">
         <div className="flex gap-4">
-          <NodeCard id="node-5" name="Dave Brown" role="Bronze Affiliate" statusColor="orange" />
-          <NodeCard id="node-6" name="Eve Davis" role="Bronze Affiliate" statusColor="orange" />
+          <NodeCard 
+            id="node-5" 
+            name="Dave Brown" 
+            role="Bronze Affiliate" 
+            statusColor="orange" 
+            isHighlighted={highlightNodes.includes('node-5')} 
+          />
+          <NodeCard 
+            id="node-6" 
+            name="Eve Davis" 
+            role="Bronze Affiliate" 
+            statusColor="orange" 
+            isHighlighted={highlightNodes.includes('node-6')} 
+          />
         </div>
         
         {/* Level 2 - Under Bob */}
         <div className="flex gap-4">
-          <NodeCard id="node-7" name="Frank Miller" role="Bronze Affiliate" statusColor="orange" />
+          <NodeCard 
+            id="node-7" 
+            name="Frank Miller" 
+            role="Bronze Affiliate" 
+            statusColor="orange" 
+            isHighlighted={highlightNodes.includes('node-7')} 
+          />
         </div>
         
         {/* Level 2 - Under Carol */}
         <div className="flex gap-4">
-          <NodeCard id="node-8" name="Grace Wilson" role="Silver Affiliate" statusColor="blue" />
-          <NodeCard id="node-9" name="Henry Moore" role="Bronze Affiliate" statusColor="orange" />
+          <NodeCard 
+            id="node-8" 
+            name="Grace Wilson" 
+            role="Silver Affiliate" 
+            statusColor="blue" 
+            isHighlighted={highlightNodes.includes('node-8')} 
+          />
+          <NodeCard 
+            id="node-9" 
+            name="Henry Moore" 
+            role="Bronze Affiliate" 
+            statusColor="orange" 
+            isHighlighted={highlightNodes.includes('node-9')} 
+          />
         </div>
       </div>
 
@@ -63,9 +122,10 @@ interface NodeCardProps {
   role: string;
   statusColor: string;
   isRoot?: boolean;
+  isHighlighted?: boolean;
 }
 
-const NodeCard = ({ id, name, role, statusColor, isRoot = false }: NodeCardProps) => {
+const NodeCard = ({ id, name, role, statusColor, isRoot = false, isHighlighted = false }: NodeCardProps) => {
   // Customize the status color based on role
   const getBadgeColor = () => {
     switch (statusColor) {
@@ -78,7 +138,14 @@ const NodeCard = ({ id, name, role, statusColor, isRoot = false }: NodeCardProps
   };
 
   return (
-    <Card className={`w-40 cursor-pointer hover:shadow-md transition-shadow ${isRoot ? 'border-primary' : ''} affiliate-node`} data-id={id}>
+    <Card 
+      className={`w-40 cursor-pointer hover:shadow-md transition-shadow ${
+        isRoot ? 'border-primary' : ''
+      } ${
+        isHighlighted ? 'ring-2 ring-primary ring-offset-2' : ''
+      } affiliate-node`} 
+      data-id={id}
+    >
       <CardContent className="p-3 flex flex-col items-center text-center">
         <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">
           <User className="w-6 h-6 text-gray-500" />
