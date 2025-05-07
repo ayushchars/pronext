@@ -6,11 +6,18 @@ import { User } from 'lucide-react';
 
 interface OrganizationTreeProps {
   highlightNodes?: string[];
+  onNodeClick?: (nodeId: string) => void;
 }
 
-const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
+const OrganizationTree = ({ highlightNodes = [], onNodeClick }: OrganizationTreeProps) => {
   // This is a simplified version of an organizational tree component
   // In a real app, this would receive data to render a dynamic tree
+  
+  const handleNodeClick = (id: string) => {
+    if (onNodeClick) {
+      onNodeClick(id);
+    }
+  };
   
   return (
     <div className="flex flex-col items-center min-w-[800px] p-4">
@@ -23,6 +30,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
           statusColor="green" 
           isRoot={true} 
           isHighlighted={highlightNodes.includes('node-1')} 
+          onClick={() => handleNodeClick('node-1')}
         />
         
         <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
@@ -37,6 +45,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Gold Affiliate" 
             statusColor="amber" 
             isHighlighted={highlightNodes.includes('node-2')} 
+            onClick={() => handleNodeClick('node-2')}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
@@ -47,6 +56,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Silver Affiliate" 
             statusColor="blue" 
             isHighlighted={highlightNodes.includes('node-3')} 
+            onClick={() => handleNodeClick('node-3')}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
@@ -57,6 +67,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Gold Affiliate" 
             statusColor="amber" 
             isHighlighted={highlightNodes.includes('node-4')} 
+            onClick={() => handleNodeClick('node-4')}
           />
           <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
@@ -71,6 +82,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Bronze Affiliate" 
             statusColor="orange" 
             isHighlighted={highlightNodes.includes('node-5')} 
+            onClick={() => handleNodeClick('node-5')}
           />
           <NodeCard 
             id="node-6" 
@@ -78,6 +90,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Bronze Affiliate" 
             statusColor="orange" 
             isHighlighted={highlightNodes.includes('node-6')} 
+            onClick={() => handleNodeClick('node-6')}
           />
         </div>
         
@@ -89,6 +102,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Bronze Affiliate" 
             statusColor="orange" 
             isHighlighted={highlightNodes.includes('node-7')} 
+            onClick={() => handleNodeClick('node-7')}
           />
         </div>
         
@@ -100,6 +114,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Silver Affiliate" 
             statusColor="blue" 
             isHighlighted={highlightNodes.includes('node-8')} 
+            onClick={() => handleNodeClick('node-8')}
           />
           <NodeCard 
             id="node-9" 
@@ -107,6 +122,7 @@ const OrganizationTree = ({ highlightNodes = [] }: OrganizationTreeProps) => {
             role="Bronze Affiliate" 
             statusColor="orange" 
             isHighlighted={highlightNodes.includes('node-9')} 
+            onClick={() => handleNodeClick('node-9')}
           />
         </div>
       </div>
@@ -123,9 +139,10 @@ interface NodeCardProps {
   statusColor: string;
   isRoot?: boolean;
   isHighlighted?: boolean;
+  onClick?: () => void;
 }
 
-const NodeCard = ({ id, name, role, statusColor, isRoot = false, isHighlighted = false }: NodeCardProps) => {
+const NodeCard = ({ id, name, role, statusColor, isRoot = false, isHighlighted = false, onClick }: NodeCardProps) => {
   // Customize the status color based on role
   const getBadgeColor = () => {
     switch (statusColor) {
@@ -145,6 +162,7 @@ const NodeCard = ({ id, name, role, statusColor, isRoot = false, isHighlighted =
         isHighlighted ? 'ring-2 ring-primary ring-offset-2' : ''
       } affiliate-node`} 
       data-id={id}
+      onClick={onClick}
     >
       <CardContent className="p-3 flex flex-col items-center text-center">
         <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">

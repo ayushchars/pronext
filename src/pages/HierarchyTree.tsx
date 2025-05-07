@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { 
   GitBranch, 
@@ -94,7 +93,7 @@ const HierarchyTree = () => {
     setSearchQuery(e.target.value);
   };
 
-  // Mock function to show the affiliate profile when a node is clicked
+  // Function to show the affiliate profile when a node is clicked
   const handleNodeClick = (affiliateId: string) => {
     // Find the affiliate from our mock data
     const affiliate = mockAffiliates.find(a => a.id === affiliateId);
@@ -117,7 +116,8 @@ const HierarchyTree = () => {
         total: Math.floor(Math.random() * 5000) + 500,
         monthly: Math.floor(Math.random() * 500) + 100,
         pending: Math.floor(Math.random() * 200)
-      }
+      },
+      kyc: Math.random() > 0.6 ? 'verified' : (Math.random() > 0.5 ? 'pending' : 'rejected') // Randomly assign KYC status for demo
     };
     
     setSelectedAffiliate(mockAffiliate);
@@ -129,28 +129,9 @@ const HierarchyTree = () => {
   };
 
   useEffect(() => {
-    // Add event listeners to tree nodes for demo purposes
-    const setupTreeNodeListeners = () => {
-      setTimeout(() => {
-        const treeNodes = document.querySelectorAll('.affiliate-node');
-        
-        treeNodes.forEach((node) => {
-          node.addEventListener('click', (e) => {
-            const nodeId = (e.currentTarget as HTMLElement).dataset.id || 'node-1';
-            handleNodeClick(nodeId);
-          });
-        });
-      }, 500); // Give time for the tree to render
-    };
-
-    setupTreeNodeListeners();
-    
-    return () => {
-      const treeNodes = document.querySelectorAll('.affiliate-node');
-      treeNodes.forEach((node) => {
-        node.removeEventListener('click', () => {});
-      });
-    };
+    // We now handle clicks directly through props in OrganizationTree
+    // This useEffect is no longer needed for setting up click listeners
+    return () => {};
   }, []);
   
   return (
@@ -268,7 +249,10 @@ const HierarchyTree = () => {
           </CardHeader>
           <CardContent className="p-0 overflow-auto">
             <div className="relative min-h-[600px] overflow-x-auto">
-              <OrganizationTree highlightNodes={searchedNodes} />
+              <OrganizationTree 
+                highlightNodes={searchedNodes} 
+                onNodeClick={handleNodeClick}
+              />
             </div>
           </CardContent>
         </Card>

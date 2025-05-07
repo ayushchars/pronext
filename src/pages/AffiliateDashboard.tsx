@@ -48,6 +48,9 @@ const AffiliateDashboard = () => {
             <h3 className="font-medium text-lg text-center">KYC Verified</h3>
             <Badge variant="outline" className="bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 mt-2">Verified</Badge>
             <p className="text-sm text-gray-500 mt-2 text-center">Your identity has been verified. You have full access to all platform features.</p>
+            <Link to="/kyc-verification">
+              <Button variant="outline" className="mt-4">View Details</Button>
+            </Link>
           </div>
         );
       case 'rejected':
@@ -59,7 +62,9 @@ const AffiliateDashboard = () => {
             <h3 className="font-medium text-lg text-center">KYC Rejected</h3>
             <Badge variant="outline" className="bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300 mt-2">Rejected</Badge>
             <p className="text-sm text-gray-500 mt-2 text-center">Your verification was declined. Please review the feedback and submit again.</p>
-            <Button className="mt-4">Resubmit Documents</Button>
+            <Link to="/kyc-verification">
+              <Button className="mt-4">Resubmit Documents</Button>
+            </Link>
           </div>
         );
       case 'pending':
@@ -71,6 +76,9 @@ const AffiliateDashboard = () => {
             <h3 className="font-medium text-lg text-center">KYC In Review</h3>
             <Badge variant="outline" className="bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-300 mt-2">Pending</Badge>
             <p className="text-sm text-gray-500 mt-2 text-center">Your documents are being reviewed. This usually takes 24-48 hours.</p>
+            <Link to="/kyc-verification">
+              <Button variant="outline" className="mt-4">Check Status</Button>
+            </Link>
           </div>
         );
       default:
@@ -81,7 +89,9 @@ const AffiliateDashboard = () => {
             </div>
             <h3 className="font-medium text-lg text-center">Submit KYC Documents</h3>
             <p className="text-sm text-gray-500 mt-2 text-center">Please upload your identity documents to verify your account.</p>
-            <Button className="mt-4">Upload Documents</Button>
+            <Link to="/kyc-verification">
+              <Button className="mt-4">Upload Documents</Button>
+            </Link>
           </div>
         );
     }

@@ -16,7 +16,8 @@ import {
   CreditCard,
   Video,
   FileText,
-  Share2
+  Share2,
+  ShieldCheck
 } from 'lucide-react';
 
 interface AffiliateSidebarProps {
@@ -38,6 +39,7 @@ const AffiliateSidebar = ({ collapsed }: AffiliateSidebarProps) => {
     { icon: DollarSign, label: 'My Payouts', path: '/payouts' },
     { icon: Share2, label: 'My Referrals', path: '/referral' },
     { icon: Video, label: 'Meetings', path: '/meetings' },
+    { icon: ShieldCheck, label: 'KYC Verification', path: '/kyc-verification' },
     { icon: LifeBuoy, label: 'Support', path: '/support' },
     { icon: CreditCard, label: 'Subscriptions', path: '/subscriptions' },
     { icon: Settings, label: 'Profile Settings', path: '/profile/settings' },
