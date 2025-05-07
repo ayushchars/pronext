@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { 
   GitBranch, 
@@ -19,11 +20,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import OrganizationTree from '@/components/hierarchy/OrganizationTree';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import AffiliateProfile, { AffiliateData } from '@/components/affiliate/AffiliateProfile';
 
 const HierarchyTree = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filter, setFilter] = useState('all');
   const [searchedNodes, setSearchedNodes] = useState<string[]>([]);
+  const [selectedAffiliate, setSelectedAffiliate] = useState<AffiliateData | null>(null);
   
   // This is a placeholder for the actual search functionality
   // In a real app, you would search through the actual tree data
@@ -52,6 +56,56 @@ const HierarchyTree = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
+
+  // Mock function to show the affiliate profile when a node is clicked
+  const handleNodeClick = (affiliateId: string) => {
+    // In a real app, you would fetch the affiliate data from your API
+    // For now, we'll use mock data
+    const mockAffiliate: AffiliateData = {
+      id: affiliateId,
+      name: `Jane Smith (${affiliateId})`,
+      email: 'janesmith@example.com',
+      phone: '+1987654321',
+      address: '456 Oak St, Town, Country',
+      joinDate: '2023-03-10',
+      status: 'active',
+      level: 'Silver',
+      teamSize: 12,
+      directReferrals: 3,
+      earnings: {
+        total: 2450,
+        monthly: 320,
+        pending: 80
+      }
+    };
+    
+    setSelectedAffiliate(mockAffiliate);
+  };
+
+  useEffect(() => {
+    // Add event listeners to tree nodes for demo purposes
+    const setupTreeNodeListeners = () => {
+      setTimeout(() => {
+        const treeNodes = document.querySelectorAll('.affiliate-node');
+        
+        treeNodes.forEach((node) => {
+          node.addEventListener('click', (e) => {
+            const nodeId = (e.currentTarget as HTMLElement).dataset.id || 'node-1';
+            handleNodeClick(nodeId);
+          });
+        });
+      }, 500); // Give time for the tree to render
+    };
+
+    setupTreeNodeListeners();
+    
+    return () => {
+      const treeNodes = document.querySelectorAll('.affiliate-node');
+      treeNodes.forEach((node) => {
+        node.removeEventListener('click', () => {});
+      });
+    };
+  }, []);
   
   return (
     <DashboardLayout>
@@ -153,6 +207,19 @@ const HierarchyTree = () => {
             </div>
           </CardContent>
         </Card>
+
+        {/* Affiliate Profile Dialog */}
+        <Dialog open={!!selectedAffiliate} onOpenChange={(open) => !open && setSelectedAffiliate(null)}>
+          <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
+            {selectedAffiliate && (
+              <AffiliateProfile 
+                affiliate={selectedAffiliate}
+                onClose={() => setSelectedAffiliate(null)}
+                isAdmin={false}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );

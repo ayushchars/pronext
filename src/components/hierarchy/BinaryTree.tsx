@@ -1,136 +1,96 @@
 
 import React from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { User } from 'lucide-react';
 
-// Sample binary tree data
-const mockBinaryTreeData = {
-  id: 'user-1',
-  name: 'You',
-  role: 'Gold Member', 
-  status: 'active',
-  left: {
-    id: 'user-2',
-    name: 'John Doe',
-    role: 'Silver Member',
-    status: 'active',
-    left: {
-      id: 'user-5',
-      name: 'Robert Brown',
-      role: 'Starter',
-      status: 'active',
-      left: null,
-      right: null
-    },
-    right: {
-      id: 'user-6',
-      name: 'Emily White',
-      role: 'Starter',
-      status: 'inactive',
-      left: null,
-      right: null
-    }
-  },
-  right: {
-    id: 'user-3',
-    name: 'Alice Smith',
-    role: 'Silver Member',
-    status: 'active',
-    left: {
-      id: 'user-7',
-      name: 'Michael Lee',
-      role: 'Starter',
-      status: 'active',
-      left: null,
-      right: null
-    },
-    right: {
-      id: 'user-8',
-      name: 'David Wilson',
-      role: 'Starter',
-      status: 'active',
-      left: null,
-      right: null
-    }
-  }
-};
-
-interface BinaryNodeProps {
-  node: any;
-  position?: 'root' | 'left' | 'right';
-}
-
-const BinaryNode = ({ node, position = 'root' }: BinaryNodeProps) => {
-  if (!node) return null;
-
-  const hasChildren = node.left || node.right;
+const BinaryTree = () => {
+  // This is a simplified binary tree visualization
+  // In a real app, this would be dynamically rendered based on data
   
   return (
-    <div className="flex flex-col items-center">
-      <Card className={`binary-node p-3 w-[200px] flex items-center gap-3 ${position === 'left' ? 'border-l-blue-500 border-l-4' : position === 'right' ? 'border-r-green-500 border-r-4' : ''} ${node.status === 'inactive' ? 'bg-gray-100 dark:bg-gray-800 opacity-70' : ''}`}>
-        <Avatar className="h-10 w-10">
-          <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${node.name}`} />
-          <AvatarFallback>{node.name.charAt(0)}</AvatarFallback>
-        </Avatar>
-        <div>
-          <div className="font-medium leading-none mb-1">{node.name}</div>
-          <div className="text-xs text-muted-foreground">{node.role}</div>
+    <div className="flex justify-center min-w-[900px] p-4">
+      <div className="flex flex-col items-center">
+        {/* Root Node */}
+        <div className="pb-10 relative">
+          <NodeCard id="node-1" name="John Doe" position="Root" volume={12500} className="border-primary" />
+          
+          {/* Connector to Level 1 */}
+          <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
         </div>
-        {node.status === 'inactive' && (
-          <span className="ml-auto px-2 py-1 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-xs">
-            Inactive
-          </span>
-        )}
-      </Card>
-      
-      {hasChildren && (
-        <div className="pt-4">
+        
+        {/* Level 1 */}
+        <div className="flex justify-between w-[600px] pb-10 relative">
           <div className="relative">
-            <div className="absolute left-1/2 top-0 -translate-x-1/2 h-4 border-l border-gray-300 dark:border-gray-700"></div>
-            <div className="flex justify-center gap-8 md:gap-16">
-              <div className="relative pt-4">
-                {node.left && (
-                  <>
-                    <div className="absolute top-0 left-1/2 h-4 border-l border-gray-300 dark:border-gray-700"></div>
-                    <div className="absolute top-4 left-0 right-1/2 border-t border-gray-300 dark:border-gray-700"></div>
-                    <BinaryNode node={node.left} position="left" />
-                  </>
-                )}
-              </div>
-              <div className="relative pt-4">
-                {node.right && (
-                  <>
-                    <div className="absolute top-0 left-1/2 h-4 border-l border-gray-300 dark:border-gray-700"></div>
-                    <div className="absolute top-4 right-0 left-1/2 border-t border-gray-300 dark:border-gray-700"></div>
-                    <BinaryNode node={node.right} position="right" />
-                  </>
-                )}
-              </div>
-            </div>
+            <NodeCard id="node-2" name="Alice Smith" position="Left" volume={8200} />
+            <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
+          </div>
+          <div className="relative">
+            <NodeCard id="node-3" name="Bob Johnson" position="Right" volume={4300} />
+            <div className="absolute top-20 left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 h-10"></div>
+          </div>
+          
+          {/* Horizontal connector between nodes */}
+          <div className="absolute top-10 left-[150px] w-[300px] h-0.5 bg-gray-300"></div>
+        </div>
+        
+        {/* Level 2 */}
+        <div className="flex justify-between w-[800px]">
+          {/* Left side of Level 2 */}
+          <div className="flex justify-between w-[250px] relative">
+            <NodeCard id="node-4" name="Carol Williams" position="Left" volume={4500} />
+            <NodeCard id="node-5" name="David Brown" position="Right" volume={3700} />
+            
+            {/* Horizontal connector */}
+            <div className="absolute top-10 left-[75px] w-[100px] h-0.5 bg-gray-300"></div>
+          </div>
+          
+          {/* Right side of Level 2 */}
+          <div className="flex justify-between w-[250px] relative">
+            <NodeCard id="node-6" name="Eve Davis" position="Left" volume={2300} />
+            <NodeCard id="node-7" name="Frank Miller" position="Right" volume={2000} />
+            
+            {/* Horizontal connector */}
+            <div className="absolute top-10 left-[75px] w-[100px] h-0.5 bg-gray-300"></div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };
 
-const BinaryTree = () => {
+interface NodeCardProps {
+  id: string;
+  name: string;
+  position: string;
+  volume: number;
+  className?: string;
+}
+
+const NodeCard = ({ id, name, position, volume, className = '' }: NodeCardProps) => {
+  const getPositionColor = () => {
+    switch (position.toLowerCase()) {
+      case 'left': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-300';
+      case 'right': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
+      default: return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+    }
+  };
+
   return (
-    <div className="binary-tree p-6 overflow-auto">
-      <div className="min-w-[800px] flex justify-center">
-        <BinaryNode node={mockBinaryTreeData} />
-      </div>
-      <div className="mt-6 flex justify-center gap-8">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded-full"></div>
-          <span className="text-sm font-medium">Left Team</span>
+    <Card className={`w-40 cursor-pointer hover:shadow-md transition-shadow affiliate-node ${className}`} data-id={id}>
+      <CardContent className="p-3 flex flex-col items-center text-center">
+        <div className="w-12 h-12 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center mb-2">
+          <User className="w-6 h-6 text-gray-500" />
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded-full"></div>
-          <span className="text-sm font-medium">Right Team</span>
+        <div className="font-medium text-sm">{name}</div>
+        <Badge variant="outline" className={`mt-1 text-xs ${getPositionColor()}`}>
+          {position}
+        </Badge>
+        <div className="text-xs text-gray-500 mt-1">
+          Volume: ${volume.toLocaleString()}
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 

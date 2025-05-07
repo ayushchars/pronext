@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,14 +14,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// Fix imports - import as default
 import BinaryTree from '@/components/hierarchy/BinaryTree';
 import OrganizationTree from '@/components/hierarchy/OrganizationTree';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import AffiliateProfile, { AffiliateData } from '@/components/affiliate/AffiliateProfile';
 
 const AffiliateTree = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [zoomLevel, setZoomLevel] = useState(100);
   const [treeType, setTreeType] = useState('organization');
+  const [selectedAffiliate, setSelectedAffiliate] = useState<AffiliateData | null>(null);
   
   const handleZoomIn = () => {
     if (zoomLevel < 150) {
@@ -41,6 +42,58 @@ const AffiliateTree = () => {
     console.log('Searching for:', searchTerm);
     // Implement search logic here
   };
+
+  // Mock function to show the affiliate profile when a node is clicked
+  const handleNodeClick = (affiliateId: string) => {
+    // In a real app, you would fetch the affiliate data from your API
+    // For now, we'll use mock data
+    const mockAffiliate: AffiliateData = {
+      id: affiliateId,
+      name: `John Doe (${affiliateId})`,
+      email: 'johndoe@example.com',
+      phone: '+1234567890',
+      address: '123 Main St, City, Country',
+      joinDate: '2023-06-15',
+      status: 'active',
+      level: 'Gold',
+      teamSize: 24,
+      directReferrals: 5,
+      earnings: {
+        total: 5280,
+        monthly: 420,
+        pending: 150
+      },
+      kyc: 'verified'
+    };
+    
+    setSelectedAffiliate(mockAffiliate);
+  };
+
+  React.useEffect(() => {
+    // Add event listeners to tree nodes for demo purposes
+    const setupTreeNodeListeners = () => {
+      setTimeout(() => {
+        const treeNodes = document.querySelectorAll('.affiliate-node');
+        
+        treeNodes.forEach((node) => {
+          node.addEventListener('click', (e) => {
+            const nodeId = (e.currentTarget as HTMLElement).dataset.id || 'node-1';
+            handleNodeClick(nodeId);
+          });
+        });
+      }, 500); // Give time for the tree to render
+    };
+
+    setupTreeNodeListeners();
+    
+    // Re-setup listeners when tree type changes
+    return () => {
+      const treeNodes = document.querySelectorAll('.affiliate-node');
+      treeNodes.forEach((node) => {
+        node.removeEventListener('click', () => {});
+      });
+    };
+  }, [treeType]);
 
   return (
     <DashboardLayout>
@@ -259,6 +312,19 @@ const AffiliateTree = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Affiliate Profile Dialog */}
+        <Dialog open={!!selectedAffiliate} onOpenChange={(open) => !open && setSelectedAffiliate(null)}>
+          <DialogContent className="sm:max-w-[700px] max-h-[80vh] overflow-y-auto">
+            {selectedAffiliate && (
+              <AffiliateProfile 
+                affiliate={selectedAffiliate}
+                onClose={() => setSelectedAffiliate(null)}
+                isAdmin={true}
+              />
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </DashboardLayout>
   );
