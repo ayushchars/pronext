@@ -1,9 +1,15 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Check, TrendingUp, DollarSign, BarChart3, Users, Award } from 'lucide-react';
+import { Check, TrendingUp, DollarSign, BarChart3, Users, Award, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
 
 const Index = () => {
   return (
@@ -19,7 +25,58 @@ const Index = () => {
             />
             <span className="text-xl font-bold">Pro Net Solutions</span>
           </div>
-          <div className="flex gap-4">
+          <div className="flex items-center gap-4">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="bg-transparent text-white hover:text-[#4CD3C8] data-[state=open]:text-[#4CD3C8]">
+                    Pages
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="grid gap-3 p-6 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-medium leading-none">Company</h4>
+                        <div className="grid gap-1">
+                          <Link to="/about" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">About Us</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Learn about our story and mission</p>
+                          </Link>
+                          <Link to="/services" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">Our Services</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Explore our service offerings</p>
+                          </Link>
+                          <Link to="/testimonials" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">Testimonials</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">See what our clients say</p>
+                          </Link>
+                          <Link to="/contact" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">Contact Us</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Get in touch with us</p>
+                          </Link>
+                        </div>
+                      </div>
+                      <div className="space-y-2">
+                        <h4 className="text-sm font-medium leading-none">Resources</h4>
+                        <div className="grid gap-1">
+                          <Link to="/faq" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">FAQ</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Frequently asked questions</p>
+                          </Link>
+                          <Link to="/dashboard" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">Dashboard</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Access your dashboard</p>
+                          </Link>
+                          <Link to="/admin" className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+                            <div className="text-sm font-medium leading-none">Admin Portal</div>
+                            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">Administrator access</p>
+                          </Link>
+                        </div>
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
             <Link to="/login" className="text-white hover:text-[#4CD3C8]">Login</Link>
             <Link to="/signup">
               <Button className="bg-[#4CD3C8] hover:bg-[#3CC3B8] text-white">
