@@ -38,7 +38,7 @@ const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
 
     setVerifying(true);
     try {
-      const res = await axios.post("http://localhost:5000/api/verify", { email, otp });
+      const res = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/verify`, { email, otp });
        const { token, user } = res.data.data;
       if (res.data?.status === 1) {
         toast({
@@ -75,7 +75,7 @@ const OtpVerificationModal: React.FC<OtpVerificationModalProps> = ({
   const handleResendOtp = async () => {
     setResending(true);
     try {
-      await axios.post("http://localhost:5000/api/resendOtp", { email });
+      await axios.post(`${import.meta.env.VITE_BASE_URL}/api/resendOtp`, { email });
       toast({
         title: "OTP Resent",
         description: "A new OTP has been sent to your email/phone.",

@@ -32,7 +32,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:5000/api/login", 
+      `${import.meta.env.VITE_BASE_URL}/api/login`, 
       { email, password }
     );
     console.log(response,"SDDSdsds")
