@@ -1,7 +1,5 @@
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-
-// Roles available in the application
 export type UserRole = 'affiliate' | 'admin';
 
 interface User {
@@ -10,13 +8,13 @@ interface User {
   email: string;
   role: UserRole;
   avatar?: string;
-  phone?: string; // Added phone property to fix TypeScript error
+  phone?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (user: User, token: string) => void;
   logout: () => void;
   isAdmin: boolean;
 }
@@ -24,7 +22,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
-  login: async () => {},
+  login: () => {},
   logout: () => {},
   isAdmin: false,
 });
@@ -38,22 +36,24 @@ interface AuthProviderProps {
 export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
 
-  // Mock login function - in a real app, this would call an API
-  const login = async (email: string, password: string) => {
-    // For demo purposes, simulate a successful login
-    // In a real app, this would validate credentials against an API
-    const mockUser: User = {
-      id: '1',
-      name: email.includes('admin') ? 'Admin User' : 'Affiliate User',
-      email,
-      role: email.includes('admin') ? 'admin' : 'affiliate',
-      avatar: 'https://ui-avatars.com/api/?name=User',
-    };
-    
-    setUser(mockUser);
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    const token = localStorage.getItem('token');
+
+    if (storedUser && token) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  const login = (user: User, token: string) => {
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', token);
+    setUser(user);
   };
 
   const logout = () => {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
   };
 
@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         isAuthenticated: !!user,
         login,
         logout,
-        isAdmin: user?.role === 'admin',
+        isAdmin: user?.role === 'Admin',
       }}
     >
       {children}

@@ -7,7 +7,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Shield } from 'lucide-react';
-
+import axios from 'axios';
+import { redirectBasedOnRole } from '@/hooks/redirect';
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -16,43 +17,59 @@ const AdminLogin = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // If already logged in as admin, redirect to admin dashboard
   useEffect(() => {
-    if (user && isAdmin) {
-      navigate('/admin');
-    }
-  }, [user, isAdmin, navigate]);
+    redirectBasedOnRole(navigate);
+  }, [navigate]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
 
-    try {
-      // In admin login, we must use admin email
-      if (!email.includes('admin')) {
-        throw new Error('Invalid admin credentials');
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/login", 
+      { email, password }
+    );
+    if (response.data) {
+      const { token, user } = response.data.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      toast({
+        title: "Login successful",
+        description: `Welcome back, ${user.name}!`,
+        variant: "default",
+      });
+
+      if (user.role === "Admin") {
+        navigate("/admin");
+      } else {
+           toast({
+        title: "You are not  admin",
+        description: `Please go to user Login!`,
+        variant: "default",
+      });
+
       }
-      
-      await login(email, password);
-      
+    } else {
       toast({
-        title: 'Admin login successful',
-        description: 'Welcome to the admin dashboard.',
-        variant: 'default',
+        title: "Login failed",
+        description: response.data?.message || "Invalid credentials",
+        variant: "destructive",
       });
-      
-      navigate('/admin');
-    } catch (error) {
-      toast({
-        title: 'Login failed',
-        description: 'Invalid admin credentials. Please try again.',
-        variant: 'destructive',
-      });
-    } finally {
-      setIsLoading(false);
     }
-  };
-
+  } catch (error: any) {
+    console.error("Login error:", error);
+    toast({
+      title: "Login failed",
+      description: error.response?.data?.message || "Something went wrong",
+      variant: "destructive",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#1A2A38]">
       <div className="max-w-md w-full p-8 bg-card text-card-foreground rounded-lg shadow-lg">
@@ -115,11 +132,6 @@ const AdminLogin = () => {
             </Button>
           </div>
 
-          <div className="text-center text-sm text-muted-foreground">
-            <p>
-              For demo purposes: Use any email that contains "admin" with any password
-            </p>
-          </div>
         </form>
       </div>
     </div>

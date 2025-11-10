@@ -1,6 +1,4 @@
-
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
 import AdminSidebar from './AdminSidebar';
 import AffiliateSidebar from './AffiliateSidebar';
 import TopBar from './TopBar';
@@ -14,14 +12,30 @@ interface DashboardLayoutProps {
 }
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
-  const { isAdmin, user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [user, setUser] = useState<any>(null);
   const navigate = useNavigate();
   const location = useLocation();
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if user is trying to access admin pages
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    } else {
+      if (location.pathname.startsWith('/admin')) {
+        navigate('/admin-login');
+      } else {
+        navigate('/login');
+      }
+    }
+  }, [location.pathname, navigate]);
+
+  useEffect(() => {
+    if (!user) return;
+
+    const isAdmin = user.role === 'Admin';
+
     if (location.pathname.startsWith('/admin') && !isAdmin) {
       toast({
         title: "Access Denied",
@@ -30,24 +44,14 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       });
       navigate('/dashboard');
     }
-    
-    // Redirect unauthenticated users
-    if (!user) {
-      if (location.pathname.startsWith('/admin')) {
-        navigate('/admin-login');
-      } else {
-        navigate('/login');
-      }
-    }
-  }, [user, isAdmin, location.pathname, navigate, toast]);
+  }, [user, location.pathname, navigate, toast]);
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
 
-  const handleFaqClick = () => {
-    navigate('/faq');
-  };
+  const handleFaqClick = () => navigate('/faq');
+
+  const isAdmin = user?.role === 'Admin';
+
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
@@ -71,7 +75,6 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         </div>
       </div>
       
-      {/* Footer with Social Media Handles */}
       <footer className="bg-[#1A2A38] text-white py-4 px-6">
         <div className="container mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center">

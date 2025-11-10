@@ -1,12 +1,13 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-
+import axios from "axios"
+import { redirectBasedOnRole } from '@/hooks/redirect';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,35 +16,60 @@ const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
 
-    try {
-      await login(email, password);
-      
+  useEffect(() => {
+    redirectBasedOnRole(navigate);
+  }, [navigate]);
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const response = await axios.post(
+      "http://localhost:5000/api/login", 
+      { email, password }
+    );
+
+
+
+    console.log(response,"SDDSdsds")
+    if (response.data) {
+      const { token, user } = response.data.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
       toast({
-        title: 'Login successful',
-        description: 'Welcome back to the dashboard.',
-        variant: 'default',
+        title: "Login successful",
+        description: `Welcome back, ${user.name}!`,
+        variant: "default",
       });
-      
-      // Redirect based on login credentials
-      if (email === 'admin@example.com') {
-        navigate('/admin');
+
+      if (user.role === "Admin") {
+        navigate("/admin");
       } else {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
-    } catch (error) {
+    } else {
       toast({
-        title: 'Login failed',
-        description: 'Please check your credentials and try again.',
-        variant: 'destructive',
+        title: "Login failed",
+        description: response.data?.message || "Invalid credentials",
+        variant: "destructive",
       });
-    } finally {
-      setIsLoading(false);
     }
-  };
+  } catch (error: any) {
+    console.error("Login error:", error);
+    toast({
+      title: "Login failed",
+      description: error.response?.data?.message || "Something went wrong",
+      variant: "destructive",
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#1A2A38]">
@@ -109,12 +135,6 @@ const Login = () => {
             </Button>
           </div>
 
-          <div className="text-center text-sm text-muted-foreground">
-            <p>
-              For demo purposes: Use <span className="font-semibold">admin@example.com</span> or <span className="font-semibold">affiliate@example.com</span> with any password
-            </p>
-          </div>
-          
           <div className="text-center mt-4 pt-4 border-t border-border">
             <p className="text-sm text-muted-foreground mb-2">Are you an administrator?</p>
             <Link to="/admin-login">
