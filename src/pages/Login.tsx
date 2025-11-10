@@ -8,10 +8,15 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import axios from "axios"
 import { redirectBasedOnRole } from '@/hooks/redirect';
+import OtpVerificationModal from '@/components/ui/otp-dialog';
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [otpModal, setOtpModal] = useState(false);
+  
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -30,15 +35,10 @@ const handleSubmit = async (e: React.FormEvent) => {
       "http://localhost:5000/api/login", 
       { email, password }
     );
-
-
-
     console.log(response,"SDDSdsds")
     if (response.data) {
       const { token, user } = response.data.data;
 
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
 
       toast({
         title: "Login successful",
@@ -46,11 +46,8 @@ const handleSubmit = async (e: React.FormEvent) => {
         variant: "default",
       });
 
-      if (user.role === "Admin") {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard");
-      }
+      setOtpModal(true)
+ 
     } else {
       toast({
         title: "Login failed",
@@ -134,7 +131,12 @@ const handleSubmit = async (e: React.FormEvent) => {
               {isLoading ? "Logging in..." : "Login"}
             </Button>
           </div>
-
+ <p className="text-sm text-muted-foreground">
+    Don’t have an account?{" "}
+    <Link to="/signup" className="text-primary hover:underline">
+      Sign up
+    </Link>
+  </p>
           <div className="text-center mt-4 pt-4 border-t border-border">
             <p className="text-sm text-muted-foreground mb-2">Are you an administrator?</p>
             <Link to="/admin-login">
@@ -145,6 +147,11 @@ const handleSubmit = async (e: React.FormEvent) => {
           </div>
         </form>
       </div>
+        <OtpVerificationModal
+        open={otpModal}
+        onClose={() => setOtpModal(false)}
+        email={email}
+      />
     </div>
   );
 };

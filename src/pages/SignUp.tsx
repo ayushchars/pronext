@@ -1,7 +1,6 @@
-
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -13,29 +12,34 @@ import {
   CardHeader,
   CardTitle
 } from '@/components/ui/card';
-import { useToast } from '@/components/ui/use-toast';
-import { Link } from 'react-router-dom';
-import { UserPlus, ArrowRight } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { UserPlus } from 'lucide-react';
+import OtpVerificationModal from '@/components/ui/otp-dialog';
+import { redirectBasedOnRole } from '@/hooks/redirect';
 
 const SignUp = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login } = useAuth();
-  
+  const [otpModal, setOtpModal] = useState(false);
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fname: '',
+    lname: '',
     email: '',
     password: '',
     confirmPassword: '',
-    phone: '',
-    address: '',
-    referralCode: ''
+    Phone: '',
+    Address: '',
+    ReferralCode: ''
   });
   
   const [loading, setLoading] = useState(false);
   const [agreed, setAgreed] = useState(false);
   
+
+  useEffect(() => {
+    redirectBasedOnRole(navigate);
+  }, [navigate]);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -65,26 +69,35 @@ const SignUp = () => {
     setLoading(true);
     
     try {
-      // In a real app, you'd register the user with an API
-      // For demo purposes, we'll simulate success and use the login function
-      
-      // Simulate a delay for API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Login the user
-      await login(formData.email, formData.password);
-      
-      toast({
-        title: "Account created successfully",
-        description: "Welcome to Pro Net Solutions!"
+      const response = await axios.post("http://localhost:5000/api/register", {
+        fname: formData.fname,
+        lname: formData.lname,
+        email: formData.email,
+        password: formData.password,
+        Phone: formData.Phone,
+        Address: formData.Address,
+        ReferralCode: formData.ReferralCode
       });
-      
-      // Navigate to the dashboard
-      navigate("/dashboard");
-    } catch (error) {
+
+      if (response.data?.status === 1) {
+        toast({
+          title: "Please Verify your Otp",
+          description: "Welcome to Pro Net Solutions!"
+        });
+        setOtpModal(true)
+        
+      } else {
+        toast({
+          title: "Registration failed",
+          description: response.data?.message || "Unable to register user.",
+          variant: "destructive"
+        });
+      }
+    } catch (error: any) {
+      console.error("Registration error:", error);
       toast({
         title: "Registration failed",
-        description: "There was an error creating your account. Please try again.",
+        description: error.response?.data?.message || "Something went wrong.",
         variant: "destructive"
       });
     } finally {
@@ -119,24 +132,24 @@ const SignUp = () => {
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="firstName">First Name</Label>
+                <Label htmlFor="fname">First Name</Label>
                 <Input 
-                  id="firstName"
-                  name="firstName"
+                  id="fname"
+                  name="fname"
                   placeholder="John"
                   required
-                  value={formData.firstName}
+                  value={formData.fname}
                   onChange={handleChange}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="lastName">Last Name</Label>
+                <Label htmlFor="lname">Last Name</Label>
                 <Input 
-                  id="lastName"
-                  name="lastName"
+                  id="lname"
+                  name="lname"
                   placeholder="Doe"
                   required
-                  value={formData.lastName}
+                  value={formData.lname}
                   onChange={handleChange}
                 />
               </div>
@@ -183,36 +196,36 @@ const SignUp = () => {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="phone">Phone Number</Label>
+              <Label htmlFor="Phone">Phone Number</Label>
               <Input 
-                id="phone"
-                name="phone"
+                id="Phone"
+                name="Phone"
                 placeholder="+1 (555) 123-4567"
                 required
-                value={formData.phone}
+                value={formData.Phone}
                 onChange={handleChange}
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="address">Address</Label>
+              <Label htmlFor="Address">Address</Label>
               <Input 
-                id="address"
-                name="address"
+                id="Address"
+                name="Address"
                 placeholder="123 Main St, New York, NY 10001"
                 required
-                value={formData.address}
+                value={formData.Address}
                 onChange={handleChange}
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="referralCode">Referral Code (Optional)</Label>
+              <Label htmlFor="ReferralCode">Referral Code (Optional)</Label>
               <Input 
-                id="referralCode"
-                name="referralCode"
+                id="ReferralCode"
+                name="ReferralCode"
                 placeholder="Enter referral code if you have one"
-                value={formData.referralCode}
+                value={formData.ReferralCode}
                 onChange={handleChange}
               />
             </div>
@@ -245,6 +258,11 @@ const SignUp = () => {
           </CardFooter>
         </form>
       </Card>
+       <OtpVerificationModal
+        open={otpModal}
+        onClose={() => setOtpModal(false)}
+        email={formData.email}
+      />
     </div>
   );
 };

@@ -9,10 +9,13 @@ import { useToast } from '@/hooks/use-toast';
 import { Shield } from 'lucide-react';
 import axios from 'axios';
 import { redirectBasedOnRole } from '@/hooks/redirect';
+import OtpVerificationModal from '@/components/ui/otp-dialog';
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+    const [otpModal, setOtpModal] = useState(false);
+  
   const { login, isAdmin, user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -43,7 +46,8 @@ const handleSubmit = async (e: React.FormEvent) => {
       });
 
       if (user.role === "Admin") {
-        navigate("/admin");
+      setOtpModal(true)
+       
       } else {
            toast({
         title: "You are not  admin",
@@ -134,6 +138,11 @@ const handleSubmit = async (e: React.FormEvent) => {
 
         </form>
       </div>
+        <OtpVerificationModal
+        open={otpModal}
+        onClose={() => setOtpModal(false)}
+        email={email}
+      />
     </div>
   );
 };
