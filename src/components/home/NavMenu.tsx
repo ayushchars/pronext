@@ -129,9 +129,12 @@ const NavMenu = () => {
 
             <Link
               to="/login"
-              className="block text-white hover:text-[#4CD3C8] transition-colors"
+              className="block text-white hover:text-[#4CD3C8] transition-colors "
             >
+                <Button className="w-full bg-[#4CD3C8] hover:bg-[#3CC3B8] text-white mb-2">
+
               Login
+                </Button>
             </Link>
             <Link to="/signup">
               <Button className="w-full bg-[#4CD3C8] hover:bg-[#3CC3B8] text-white">
