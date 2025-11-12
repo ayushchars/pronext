@@ -80,6 +80,10 @@
   border: 1px solid hsl(var(--border));
 }
 
+.scrollbar-hide {
+  -ms-overflow-style: none; 
+  scrollbar-width: none;
+}
 .admin-table th {
   background-color: hsl(var(--secondary));
   color: hsl(var(--secondary-foreground));

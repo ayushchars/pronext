@@ -98,19 +98,27 @@ const AffiliateTree = () => {
   return (
     <DashboardLayout>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">Affiliate Tree Structure</h1>
-          <div className="flex gap-2">
-            <Button variant="outline">
-              <Download className="mr-2 h-4 w-4" />
-              Export Tree
-            </Button>
-            <Button variant="outline" onClick={() => setZoomLevel(100)}>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Reset View
-            </Button>
-          </div>
-        </div>
+     <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3">
+  <h1 className="text-2xl font-bold text-center sm:text-left">
+    Affiliate Tree Structure
+  </h1>
+
+  <div className="flex flex-wrap justify-center sm:justify-end gap-2">
+    <Button variant="outline" className="w-full sm:w-auto">
+      <Download className="mr-2 h-4 w-4" />
+      Export Tree
+    </Button>
+    <Button
+      variant="outline"
+      onClick={() => setZoomLevel(100)}
+      className="w-full sm:w-auto"
+    >
+      <RefreshCw className="mr-2 h-4 w-4" />
+      Reset View
+    </Button>
+  </div>
+</div>
+
         
         <Card>
           <CardHeader>
